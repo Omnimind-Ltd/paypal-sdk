@@ -1,5 +1,6 @@
 name: paypal_sdk
 description: PayPal SDK
+homepage: https://github.com/chirag729/paypal-sdk
 version: 0.1.0
 
 environment:
