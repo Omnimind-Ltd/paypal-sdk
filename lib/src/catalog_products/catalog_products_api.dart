@@ -103,13 +103,13 @@ class CatalogProductsApi {
   /// Updates a product, by ID. You can patch these attributes and objects:
   /// <ul>
   /// <li>
-  /// description. Operations:	add, replace, remove
+  /// description. Operations: add, replace, remove
   /// </li>
   /// <li>
   /// category. Operations:	add, replace, remove
   /// </li>
   /// <li>
-  /// image_url. Operations:	add, replace, remove
+  /// image_url. Operations: add, replace, remove
   /// </li>
   /// <li>
   /// home_url. Operations:	add, replace, remove
