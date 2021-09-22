@@ -24,6 +24,7 @@ class LinkDescription {
   /// Possible values: GET, POST, PUT, DELETE, HEAD, CONNECT, OPTIONS, PATCH
   final String method;
 
+  /// Encoding type.
   final String? encType;
 
   const LinkDescription({
