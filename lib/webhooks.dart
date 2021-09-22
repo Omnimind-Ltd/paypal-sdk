@@ -9,3 +9,4 @@
 library paypal_sdk_webhooks;
 
 export 'src/webhooks/model/event.dart';
+export 'src/webhooks/model/verify_webhook_signature_request.dart';
