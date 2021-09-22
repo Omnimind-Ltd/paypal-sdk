@@ -27,4 +27,10 @@ class PricingTier {
 
   factory PricingTier.fromJson(Map<String, dynamic> json) =>
       _$PricingTierFromJson(json);
+
+  @override
+  String toString() {
+    return 'PricingTier{startingQuantity: $startingQuantity, '
+        'endingQuantity: $endingQuantity, amount: $amount}';
+  }
 }

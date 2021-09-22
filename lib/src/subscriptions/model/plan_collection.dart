@@ -32,4 +32,10 @@ class PlanCollection {
 
   factory PlanCollection.fromJson(Map<String, dynamic> json) =>
       _$PlanCollectionFromJson(json);
+
+  @override
+  String toString() {
+    return 'PlanCollection{plans: $plans, totalItems: $totalItems, '
+        'totalPages: $totalPages, links: $links}';
+  }
 }

@@ -62,4 +62,11 @@ class PricingScheme {
 
   factory PricingScheme.fromJson(Map<String, dynamic> json) =>
       _$PricingSchemeFromJson(json);
+
+  @override
+  String toString() {
+    return 'PricingScheme{version: $version, fixedPrice: $fixedPrice, '
+        'pricingModel: $pricingModel, tiers: $tiers, createTime: $createTime, '
+        'updateTime: $updateTime}';
+  }
 }
