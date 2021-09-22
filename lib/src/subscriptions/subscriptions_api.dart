@@ -4,6 +4,7 @@ import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
 import 'package:paypal_sdk/src/subscriptions/model/billing_plan.dart';
 import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
+import 'package:paypal_sdk/src/subscriptions/model/pricing_schemes.dart';
 import 'package:paypal_sdk/src/subscriptions/model/taxes.dart';
 
 import 'model/plan_collection.dart';
@@ -37,7 +38,7 @@ class SubscriptionsApi {
       int? pageSize,
       int? page,
       bool? totalRequired}) async {
-    var uri = _payPalHttpClient.getUri(
+    var url = _payPalHttpClient.getUrl(
       '/v1/billing/plans',
       queryParameters: {
         'product_id': productId,
@@ -48,7 +49,7 @@ class SubscriptionsApi {
       },
     );
 
-    var response = await _payPalHttpClient.get(uri);
+    var response = await _payPalHttpClient.get(url);
     return PlanCollection.fromJson(jsonDecode(response.body));
   }
 
@@ -101,7 +102,7 @@ class SubscriptionsApi {
     bool? quantitySupported,
     String? payPalRequestId,
   }) async {
-    var uri = _payPalHttpClient.getUri('/v1/billing/plans');
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans');
 
     var headers =
         payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
@@ -117,7 +118,72 @@ class SubscriptionsApi {
         quantitySupported: quantitySupported));
 
     var response =
-        await _payPalHttpClient.post(uri, headers: headers, body: body);
+        await _payPalHttpClient.post(url, headers: headers, body: body);
     return BillingPlan.fromJson(jsonDecode(response.body));
+  }
+
+  /// Updates a plan with the CREATED or ACTIVE status. For an INACTIVE plan, you can make only status updates.
+  /// You can patch these attributes and objects:
+  /// <ul>
+  /// <li>
+  /// description. Operations: replace
+  /// </li>
+  /// <li>
+  /// payment_preferences.auto_bill_outstanding. Operations: replace
+  /// </li>
+  /// <li>
+  /// taxes.percentage. Operations: replace
+  /// </li>
+  /// <li>
+  /// payment_preferences.payment_failure_threshold. Operations: replace
+  /// </li>
+  /// <li>
+  /// payment_preferences.setup_fee. Operations: replace
+  /// </li>
+  /// <li>
+  /// payment_preferences.setup_fee_failure_action. Operations:	replace
+  /// </li>
+  /// </ul>
+  Future<void> updatePlan(String planId, List<Patch> patchRequests) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
+
+    var patchRequest = List.generate(
+        patchRequests.length, (index) => patchRequests[index].toJson());
+
+    var body = jsonEncode(patchRequest);
+
+    await _payPalHttpClient.patch(url, body: body);
+  }
+
+  /// Shows details for a plan, by ID.
+  Future<BillingPlan> showPlanDetails(String planId) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
+
+    var response = await _payPalHttpClient.get(url);
+    return BillingPlan.fromJson(jsonDecode(response.body));
+  }
+
+  /// Activates a plan, by ID.
+  Future<void> activatePlan(String planId) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId/activate');
+    await _payPalHttpClient.post(url);
+  }
+
+  /// Deactivates a plan, by ID.
+  Future<void> deactivatePlan(String planId) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId/deactivate');
+    await _payPalHttpClient.post(url);
+  }
+
+  /// Updates pricing for a plan. For example, you can update a regular billing
+  /// cycle from $5 per month to $7 per month.
+  Future<void> updatePlanPricing(
+      String planId, PricingSchemes pricingSchemes) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/plans/$planId/update-pricing-schemes');
+
+    var body = jsonEncode(pricingSchemes.toJson());
+
+    await _payPalHttpClient.post(url, body: body);
   }
 }
