@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:html' if (dart.library.io) 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -16,7 +16,7 @@ class PayPalHttpClient extends http.BaseClient {
 
   late final http.Client _inner;
 
-  final String userAgent = 'PayPalSDK/Dart-SDK ${Platform.version}';
+  final String userAgent = 'PayPalSDK/Dart-SDK';
 
   final StreamController<AccessToken> accessTokenUpdatedStream =
       StreamController<AccessToken>.broadcast();
@@ -57,7 +57,6 @@ class PayPalHttpClient extends http.BaseClient {
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
     request.headers['sdk_name'] = 'Dart-SDK';
-    request.headers['sdk_tech_stack'] = Platform.version;
 
     return _inner.send(request);
   }
