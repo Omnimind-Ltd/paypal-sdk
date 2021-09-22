@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 import 'mock_http_client.dart';
 
 void main() {
-  late PayPalHttpClient _payPalHttpClient;
+  late CatalogProductsApi _catalogProductsApi;
 
   String _productDescription = 'test_description';
 
@@ -58,19 +58,17 @@ void main() {
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _payPalHttpClient =
-        PayPalHttpClient(paypalEnvironment, client: mockHttpClient);
+    _catalogProductsApi = CatalogProductsApi(
+        PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   test('Test list products', () async {
-    var productsApi = CatalogProductsApi(_payPalHttpClient);
-    var productsCollection = await productsApi.listProducts();
+    var productsCollection = await _catalogProductsApi.listProducts();
     expect(productsCollection is ProductCollection, true);
   });
 
   test('Test create product', () async {
-    var productsApi = CatalogProductsApi(_payPalHttpClient);
-    var product = await productsApi.createProduct(
+    var product = await _catalogProductsApi.createProduct(
         name: 'test_product',
         type: Product.typeDigital,
         description: 'test_description');
@@ -81,8 +79,7 @@ void main() {
   });
 
   test('Test update product', () async {
-    var productsApi = CatalogProductsApi(_payPalHttpClient);
-    await productsApi.updateProduct('PROD-41223692GT225981R', [
+    await _catalogProductsApi.updateProduct('PROD-41223692GT225981R', [
       Patch(
           op: Patch.operationReplace,
           path: '/description',
@@ -90,24 +87,24 @@ void main() {
     ]);
 
     var product =
-        await productsApi.showProductDetails('PROD-41223692GT225981R');
+        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
     expect(product.description, 'test_description_updated');
 
-    await productsApi.updateProduct('PROD-41223692GT225981R', [
+    await _catalogProductsApi.updateProduct('PROD-41223692GT225981R', [
       Patch(
           op: Patch.operationReplace,
           path: '/description',
           value: 'test_description')
     ]);
 
-    product = await productsApi.showProductDetails('PROD-41223692GT225981R');
+    product =
+        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
     expect(product.description, 'test_description');
   });
 
   test('Test get product', () async {
-    var productsApi = CatalogProductsApi(_payPalHttpClient);
     var product =
-        await productsApi.showProductDetails('PROD-41223692GT225981R');
+        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
     expect(product.name, 'test_product');
     expect(product.description, 'test_description');
   });
