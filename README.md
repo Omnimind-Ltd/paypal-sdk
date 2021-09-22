@@ -7,6 +7,7 @@ APIs implemented:
   
 In progress:
 - Subscriptions
+- Webhooks
 
 TODO:
 - Add Tracking
@@ -22,7 +23,6 @@ TODO:
 - Payouts
 - Referenced Payouts
 - Transaction Search
-- Webhooks 
 
 ## Getting started
 
