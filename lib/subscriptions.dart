@@ -16,7 +16,7 @@ export 'src/subscriptions/model/frequency.dart';
 export 'src/subscriptions/model/payment_preferences.dart';
 export 'src/subscriptions/model/plan_collection.dart';
 export 'src/subscriptions/model/pricing_scheme.dart';
-export 'src/subscriptions/model/pricing_schemes.dart';
+export 'src/subscriptions/model/pricing_schemes_update_request.dart';
 export 'src/subscriptions/model/pricing_tier.dart';
 export 'src/subscriptions/model/taxes.dart';
 export 'src/subscriptions/subscriptions_api.dart';

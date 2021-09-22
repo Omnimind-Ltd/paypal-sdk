@@ -4,7 +4,7 @@ import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
 import 'package:paypal_sdk/src/subscriptions/model/billing_plan.dart';
 import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
-import 'package:paypal_sdk/src/subscriptions/model/pricing_schemes.dart';
+import 'package:paypal_sdk/src/subscriptions/model/pricing_schemes_update_request.dart';
 import 'package:paypal_sdk/src/subscriptions/model/taxes.dart';
 
 import 'model/plan_collection.dart';
@@ -178,7 +178,7 @@ class SubscriptionsApi {
   /// Updates pricing for a plan. For example, you can update a regular billing
   /// cycle from $5 per month to $7 per month.
   Future<void> updatePlanPricing(
-      String planId, PricingSchemes pricingSchemes) async {
+      String planId, PricingSchemesUpdateRequest pricingSchemes) async {
     var url = _payPalHttpClient
         .getUrl('/v1/billing/plans/$planId/update-pricing-schemes');
 
