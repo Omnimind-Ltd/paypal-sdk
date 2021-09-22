@@ -6,7 +6,7 @@ import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
 import 'package:test/test.dart';
 
-import 'mock_http_client.dart';
+import 'helper/mock_http_client.dart';
 
 void main() {
   late CatalogProductsApi _catalogProductsApi;

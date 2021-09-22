@@ -14,4 +14,4 @@ doc/
 .idea/
 *.iml
 
-test/test_environment.dart
+test/helper/test_environment.dart

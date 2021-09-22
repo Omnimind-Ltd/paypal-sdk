@@ -12,7 +12,7 @@ import 'package:paypal_sdk/src/subscriptions/subscriptions_api.dart';
 import 'package:paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
-import 'mock_http_client.dart';
+import 'helper/mock_http_client.dart';
 
 void main() {
   late SubscriptionsApi _subscriptionsApi;
