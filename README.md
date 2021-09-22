@@ -6,6 +6,22 @@ APIs implemented:
 - Catalog Products
 - Subscriptions
 
+TODO:
+- Add Tracking
+- Billing Agreements
+- Billing Plans
+- Disputes
+- Identity
+- Invoicing
+- Orders
+- Partner Referrals
+- Payment Experience
+- Payments
+- Payouts
+- Referenced Payouts
+- Transaction Search
+- Webhooks 
+
 ## Getting started
 
 Follow the instructions <a href="https://developer.paypal.com/docs/api/overview/#create-sandbox-accounts">here</a> to get Sandbox account credentials
@@ -16,7 +32,7 @@ Products API
 ```dart
 var paypalEnvironment = PayPalEnvironment.sandbox(
     clientId: YOUR_CLIENT_ID, clientSecret: YOUR_CLIENT_SECRET);
-var paypalHttpClient = PayPalHttpClient(paypalEnvironment);
+var payPalHttpClient = PayPalHttpClient(paypalEnvironment);
 var productsApi = CatalogProductsApi(payPalHttpClient);
 
 // Get product
