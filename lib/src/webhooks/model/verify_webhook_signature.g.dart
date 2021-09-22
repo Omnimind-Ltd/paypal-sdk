@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verify_webhook_signature_request.dart';
+part of 'verify_webhook_signature.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -28,4 +28,16 @@ Map<String, dynamic> _$VerifyWebhookSignatureRequestToJson(
       'transmission_time': instance.transmissionTime,
       'webhook_id': instance.webhookId,
       'webhook_event': instance.webhookEvent,
+    };
+
+VerifyWebhookSignatureResponse _$VerifyWebhookSignatureResponseFromJson(
+        Map<String, dynamic> json) =>
+    VerifyWebhookSignatureResponse(
+      json['verification_status'] as String,
+    );
+
+Map<String, dynamic> _$VerifyWebhookSignatureResponseToJson(
+        VerifyWebhookSignatureResponse instance) =>
+    <String, dynamic>{
+      'verification_status': instance.verificationStatus,
     };

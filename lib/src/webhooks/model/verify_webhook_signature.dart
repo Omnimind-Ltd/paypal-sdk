@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'verify_webhook_signature_request.g.dart';
+part 'verify_webhook_signature.g.dart';
 
 /// Verifies a webhook signature.
 @JsonSerializable()
@@ -61,5 +61,26 @@ class VerifyWebhookSignatureRequest {
         'certUrl: $certUrl, transmissionId: $transmissionId, '
         'transmissionSig: $transmissionSig, transmissionTime: $transmissionTime, '
         'webhookId: $webhookId, webhookEvent: $webhookEvent}';
+  }
+}
+
+@JsonSerializable()
+class VerifyWebhookSignatureResponse {
+  static const String statusSuccess = 'SUCCESS';
+  static const String statusFailure = 'FAILURE';
+
+  @JsonKey(name: 'verification_status')
+  final String verificationStatus;
+
+  VerifyWebhookSignatureResponse(this.verificationStatus);
+
+  Map<String, dynamic> toJson() => _$VerifyWebhookSignatureResponseToJson(this);
+
+  factory VerifyWebhookSignatureResponse.fromJson(Map<String, dynamic> json) =>
+      _$VerifyWebhookSignatureResponseFromJson(json);
+
+  @override
+  String toString() {
+    return 'VerifyWebhookSignatureResponse{verificationStatus: $verificationStatus}';
   }
 }
