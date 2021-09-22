@@ -25,7 +25,7 @@ class CatalogProductsApi {
   /// the response.
   Future<ProductCollection> listProducts(
       {int? pageSize, int? page, bool? totalRequired}) async {
-    var uri = _payPalHttpClient.getUri(
+    var uri = _payPalHttpClient.getUrl(
       '/v1/catalogs/products',
       queryParameters: {
         'page_size': pageSize?.toString(),
@@ -80,7 +80,7 @@ class CatalogProductsApi {
     String? homeUrl,
     String? payPalRequestId,
   }) async {
-    var uri = _payPalHttpClient.getUri('/v1/catalogs/products');
+    var uri = _payPalHttpClient.getUrl('/v1/catalogs/products');
 
     var headers =
         payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
@@ -117,7 +117,7 @@ class CatalogProductsApi {
   /// </ul>
   Future<void> updateProduct(
       String productId, List<Patch> patchRequests) async {
-    var uri = _payPalHttpClient.getUri('/v1/catalogs/products/$productId');
+    var uri = _payPalHttpClient.getUrl('/v1/catalogs/products/$productId');
 
     var patchRequest = List.generate(
         patchRequests.length, (index) => patchRequests[index].toJson());
@@ -129,7 +129,7 @@ class CatalogProductsApi {
 
   /// Shows details for a product, by ID.
   Future<Product> showProductDetails(String productId) async {
-    var uri = _payPalHttpClient.getUri('/v1/catalogs/products/$productId');
+    var uri = _payPalHttpClient.getUrl('/v1/catalogs/products/$productId');
     var response = await _payPalHttpClient.get(uri);
     return Product.fromJson(jsonDecode(response.body));
   }

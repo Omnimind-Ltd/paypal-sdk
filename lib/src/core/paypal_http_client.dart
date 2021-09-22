@@ -42,7 +42,7 @@ class PayPalHttpClient extends http.BaseClient {
     }
   }
 
-  Uri getUri(String path, {Map<String, String?>? queryParameters}) {
+  Uri getUrl(String path, {Map<String, String?>? queryParameters}) {
     if (queryParameters != null) {
       for (var key in queryParameters.keys.toList(growable: false)) {
         if (queryParameters[key] == null) {
