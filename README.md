@@ -4,6 +4,8 @@ Unofficial Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">
 
 APIs implemented:
 - Catalog Products
+  
+In progress:
 - Subscriptions
 
 TODO:
@@ -35,32 +37,47 @@ var paypalEnvironment = PayPalEnvironment.sandbox(
 var payPalHttpClient = PayPalHttpClient(paypalEnvironment);
 var productsApi = CatalogProductsApi(payPalHttpClient);
 
-// Get product
+// Get product details
 try {
   var product = await productsApi.showProductDetails('product_id');
-} catch(e) {
+  print(product);
+} catch (e) {
   print(e);
 }
 
 // List products
 try {
   var productsCollection = await productsApi.listProducts();
-} catch(e) {
+  for (var product in productsCollection.products) {
+    print(product);
+  }
+} catch (e) {
   print(e);
 }
 
 // Create product
 try {
-  var product = await productsApi.createProduct(name: 'product_name', type: Product.typeDigital,);
-} catch(e) {
+  var product = await productsApi.createProduct(
+    name: 'Product name',
+    type: Product.typeDigital,
+    category: 'ONLINE_GAMING',
+    description: 'Product description',
+  );
+
+  print(product);
+} catch (e) {
   print(e);
 }
 
 // Update product
 try {
-  await productsApi.updateProduct('product_id', [Patch(op: Patch.operationReplace, path: '/description', value: 'Updated description')
+  await productsApi.updateProduct('product_id', [
+  Patch(
+    op: Patch.operationReplace,
+    path: '/description',
+    value: 'Updated description')
   ]);
-} catch(e) {
+} catch (e) {
   print(e);
 }
 ```
