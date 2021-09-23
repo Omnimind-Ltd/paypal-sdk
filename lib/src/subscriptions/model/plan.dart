@@ -8,7 +8,7 @@ part 'billing_plan.g.dart';
 
 /// Billing plan.
 @JsonSerializable()
-class BillingPlan {
+class Plan {
   static const String statusCreated = 'CREATED';
   static const String statusInactive = 'INACTIVE';
   static const String statusActive = 'ACTIVE';
@@ -72,7 +72,7 @@ class BillingPlan {
   /// HATEOAS links</a>.
   List<LinkDescription>? links;
 
-  BillingPlan({
+  Plan({
     this.id,
     this.productId,
     this.status,
@@ -89,7 +89,7 @@ class BillingPlan {
 
   Map<String, dynamic> toJson() => _$BillingPlanToJson(this);
 
-  factory BillingPlan.fromJson(Map<String, dynamic> json) =>
+  factory Plan.fromJson(Map<String, dynamic> json) =>
       _$BillingPlanFromJson(json);
 
   @override

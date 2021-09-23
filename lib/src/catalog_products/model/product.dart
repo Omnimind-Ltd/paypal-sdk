@@ -32,7 +32,7 @@ class Product {
   /// SERVICE. Product representing a service. Example: Tech Support
   /// </li>
   /// </ul>
-  final String type;
+  final String? type;
 
   /// The product category. <a href="https://developer.paypal.com/docs/api/catalog-products/v1/#definition-product_category">
   /// Possible values</a>

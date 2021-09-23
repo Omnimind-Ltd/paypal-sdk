@@ -13,7 +13,7 @@ class ProductCollectionElement {
   final String name;
 
   /// The product description.
-  final String description;
+  final String? description;
 
   /// The date and time when the plan was created, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">

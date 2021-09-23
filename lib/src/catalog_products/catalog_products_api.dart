@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/catalog_products/model/create_product_request.dart';
+import 'package:paypal_sdk/src/catalog_products/model/product_request.dart';
 
 import 'model/product.dart';
 import 'model/product_collection.dart';
@@ -72,7 +72,7 @@ class CatalogProductsApi {
   ///
   /// Parameter home_url: The home page URL for the product.
   Future<Product> createProduct(
-    CreateProductRequest request, {
+    ProductRequest request, {
     String? payPalRequestId,
   }) async {
     var uri = _payPalHttpClient.getUrl('/v1/catalogs/products');

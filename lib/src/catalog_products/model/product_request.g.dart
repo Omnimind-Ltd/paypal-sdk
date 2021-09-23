@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'create_product_request.dart';
+part of 'product_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreateProductRequest _$CreateProductRequestFromJson(
-        Map<String, dynamic> json) =>
-    CreateProductRequest(
+ProductRequest _$ProductRequestFromJson(Map<String, dynamic> json) =>
+    ProductRequest(
       name: json['name'] as String,
       type: json['type'] as String,
       id: json['id'] as String?,
@@ -18,8 +17,7 @@ CreateProductRequest _$CreateProductRequestFromJson(
       homeUrl: json['home_url'] as String?,
     );
 
-Map<String, dynamic> _$CreateProductRequestToJson(
-    CreateProductRequest instance) {
+Map<String, dynamic> _$ProductRequestToJson(ProductRequest instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

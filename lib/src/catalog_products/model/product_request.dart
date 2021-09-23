@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'create_product_request.g.dart';
+part 'product_request.g.dart';
 
 /// Create product request object
 @JsonSerializable()
-class CreateProductRequest {
+class ProductRequest {
   static const String typePhysical = 'PHYSICAL';
   static const String typeDigital = 'DIGITAL';
   static const String typeService = 'SERVICE';
@@ -46,7 +46,7 @@ class CreateProductRequest {
   @JsonKey(name: 'home_url')
   String? homeUrl;
 
-  CreateProductRequest({
+  ProductRequest({
     required this.name,
     required this.type,
     this.id,
@@ -56,14 +56,14 @@ class CreateProductRequest {
     this.homeUrl,
   });
 
-  Map<String, dynamic> toJson() => _$CreateProductRequestToJson(this);
+  Map<String, dynamic> toJson() => _$ProductRequestToJson(this);
 
-  factory CreateProductRequest.fromJson(Map<String, dynamic> json) =>
-      _$CreateProductRequestFromJson(json);
+  factory ProductRequest.fromJson(Map<String, dynamic> json) =>
+      _$ProductRequestFromJson(json);
 
   @override
   String toString() {
-    return 'CreateProductRequest{id: $id, name: $name, '
+    return 'ProductRequest{id: $id, name: $name, '
         'description: $description, type: $type, category: $category, '
         'imageUrl: $imageUrl, homeUrl: $homeUrl}';
   }

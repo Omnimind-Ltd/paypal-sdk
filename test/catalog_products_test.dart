@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/catalog_products/model/create_product_request.dart';
+import 'package:paypal_sdk/src/catalog_products/model/product_request.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
@@ -20,10 +20,10 @@ void main() {
         '/v1/catalogs/products',
         'GET',
         (request) async => Response(
-            '{"products":[{"id":"PROD-41223692GT225981R","name":"test_product","'
+            '{"products":[{"id":"PROD-3XF87627UU805523Y","name":"test_product","'
             'description":"$_productDescription","create_time":"2021-09-21T17:13'
             ':54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/'
-            'products/PROD-41223692GT225981R","rel":"self","method":"GET"}]}],"l'
+            'products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}],"l'
             'inks":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/products'
             '?page_size=10&page=1","rel":"self","method":"GET"}]}',
             HttpStatus.ok));
@@ -32,24 +32,24 @@ void main() {
         '/v1/catalogs/products',
         'POST',
         (request) async => Response(
-            '{"id":"PROD-41223692GT225981R","name":"test_product","description":'
+            '{"id":"PROD-3XF87627UU805523Y","name":"test_product","description":'
             '"test_description","type": "SERVICE","create_time":"2021-09-21T17:1'
             '3:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs'
-            '/products/PROD-41223692GT225981R","rel":"self","method":"GET"}]}',
+            '/products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}',
             HttpStatus.created));
 
     mockHttpClient.addHandler(
-        '/v1/catalogs/products/PROD-41223692GT225981R',
+        '/v1/catalogs/products/PROD-3XF87627UU805523Y',
         'GET',
         (request) async => Response(
-            '{"id":"PROD-41223692GT225981R","name":"test_product","description":'
+            '{"id":"PROD-3XF87627UU805523Y","name":"test_product","description":'
             '"$_productDescription","type": "SERVICE","create_time":"2021-09-21T'
             '17:13:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/cata'
-            'logs/products/PROD-41223692GT225981R","rel":"self","method":"GET"}]}',
+            'logs/products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}',
             HttpStatus.created));
 
     mockHttpClient
-        .addHandler('/v1/catalogs/products/PROD-41223692GT225981R', 'PATCH',
+        .addHandler('/v1/catalogs/products/PROD-3XF87627UU805523Y', 'PATCH',
             (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
@@ -69,7 +69,7 @@ void main() {
   });
 
   test('Test create product', () async {
-    var createProductRequest = CreateProductRequest(
+    var createProductRequest = ProductRequest(
         name: 'test_product',
         type: Product.typeDigital,
         description: 'test_description');
@@ -82,7 +82,7 @@ void main() {
   });
 
   test('Test update product', () async {
-    await _catalogProductsApi.updateProduct('PROD-41223692GT225981R', [
+    await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
           op: Patch.operationReplace,
           path: '/description',
@@ -90,10 +90,10 @@ void main() {
     ]);
 
     var product =
-        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
+        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.description, 'test_description_updated');
 
-    await _catalogProductsApi.updateProduct('PROD-41223692GT225981R', [
+    await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
           op: Patch.operationReplace,
           path: '/description',
@@ -101,13 +101,13 @@ void main() {
     ]);
 
     product =
-        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
+        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.description, 'test_description');
   });
 
   test('Test get product', () async {
     var product =
-        await _catalogProductsApi.showProductDetails('PROD-41223692GT225981R');
+        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.name, 'test_product');
     expect(product.description, 'test_description');
   });

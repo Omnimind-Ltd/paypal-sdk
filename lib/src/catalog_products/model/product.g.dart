@@ -10,7 +10,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       json['id'] as String,
       json['name'] as String,
       json['description'] as String?,
-      json['type'] as String,
+      json['type'] as String?,
       json['category'] as String?,
       json['image_url'] as String?,
       json['home_url'] as String?,
@@ -34,7 +34,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) {
   }
 
   writeNotNull('description', instance.description);
-  val['type'] = instance.type;
+  writeNotNull('type', instance.type);
   writeNotNull('category', instance.category);
   writeNotNull('image_url', instance.imageUrl);
   writeNotNull('home_url', instance.homeUrl);
