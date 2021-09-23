@@ -7,19 +7,19 @@ class PayPalEnvironment {
   final String host;
   final String webUrl;
 
-  PayPalEnvironment(
+  const PayPalEnvironment(
       {required this.clientId,
       required this.clientSecret,
       required this.host,
       required this.webUrl});
 
-  PayPalEnvironment.sandbox({
+  const PayPalEnvironment.sandbox({
     required this.clientId,
     required this.clientSecret,
   })  : host = 'api.sandbox.paypal.com',
         webUrl = 'https://www.sandbox.paypal.com';
 
-  PayPalEnvironment.live({
+  const PayPalEnvironment.live({
     required this.clientId,
     required this.clientSecret,
   })  : host = 'api.paypal.com',
