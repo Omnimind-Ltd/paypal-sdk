@@ -9,7 +9,7 @@ part of 'plan_collection.dart';
 PlanCollection _$PlanCollectionFromJson(Map<String, dynamic> json) =>
     PlanCollection(
       plans: (json['plans'] as List<dynamic>)
-          .map((e) => BillingPlan.fromJson(e as Map<String, dynamic>))
+          .map((e) => Plan.fromJson(e as Map<String, dynamic>))
           .toList(),
       totalItems: json['total_items'] as int?,
       totalPages: json['total_pages'] as int?,

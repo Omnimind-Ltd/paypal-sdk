@@ -11,9 +11,9 @@
 library paypal_sdk_subscriptions;
 
 export 'src/subscriptions/model/billing_cycle.dart';
-export 'src/subscriptions/model/billing_plan.dart';
 export 'src/subscriptions/model/frequency.dart';
 export 'src/subscriptions/model/payment_preferences.dart';
+export 'src/subscriptions/model/plan.dart';
 export 'src/subscriptions/model/plan_collection.dart';
 export 'src/subscriptions/model/pricing_scheme.dart';
 export 'src/subscriptions/model/pricing_schemes_update_request.dart';

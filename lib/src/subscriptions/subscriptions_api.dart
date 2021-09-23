@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
-import 'package:paypal_sdk/src/subscriptions/model/billing_plan.dart';
-import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
+import 'package:paypal_sdk/src/subscriptions/model/plan.dart';
+import 'package:paypal_sdk/src/subscriptions/model/plan_request.dart';
 import 'package:paypal_sdk/src/subscriptions/model/pricing_schemes_update_request.dart';
-import 'package:paypal_sdk/src/subscriptions/model/taxes.dart';
 
 import 'model/plan_collection.dart';
 
@@ -91,15 +89,8 @@ class SubscriptionsApi {
   /// plan by providing a quantity for the goods or service.
   ///
   /// Parameter paypalRequestId: The server stores keys for 72 hours.
-  Future<BillingPlan> createPlan({
-    required String productId,
-    required String name,
-    required List<BillingCycle> billingCycles,
-    required PaymentPreferences paymentPreferences,
-    Taxes? taxes,
-    String? status,
-    String? description,
-    bool? quantitySupported,
+  Future<Plan> createPlan(
+    PlanRequest planRequest, {
     String? payPalRequestId,
   }) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans');
@@ -107,19 +98,11 @@ class SubscriptionsApi {
     var headers =
         payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
 
-    var body = jsonEncode(BillingPlan(
-        productId: productId,
-        name: name,
-        billingCycles: billingCycles,
-        paymentPreferences: paymentPreferences,
-        taxes: taxes,
-        status: status,
-        description: description,
-        quantitySupported: quantitySupported));
+    var body = jsonEncode(planRequest.toJson());
 
     var response =
         await _payPalHttpClient.post(url, headers: headers, body: body);
-    return BillingPlan.fromJson(jsonDecode(response.body));
+    return Plan.fromJson(jsonDecode(response.body));
   }
 
   /// Updates a plan with the CREATED or ACTIVE status. For an INACTIVE plan, you can make only status updates.
@@ -156,11 +139,11 @@ class SubscriptionsApi {
   }
 
   /// Shows details for a plan, by ID.
-  Future<BillingPlan> showPlanDetails(String planId) async {
+  Future<Plan> showPlanDetails(String planId) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
 
     var response = await _payPalHttpClient.get(url);
-    return BillingPlan.fromJson(jsonDecode(response.body));
+    return Plan.fromJson(jsonDecode(response.body));
   }
 
   /// Activates a plan, by ID.

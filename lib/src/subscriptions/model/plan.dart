@@ -4,7 +4,7 @@ import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
 import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
 import 'package:paypal_sdk/src/subscriptions/model/taxes.dart';
 
-part 'billing_plan.g.dart';
+part 'plan.g.dart';
 
 /// Billing plan.
 @JsonSerializable()
@@ -14,11 +14,11 @@ class Plan {
   static const String statusActive = 'ACTIVE';
 
   /// The unique PayPal-generated ID for the plan.
-  String? id;
+  final String id;
 
   /// The ID for the product.
   @JsonKey(name: 'product_id')
-  String? productId;
+  final String productId;
 
   /// The plan status. The possible values are:
   /// <ul>
@@ -32,47 +32,47 @@ class Plan {
   /// ACTIVE. The plan is active. You can only create subscriptions for a plan in this state.
   /// </li>
   /// </ul>
-  String? status;
+  final String status;
 
   /// The plan name.
-  String? name;
+  final String name;
 
   /// The detailed description of the plan.
-  String? description;
+  final String? description;
 
   /// An array of billing cycles for trial billing and regular billing. A plan
   /// can have at most two trial cycles and only one regular cycle.
   @JsonKey(name: 'billing_cycles')
-  List<BillingCycle>? billingCycles;
+  final List<BillingCycle>? billingCycles;
 
   /// The payment preferences for a subscription.
   @JsonKey(name: 'payment_preferences')
-  PaymentPreferences? paymentPreferences;
+  final PaymentPreferences? paymentPreferences;
 
   /// The tax details.
-  Taxes? taxes;
+  final Taxes? taxes;
 
   /// Indicates whether you can subscribe to this plan by providing a quantity for the goods or service.
   @JsonKey(name: 'quantity_supported')
-  bool? quantitySupported;
+  final bool? quantitySupported;
 
   /// The date and time when the plan was created, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
   @JsonKey(name: 'create_time')
-  String? createTime;
+  final String? createTime;
 
   /// The date and time when the plan was last updated, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
   @JsonKey(name: 'update_time')
-  String? updateTime;
+  final String? updateTime;
 
   /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
   /// HATEOAS links</a>.
-  List<LinkDescription>? links;
+  final List<LinkDescription>? links;
 
-  Plan({
+  const Plan(
     this.id,
     this.productId,
     this.status,
@@ -85,16 +85,15 @@ class Plan {
     this.createTime,
     this.updateTime,
     this.links,
-  });
+  );
 
-  Map<String, dynamic> toJson() => _$BillingPlanToJson(this);
+  Map<String, dynamic> toJson() => _$PlanToJson(this);
 
-  factory Plan.fromJson(Map<String, dynamic> json) =>
-      _$BillingPlanFromJson(json);
+  factory Plan.fromJson(Map<String, dynamic> json) => _$PlanFromJson(json);
 
   @override
   String toString() {
-    return 'BillingPlan{id: $id, productId: $productId, status: $status, '
+    return 'Plan{id: $id, productId: $productId, status: $status, '
         'name: $name, description: $description, '
         'quantitySupported: $quantitySupported, createTime: $createTime, '
         'updateTime: $updateTime, links: $links}';

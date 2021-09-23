@@ -1,37 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'billing_plan.dart';
+part of 'plan.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BillingPlan _$BillingPlanFromJson(Map<String, dynamic> json) => BillingPlan(
-      id: json['id'] as String?,
-      productId: json['product_id'] as String?,
-      status: json['status'] as String?,
-      name: json['name'] as String?,
-      description: json['description'] as String?,
-      billingCycles: (json['billing_cycles'] as List<dynamic>?)
+Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
+      json['id'] as String,
+      json['product_id'] as String,
+      json['status'] as String,
+      json['name'] as String,
+      json['description'] as String?,
+      (json['billing_cycles'] as List<dynamic>?)
           ?.map((e) => BillingCycle.fromJson(e as Map<String, dynamic>))
           .toList(),
-      paymentPreferences: json['payment_preferences'] == null
+      json['payment_preferences'] == null
           ? null
           : PaymentPreferences.fromJson(
               json['payment_preferences'] as Map<String, dynamic>),
-      taxes: json['taxes'] == null
+      json['taxes'] == null
           ? null
           : Taxes.fromJson(json['taxes'] as Map<String, dynamic>),
-      quantitySupported: json['quantity_supported'] as bool?,
-      createTime: json['create_time'] as String?,
-      updateTime: json['update_time'] as String?,
-      links: (json['links'] as List<dynamic>?)
+      json['quantity_supported'] as bool?,
+      json['create_time'] as String?,
+      json['update_time'] as String?,
+      (json['links'] as List<dynamic>?)
           ?.map((e) => LinkDescription.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$BillingPlanToJson(BillingPlan instance) {
-  final val = <String, dynamic>{};
+Map<String, dynamic> _$PlanToJson(Plan instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'product_id': instance.productId,
+    'status': instance.status,
+    'name': instance.name,
+  };
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -39,10 +44,6 @@ Map<String, dynamic> _$BillingPlanToJson(BillingPlan instance) {
     }
   }
 
-  writeNotNull('id', instance.id);
-  writeNotNull('product_id', instance.productId);
-  writeNotNull('status', instance.status);
-  writeNotNull('name', instance.name);
   writeNotNull('description', instance.description);
   writeNotNull('billing_cycles', instance.billingCycles);
   writeNotNull('payment_preferences', instance.paymentPreferences);
