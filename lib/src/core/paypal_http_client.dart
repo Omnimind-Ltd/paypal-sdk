@@ -11,6 +11,8 @@ import 'package:paypal_sdk/src/core/model/authorization_error.dart';
 import 'model/access_token.dart';
 import 'paypal_environment.dart';
 
+/// PayPal http client. Takes care of authorization. Re-authorizes when token
+/// expires and retries request
 class PayPalHttpClient extends http.BaseClient {
   final log = Logger('PayPalSDK');
 
@@ -18,9 +20,11 @@ class PayPalHttpClient extends http.BaseClient {
 
   final String userAgent = 'PayPalSDK/Dart-SDK';
 
+  /// Listen to stream to receive updates whenever access token is updated
   final StreamController<AccessToken> accessTokenUpdatedStream =
       StreamController<AccessToken>.broadcast();
 
+  /// Live or Sandbox PayPal environment
   final PayPalEnvironment paypalEnvironment;
 
   final bool _loggingEnabled;
@@ -46,6 +50,7 @@ class PayPalHttpClient extends http.BaseClient {
     }
   }
 
+  /// Creates URL with the given path and currently configured environment
   Uri getUrl(String path, {Map<String, String?>? queryParameters}) {
     if (queryParameters != null) {
       for (var key in queryParameters.keys.toList(growable: false)) {
@@ -211,6 +216,8 @@ class PayPalHttpClient extends http.BaseClient {
     throw ApiException(response.statusCode);
   }
 
+  /// Manually get a new access token. You shouldn't need to call this as the client
+  /// will automatically request one as needed
   Future<AccessToken> authorize() async {
     var uri = Uri.https(paypalEnvironment.host, '/v1/oauth2/token');
 
