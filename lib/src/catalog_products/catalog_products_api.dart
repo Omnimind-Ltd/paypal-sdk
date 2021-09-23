@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/catalog_products/model/create_product_request.dart';
 
 import 'model/product.dart';
 import 'model/product_collection.dart';
@@ -70,14 +71,8 @@ class CatalogProductsApi {
   /// Parameter image_url: The image URL for the product.
   ///
   /// Parameter home_url: The home page URL for the product.
-  Future<Product> createProduct({
-    required String name,
-    required String type,
-    String? id,
-    String? category,
-    String? description,
-    String? imageUrl,
-    String? homeUrl,
+  Future<Product> createProduct(
+    CreateProductRequest request, {
     String? payPalRequestId,
   }) async {
     var uri = _payPalHttpClient.getUrl('/v1/catalogs/products');
@@ -85,15 +80,7 @@ class CatalogProductsApi {
     var headers =
         payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
 
-    var body = jsonEncode(Product(
-            name: name,
-            type: type,
-            id: id,
-            category: category,
-            description: description,
-            imageUrl: imageUrl,
-            homeUrl: homeUrl)
-        .toJson());
+    var body = jsonEncode(request.toJson());
 
     var response =
         await _payPalHttpClient.post(uri, headers: headers, body: body);

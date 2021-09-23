@@ -11,13 +11,13 @@ class Product {
   static const String typeService = 'SERVICE';
 
   /// The ID of the product.
-  String? id;
+  final String id;
 
   /// The product name.
-  String? name;
+  final String name;
 
   /// The product description.
-  String? description;
+  final String? description;
 
   /// The product type. Indicates whether the product is physical or digital goods, or a service.
   /// The possible values are:
@@ -32,38 +32,38 @@ class Product {
   /// SERVICE. Product representing a service. Example: Tech Support
   /// </li>
   /// </ul>
-  String? type;
+  final String type;
 
   /// The product category. <a href="https://developer.paypal.com/docs/api/catalog-products/v1/#definition-product_category">
   /// Possible values</a>
-  String? category;
+  final String? category;
 
   /// The image URL for the product.
   @JsonKey(name: 'image_url')
-  String? imageUrl;
+  final String? imageUrl;
 
   /// The home page URL for the product.
   @JsonKey(name: 'home_url')
-  String? homeUrl;
+  final String? homeUrl;
 
   /// The date and time when the plan was created, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
   @JsonKey(name: 'create_time')
-  String? createTime;
+  final String createTime;
 
   /// The date and time when the plan was last updated, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
   @JsonKey(name: 'update_time')
-  String? updateTime;
+  final String? updateTime;
 
   /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
   /// HATEOAS links</a>.
-  List<LinkDescription>? links;
+  final List<LinkDescription>? links;
 
-  Product(
-      {this.id,
+  const Product(
+      this.id,
       this.name,
       this.description,
       this.type,
@@ -71,7 +71,8 @@ class Product {
       this.imageUrl,
       this.homeUrl,
       this.createTime,
-      this.links});
+      this.updateTime,
+      this.links);
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 

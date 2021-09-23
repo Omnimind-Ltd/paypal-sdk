@@ -9,7 +9,8 @@ part of 'product_collection.dart';
 ProductCollection _$ProductCollectionFromJson(Map<String, dynamic> json) =>
     ProductCollection(
       products: (json['products'] as List<dynamic>)
-          .map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .map((e) =>
+              ProductCollectionElement.fromJson(e as Map<String, dynamic>))
           .toList(),
       totalItems: json['total_items'] as int?,
       totalPages: json['total_pages'] as int?,

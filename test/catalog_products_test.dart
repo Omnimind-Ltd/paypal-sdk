@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/catalog_products/model/create_product_request.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
@@ -32,9 +33,9 @@ void main() {
         'POST',
         (request) async => Response(
             '{"id":"PROD-41223692GT225981R","name":"test_product","description":'
-            '"test_description","create_time":"2021-09-21T17:13:54Z","links":[{"'
-            'href":"https://api.sandbox.paypal.com/v1/catalogs/products/PROD-412'
-            '23692GT225981R","rel":"self","method":"GET"}]}',
+            '"test_description","type": "SERVICE","create_time":"2021-09-21T17:1'
+            '3:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs'
+            '/products/PROD-41223692GT225981R","rel":"self","method":"GET"}]}',
             HttpStatus.created));
 
     mockHttpClient.addHandler(
@@ -42,9 +43,9 @@ void main() {
         'GET',
         (request) async => Response(
             '{"id":"PROD-41223692GT225981R","name":"test_product","description":'
-            '"$_productDescription","create_time":"2021-09-21T17:13:54Z","links"'
-            ':[{"href":"https://api.sandbox.paypal.com/v1/catalogs/products/PROD'
-            '-41223692GT225981R","rel":"self","method":"GET"}]}',
+            '"$_productDescription","type": "SERVICE","create_time":"2021-09-21T'
+            '17:13:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/cata'
+            'logs/products/PROD-41223692GT225981R","rel":"self","method":"GET"}]}',
             HttpStatus.created));
 
     mockHttpClient
@@ -68,10 +69,12 @@ void main() {
   });
 
   test('Test create product', () async {
-    var product = await _catalogProductsApi.createProduct(
+    var createProductRequest = CreateProductRequest(
         name: 'test_product',
         type: Product.typeDigital,
         description: 'test_description');
+
+    var product = await _catalogProductsApi.createProduct(createProductRequest);
 
     expect(product is Product, true);
     expect(product.name, 'test_product');
