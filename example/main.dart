@@ -1,5 +1,6 @@
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/catalog_products/model/create_product_request.dart';
 
 const _clientId = 'clientId';
 const _clientSecret = 'clientSecret';
@@ -39,12 +40,12 @@ void main() async {
 
   // Create product
   try {
-    var product = await productsApi.createProduct(
-      name: 'Product name',
-      type: Product.typeDigital,
-      category: 'ONLINE_GAMING',
-      description: 'Product description',
-    );
+    var createProductRequest = CreateProductRequest(
+        name: 'test_product',
+        type: Product.typeDigital,
+        description: 'test_description');
+
+    var product = await productsApi.createProduct(createProductRequest);
 
     print(product);
   } catch (e) {
