@@ -5,14 +5,14 @@ const _clientId = 'clientId';
 const _clientSecret = 'clientSecret';
 
 void main() async {
+  AccessToken? accessToken; // load existing token if available
+
   var paypalEnvironment = PayPalEnvironment.sandbox(
       clientId: _clientId, clientSecret: _clientSecret);
 
-  var payPalHttpClient = PayPalHttpClient(paypalEnvironment);
-
-  // Access token is posted to stream whenever client re-authenticates. If you
-  // save it you can initialise PayPalHttpClient with the existing token
-  payPalHttpClient.accessTokenUpdatedStream.stream.listen((accessToken) {
+  var payPalHttpClient =
+      PayPalHttpClient(paypalEnvironment, accessToken: accessToken,
+          accessTokenUpdatedCallback: (accessToken) async {
     // Persist token
   });
 

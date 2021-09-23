@@ -27,12 +27,16 @@ class PayPalHttpClient extends http.BaseClient {
 
   AccessToken? accessToken;
 
+  final Function(AccessToken)? _accessTokenUpdatedCallback;
+
   PayPalHttpClient(
     this.paypalEnvironment, {
     http.Client? client,
     AccessToken? accessToken,
+    Function(AccessToken)? accessTokenUpdatedCallback,
     bool loggingEnabled = false,
-  }) : _loggingEnabled = loggingEnabled {
+  })  : _loggingEnabled = loggingEnabled,
+        _accessTokenUpdatedCallback = accessTokenUpdatedCallback {
     _inner = client ?? http.Client();
 
     if (_loggingEnabled) {
@@ -237,6 +241,10 @@ class PayPalHttpClient extends http.BaseClient {
           DateTime.now().add(Duration(seconds: accessToken!.expiresIn));
 
       accessTokenUpdatedStream.add(accessToken!);
+
+      if (_accessTokenUpdatedCallback != null) {
+        await _accessTokenUpdatedCallback!(accessToken!);
+      }
 
       return accessToken!;
     } else if (response.body.isNotEmpty) {
