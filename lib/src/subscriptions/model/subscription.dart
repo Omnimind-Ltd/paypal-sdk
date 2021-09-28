@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/src/subscriptions/model/application_context.dart';
 
+import 'amount_with_breakdown.dart';
 import 'billing_cycle.dart';
 import 'payment_details.dart';
 import 'plan.dart';
@@ -16,7 +17,7 @@ class Subscription {
   final String id;
 
   /// The ID of the plan.
-  final String planId;
+  final String? planId;
 
   /// The status of the subscription.
   final String? status;
@@ -206,5 +207,133 @@ class SubscriptionRequest {
         'shippingAmount: $shippingAmount, subscriber: $subscriber, '
         'billingInfo: $billingInfo, applicationContext: $applicationContext, '
         'customId: $customId, plan: $plan}';
+  }
+}
+
+/// A subscription cancellation request
+@JsonSerializable()
+class CancelRequest {
+  /// The reason for the cancellation of a subscription.
+  final String reason;
+
+  const CancelRequest(this.reason);
+
+  Map<String, dynamic> toJson() => _$CancelRequestToJson(this);
+
+  factory CancelRequest.fromJson(Map<String, dynamic> json) =>
+      _$CancelRequestFromJson(json);
+
+  @override
+  String toString() {
+    return 'CancelRequest{reason: $reason}';
+  }
+}
+
+/// The type of capture.
+enum CaptureType {
+  /// The outstanding balance that the subscriber must clear.
+  @JsonValue('OUTSTANDING_BALANCE')
+  outstandingBalance,
+}
+
+/// Capture authorized payment request
+@JsonSerializable(fieldRename: FieldRename.snake)
+class SubscriptionCaptureRequest {
+  /// The reason or note for the subscription charge.
+  final String note;
+
+  /// The type of capture.
+  final CaptureType captureType;
+
+  /// The amount of the outstanding balance. This value cannot be greater than
+  /// the current outstanding balance amount.
+  final Money amount;
+
+  const SubscriptionCaptureRequest(
+    this.note,
+    this.amount, {
+    this.captureType = CaptureType.outstandingBalance,
+  });
+
+  Map<String, dynamic> toJson() => _$SubscriptionCaptureRequestToJson(this);
+
+  factory SubscriptionCaptureRequest.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionCaptureRequestFromJson(json);
+
+  @override
+  String toString() {
+    return 'SubscriptionCaptureRequest{note: $note, captureType: $captureType, '
+        'amount: $amount}';
+  }
+}
+
+/// The status of the captured payment.
+enum CaptureStatus {
+  /// The funds for this captured payment were credited to the payee's PayPal account.
+  @JsonValue('COMPLETED')
+  completed,
+
+  /// The funds could not be captured.
+  @JsonValue('DECLINED')
+  declined,
+
+  /// An amount less than this captured payment's amount was partially refunded
+  /// to the payer.
+  @JsonValue('PARTIALLY_REFUNDED')
+  partiallyRefunded,
+
+  /// The funds for this captured payment was not yet credited to the payee's
+  /// PayPal account. For more information, see status.details.
+  @JsonValue('PENDING')
+  pending,
+
+  ///  An amount greater than or equal to this captured payment's amount was
+  ///  refunded to the payer.
+  @JsonValue('REFUNDED')
+  refunded,
+}
+
+/// Capture authorized payment response
+@JsonSerializable(fieldRename: FieldRename.snake)
+class SubscriptionCaptureResponse {
+  /// The status of the captured payment.
+  final CaptureStatus? status;
+
+  /// The PayPal-generated transaction ID.
+  final String id;
+
+  /// The breakdown details for the amount. Includes the gross, tax, fee, and
+  /// shipping amounts.
+  final AmountWithBreakdown? amountWithBreakdown;
+
+  /// The name of the customer.
+  final Name? payerName;
+
+  /// The email ID of the customer.
+  final String? payerEmail;
+
+  /// The date and time when the transaction was processed, in
+  /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
+  /// Internet date and time format</a>
+  final String? time;
+
+  SubscriptionCaptureResponse(
+      {this.status,
+      required this.id,
+      this.amountWithBreakdown,
+      this.payerName,
+      this.payerEmail,
+      this.time});
+
+  Map<String, dynamic> toJson() => _$SubscriptionCaptureResponseToJson(this);
+
+  factory SubscriptionCaptureResponse.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionCaptureResponseFromJson(json);
+
+  @override
+  String toString() {
+    return 'SubscriptionCaptureResponse{status: $status, id: $id, '
+        'amountWithBreakdown: $amountWithBreakdown, payerName: $payerName, '
+        'payerEmail: $payerEmail, time: $time}';
   }
 }

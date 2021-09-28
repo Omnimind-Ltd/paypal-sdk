@@ -159,16 +159,20 @@ class SubscriptionsApi {
   ///
   /// Parameter paypalRequestId: The server stores keys for 72 hours.
   Future<Subscription> createSubscription(
-    SubscriptionRequest request,
+    SubscriptionRequest request, {
     Prefer? prefer,
     String? payPalRequestId,
-  ) async {
+  }) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions');
 
-    Map<String, String>? headers;
+    Map<String, String> headers = {};
 
     if (prefer != null) {
-      headers = {'return': preferTypeEnumMap[prefer]!};
+      headers['return'] = preferTypeEnumMap[prefer]!;
+    }
+
+    if (payPalRequestId != null) {
+      headers['PayPal-Request-Id'] = payPalRequestId;
     }
 
     var body = jsonEncode(request.toJson());
@@ -176,5 +180,127 @@ class SubscriptionsApi {
     var response =
         await _payPalHttpClient.post(url, headers: headers, body: body);
     return Subscription.fromJson(jsonDecode(response.body));
+  }
+
+  /// Updates a subscription which could be in ACTIVE or SUSPENDED status. You
+  /// can override plan level default attributes by providing customised values
+  /// for plan path in the patch request.
+  /// <ul>
+  /// <li>
+  /// You cannot update attributes that have already completed (Example - trial
+  /// cycles can’t be updated if completed).
+  /// </li>
+  /// <li>
+  /// Once overridden, changes to plan resource will not impact subscription.
+  /// </li>
+  /// <li>
+  /// Any price update will not impact billing cycles within next 10 days
+  /// (Applicable only for subscriptions funded by PayPal account).
+  /// </li>
+  /// </ul>
+  /// Following are the fields eligible for patch:
+  /// <ul>
+  /// <li>
+  /// billing_info.outstanding_balance. Operations: replace
+  /// </li>
+  /// <li>
+  /// custom_id. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// plan.billing_cycles[@sequence==n]. pricing_scheme.fixed_price. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// plan.billing_cycles[@sequence==n]. pricing_scheme.tiers. Operations: replace
+  /// </li>
+  /// <li>
+  /// plan.billing_cycles[@sequence==n].total_cycles. Operations: replace
+  /// </li>
+  /// <li>
+  /// plan.payment_preferences.auto_bill_outstanding. Operations: replace
+  /// </li>
+  /// <li>
+  /// plan.payment_preferences.payment_failure_threshold. Operations: replace
+  /// </li>
+  /// <li>
+  /// plan.taxes.inclusive. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// plan.taxes.percentage. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// shipping_amount. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// start_time. Operations: replace
+  /// </li>
+  /// <li>
+  /// subscriber.shipping_address. Operations: add, replace
+  /// </li>
+  /// <li>
+  /// subscriber.payment_source (for subscriptions funded by card payments). Operations: replace
+  /// </li>
+  /// </ul>
+  Future<void> updateSubscription(
+      String subscriptionId, List<Patch> patchRequests) async {
+    var url =
+        _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId');
+
+    var patchRequest = List.generate(
+        patchRequests.length, (index) => patchRequests[index].toJson());
+
+    var body = jsonEncode(patchRequest);
+
+    await _payPalHttpClient.patch(url, body: body);
+  }
+
+  /// Shows details for a subscription, by ID.
+  ///
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter fields: List of fields that are to be returned in the response.
+  /// Possible value for fields are last_failed_payment and plan.
+  Future<Subscription> showSubscriptionDetails(String subscriptionId,
+      {List<String>? fields}) async {
+    var queryParameters =
+        fields != null ? <String, dynamic>{'fields': fields} : null;
+
+    var url = _payPalHttpClient.getUrl(
+        '/v1/billing/subscriptions/$subscriptionId',
+        queryParameters: queryParameters);
+
+    var response = await _payPalHttpClient.get(url);
+    return Subscription.fromJson(jsonDecode(response.body));
+  }
+
+  /// Cancels the subscription.
+  ///
+  /// Parameter reason: The reason for the cancellation of a subscription.
+  Future<void> cancelSubscription(String subscriptionId, String reason) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/cancel');
+
+    var body = jsonEncode(CancelRequest(reason).toJson());
+
+    await _payPalHttpClient.post(url, body: body);
+  }
+
+  /// Captures an authorized payment from the subscriber on the subscription.
+  Future<SubscriptionCaptureResponse> captureAuthorizedPaymentOnSubscription(
+    String subscriptionId,
+    SubscriptionCaptureRequest request, {
+    String? payPalRequestId,
+  }) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/capture');
+
+    var headers =
+        payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
+
+    var body = jsonEncode(request.toJson());
+
+    var response =
+        await _payPalHttpClient.post(url, headers: headers, body: body);
+
+    return SubscriptionCaptureResponse.fromJson(jsonDecode(response.body));
   }
 }

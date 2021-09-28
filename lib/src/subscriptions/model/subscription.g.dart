@@ -8,7 +8,7 @@ part of 'subscription.dart';
 
 Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
       json['id'] as String,
-      json['plan_id'] as String,
+      json['plan_id'] as String?,
       json['status'] as String?,
       json['status_change_note'] as String?,
       json['status_update_time'] as String?,
@@ -39,7 +39,6 @@ Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
 Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
   final val = <String, dynamic>{
     'id': instance.id,
-    'plan_id': instance.planId,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -48,6 +47,7 @@ Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
     }
   }
 
+  writeNotNull('plan_id', instance.planId);
   writeNotNull('status', instance.status);
   writeNotNull('status_change_note', instance.statusChangeNote);
   writeNotNull('status_update_time', instance.statusUpdateTime);
@@ -151,3 +151,115 @@ Map<String, dynamic> _$SubscriptionRequestToJson(SubscriptionRequest instance) {
   writeNotNull('plan', instance.plan);
   return val;
 }
+
+CancelRequest _$CancelRequestFromJson(Map<String, dynamic> json) =>
+    CancelRequest(
+      json['reason'] as String,
+    );
+
+Map<String, dynamic> _$CancelRequestToJson(CancelRequest instance) =>
+    <String, dynamic>{
+      'reason': instance.reason,
+    };
+
+SubscriptionCaptureRequest _$SubscriptionCaptureRequestFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionCaptureRequest(
+      json['note'] as String,
+      Money.fromJson(json['amount'] as Map<String, dynamic>),
+      captureType:
+          _$enumDecodeNullable(_$CaptureTypeEnumMap, json['capture_type']) ??
+              CaptureType.outstandingBalance,
+    );
+
+Map<String, dynamic> _$SubscriptionCaptureRequestToJson(
+        SubscriptionCaptureRequest instance) =>
+    <String, dynamic>{
+      'note': instance.note,
+      'capture_type': _$CaptureTypeEnumMap[instance.captureType],
+      'amount': instance.amount,
+    };
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$CaptureTypeEnumMap = {
+  CaptureType.outstandingBalance: 'OUTSTANDING_BALANCE',
+};
+
+SubscriptionCaptureResponse _$SubscriptionCaptureResponseFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionCaptureResponse(
+      status: _$enumDecodeNullable(_$CaptureStatusEnumMap, json['status']),
+      id: json['id'] as String,
+      amountWithBreakdown: json['amount_with_breakdown'] == null
+          ? null
+          : AmountWithBreakdown.fromJson(
+              json['amount_with_breakdown'] as Map<String, dynamic>),
+      payerName: json['payer_name'] == null
+          ? null
+          : Name.fromJson(json['payer_name'] as Map<String, dynamic>),
+      payerEmail: json['payer_email'] as String?,
+      time: json['time'] as String?,
+    );
+
+Map<String, dynamic> _$SubscriptionCaptureResponseToJson(
+    SubscriptionCaptureResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('status', _$CaptureStatusEnumMap[instance.status]);
+  val['id'] = instance.id;
+  writeNotNull('amount_with_breakdown', instance.amountWithBreakdown);
+  writeNotNull('payer_name', instance.payerName);
+  writeNotNull('payer_email', instance.payerEmail);
+  writeNotNull('time', instance.time);
+  return val;
+}
+
+const _$CaptureStatusEnumMap = {
+  CaptureStatus.completed: 'COMPLETED',
+  CaptureStatus.declined: 'DECLINED',
+  CaptureStatus.partiallyRefunded: 'PARTIALLY_REFUNDED',
+  CaptureStatus.pending: 'PENDING',
+  CaptureStatus.refunded: 'REFUNDED',
+};

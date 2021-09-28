@@ -51,7 +51,7 @@ class PayPalHttpClient extends http.BaseClient {
   }
 
   /// Creates URL with the given path and currently configured environment
-  Uri getUrl(String path, {Map<String, String?>? queryParameters}) {
+  Uri getUrl(String path, {Map<String, dynamic>? queryParameters}) {
     if (queryParameters != null) {
       for (var key in queryParameters.keys.toList(growable: false)) {
         if (queryParameters[key] == null) {

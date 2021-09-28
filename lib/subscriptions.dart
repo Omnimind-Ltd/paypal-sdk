@@ -10,6 +10,7 @@
 /// <a href="https://developer.paypal.com/docs/api/subscriptions/v1/">https://developer.paypal.com/docs/api/subscriptions/v1/</a>
 library paypal_sdk_subscriptions;
 
+export 'src/subscriptions/model/amount_with_breakdown.dart';
 export 'src/subscriptions/model/application_context.dart';
 export 'src/subscriptions/model/billing_cycle.dart';
 export 'src/subscriptions/model/frequency.dart';
