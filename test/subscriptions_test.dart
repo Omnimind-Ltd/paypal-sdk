@@ -3,23 +3,22 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
-import 'package:paypal_sdk/src/subscriptions/model/frequency.dart';
-import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
-import 'package:paypal_sdk/src/subscriptions/model/plan.dart';
-import 'package:paypal_sdk/src/subscriptions/model/plan_collection.dart';
-import 'package:paypal_sdk/src/subscriptions/model/plan_request.dart';
-import 'package:paypal_sdk/src/subscriptions/subscriptions_api.dart';
 import 'package:paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
 
+const _planStatusEnumMap = {
+  PlanStatus.created: 'CREATED',
+  PlanStatus.active: 'ACTIVE',
+  PlanStatus.inactive: 'INACTIVE',
+};
+
 void main() {
   late SubscriptionsApi _subscriptionsApi;
 
   String _planDescription = 'Test description';
-  String _planStatus = Plan.statusActive;
+  PlanStatus _planStatus = PlanStatus.active;
   PricingScheme _pricingScheme = PricingScheme(
       version: 3, fixedPrice: Money(currencyCode: 'GBP', value: '5.0'));
 
@@ -69,7 +68,7 @@ void main() {
       return Response(
           '{"id":"P-6KG67732XY2608640MFGL3RY","product_id":"PROD-41223692GT22598'
           '1R","name":"Test plan","description":"$_planDescription","status":"'
-          '$_planStatus","usage_type":"LICENSED","billing_cycles":[{"pricing_sch'
+          '${_planStatusEnumMap[_planStatus]}","usage_type":"LICENSED","billing_cycles":[{"pricing_sch'
           'eme":$pricingScheme,"frequency":{"interval_unit":"MONTH","interval_co'
           'unt":1},"tenure_type":"REGULAR","sequence":1,"total_cycles":1}],"paym'
           'ent_preferences":{"service_type":"PREPAID","auto_bill_outstanding":tr'
@@ -98,14 +97,14 @@ void main() {
     mockHttpClient.addHandler(
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/activate', 'POST',
         (request) async {
-      _planStatus = Plan.statusActive;
+      _planStatus = PlanStatus.active;
       return Response('', HttpStatus.noContent);
     });
 
     mockHttpClient.addHandler(
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/deactivate', 'POST',
         (request) async {
-      _planStatus = Plan.statusInactive;
+      _planStatus = PlanStatus.inactive;
       return Response('', HttpStatus.noContent);
     });
 
@@ -140,17 +139,16 @@ void main() {
                 fixedPrice: Money(currencyCode: 'GBP', value: '5'),
               ),
               frequency: Frequency(
-                intervalUnit: Frequency.intervalMonth,
+                intervalUnit: IntervalUnit.month,
                 intervalCount: 1,
               ),
-              tenureType: BillingCycle.tenureTypeRegular,
+              tenureType: TenureType.regular,
               sequence: 1)
         ],
         paymentPreferences: PaymentPreferences(
             autoBillOutstanding: true,
             setupFee: Money(currencyCode: 'GBP', value: '1.00'),
-            setupFeeFailureAction:
-                PaymentPreferences.setupFeeFailureActionCancel,
+            setupFeeFailureAction: SetupFeeFailureAction.cancel,
             paymentFailureThreshold: 2));
     var billingPlan = await _subscriptionsApi.createPlan(planRequest);
 
@@ -165,7 +163,7 @@ void main() {
 
     await _subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
       Patch(
-          op: Patch.operationReplace,
+          op: PatchOperation.replace,
           path: '/description',
           value: 'Test description updated')
     ]);
@@ -176,7 +174,7 @@ void main() {
 
     await _subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
       Patch(
-          op: Patch.operationReplace,
+          op: PatchOperation.replace,
           path: '/description',
           value: 'Test description')
     ]);
@@ -191,19 +189,19 @@ void main() {
   test('Test deactivate/activate plan', () async {
     var billingPlan =
         await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
-    expect(billingPlan.status, Plan.statusActive);
+    expect(billingPlan.status, PlanStatus.active);
 
     await _subscriptionsApi.deactivatePlan('P-6KG67732XY2608640MFGL3RY');
 
     billingPlan =
         await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
-    expect(billingPlan.status, Plan.statusInactive);
+    expect(billingPlan.status, PlanStatus.inactive);
 
     await _subscriptionsApi.activatePlan('P-6KG67732XY2608640MFGL3RY');
 
     billingPlan =
         await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
-    expect(billingPlan.status, Plan.statusActive);
+    expect(billingPlan.status, PlanStatus.active);
   });
 
   test('Test update pricing schemas', () async {

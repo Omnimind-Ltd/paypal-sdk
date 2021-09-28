@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/src/subscriptions/model/plan.dart';
-import 'package:paypal_sdk/src/subscriptions/model/plan_request.dart';
-import 'package:paypal_sdk/src/subscriptions/model/pricing_schemes_update_request.dart';
 
-import 'model/plan_collection.dart';
+import 'model/pricing_scheme.dart';
 
 /// Subscriptions API interface
 class SubscriptionsApi {
@@ -13,7 +11,7 @@ class SubscriptionsApi {
 
   SubscriptionsApi(PayPalHttpClient payPalHttpClient)
       : _payPalHttpClient = payPalHttpClient;
-
+  // Plans
   /// Lists billing plans.
   ///
   /// Parameter productId: Filters the response by a Product ID.

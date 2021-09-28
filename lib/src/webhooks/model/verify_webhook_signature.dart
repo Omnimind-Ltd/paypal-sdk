@@ -3,42 +3,35 @@ import 'package:json_annotation/json_annotation.dart';
 part 'verify_webhook_signature.g.dart';
 
 /// Verifies a webhook signature.
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class VerifyWebhookSignatureRequest {
   /// The algorithm that PayPal uses to generate the signature and that you can
   /// use to verify the signature. Extract this value from the PAYPAL-AUTH-ALGO
   /// response header, which is received with the webhook notification.
-  @JsonKey(name: 'auth_algo')
   final String authAlgo;
 
   /// The X.509 public key certificate. Download the certificate from this URL
   /// and use it to verify the signature. Extract this value from the PAYPAL-CERT-URL
   /// response header, which is received with the webhook notification.
-  @JsonKey(name: 'cert_url')
   final String certUrl;
 
   /// The ID of the HTTP transmission. Contained in the PAYPAL-TRANSMISSION-ID
   /// header of the notification message.
-  @JsonKey(name: 'transmission_id')
   final String transmissionId;
 
   /// The PayPal-generated asymmetric signature. Appears in the
   /// PAYPAL-TRANSMISSION-SIG header of the notification message.
-  @JsonKey(name: 'transmission_sig')
   final String transmissionSig;
 
   /// The date and time of the HTTP transmission, in <a href="https://tools.ietf.org/html/rfc3339#section-5.6">
   /// Internet date and time format</a>. Appears in the PAYPAL-TRANSMISSION-TIME
   /// header of the notification message.
-  @JsonKey(name: 'transmission_time')
   final String transmissionTime;
 
   /// The ID of the webhook as configured in your Developer Portal account.
-  @JsonKey(name: 'webhook_id')
   final String webhookId;
 
   /// A webhook event notification.
-  @JsonKey(name: 'webhook_event')
   final String webhookEvent;
 
   VerifyWebhookSignatureRequest(
@@ -64,13 +57,16 @@ class VerifyWebhookSignatureRequest {
   }
 }
 
-@JsonSerializable()
-class VerifyWebhookSignatureResponse {
-  static const String statusSuccess = 'SUCCESS';
-  static const String statusFailure = 'FAILURE';
+enum VerificationStatus {
+  @JsonValue('SUCCESS')
+  success,
+  @JsonValue('FAILURE')
+  failure,
+}
 
-  @JsonKey(name: 'verification_status')
-  final String verificationStatus;
+@JsonSerializable(fieldRename: FieldRename.snake)
+class VerifyWebhookSignatureResponse {
+  final VerificationStatus verificationStatus;
 
   VerifyWebhookSignatureResponse(this.verificationStatus);
 

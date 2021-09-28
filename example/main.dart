@@ -1,6 +1,5 @@
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/catalog_products/model/product_request.dart';
 
 const _clientId = 'clientId';
 const _clientSecret = 'clientSecret';
@@ -42,7 +41,7 @@ void main() async {
   try {
     var createProductRequest = ProductRequest(
         name: 'test_product',
-        type: Product.typeDigital,
+        type: ProductType.digital,
         description: 'test_description');
 
     var product = await productsApi.createProduct(createProductRequest);
@@ -56,7 +55,7 @@ void main() async {
   try {
     await productsApi.updateProduct('product_id', [
       Patch(
-          op: Patch.operationReplace,
+          op: PatchOperation.replace,
           path: '/description',
           value: 'Updated description')
     ]);

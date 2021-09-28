@@ -7,4 +7,3 @@ library paypal_sdk_products;
 
 export 'src/catalog_products/catalog_products_api.dart';
 export 'src/catalog_products/model/product.dart';
-export 'src/catalog_products/model/product_collection.dart';

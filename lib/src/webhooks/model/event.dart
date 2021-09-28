@@ -4,7 +4,7 @@ import 'package:paypal_sdk/core.dart';
 part 'event.g.dart';
 
 /// A webhook event.
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Event {
   /// The ID of the webhook event notification.
   final String id;
@@ -12,26 +12,21 @@ class Event {
   /// The date and time when the webhook event notification was created, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
-  @JsonKey(name: 'create_time')
   String? createTime;
 
   /// The name of the resource related to the webhook notification event.
-  @JsonKey(name: 'resource_type')
   final String resourceType;
 
   /// The event version in the webhook notification.
-  @JsonKey(name: 'event_version')
   String? eventVersion;
 
   /// The event that triggered the webhook event notification.
-  @JsonKey(name: 'event_type')
   String? eventType;
 
   /// A summary description for the event notification.
   String? summary;
 
   /// The resource version in the webhook notification.
-  @JsonKey(name: 'resource_version')
   String? resourceVersion;
 
   /// The resource that triggered the webhook event notification.

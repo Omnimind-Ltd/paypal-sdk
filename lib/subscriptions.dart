@@ -10,13 +10,16 @@
 /// <a href="https://developer.paypal.com/docs/api/subscriptions/v1/">https://developer.paypal.com/docs/api/subscriptions/v1/</a>
 library paypal_sdk_subscriptions;
 
+export 'src/subscriptions/model/application_context.dart';
 export 'src/subscriptions/model/billing_cycle.dart';
 export 'src/subscriptions/model/frequency.dart';
+export 'src/subscriptions/model/payment_details.dart';
+export 'src/subscriptions/model/payment_method.dart';
 export 'src/subscriptions/model/payment_preferences.dart';
 export 'src/subscriptions/model/plan.dart';
-export 'src/subscriptions/model/plan_collection.dart';
 export 'src/subscriptions/model/pricing_scheme.dart';
-export 'src/subscriptions/model/pricing_schemes_update_request.dart';
 export 'src/subscriptions/model/pricing_tier.dart';
+export 'src/subscriptions/model/subscriber.dart';
+export 'src/subscriptions/model/subscription.dart';
 export 'src/subscriptions/model/taxes.dart';
 export 'src/subscriptions/subscriptions_api.dart';

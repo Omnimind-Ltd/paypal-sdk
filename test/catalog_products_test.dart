@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/catalog_products/model/product_request.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
@@ -71,7 +70,7 @@ void main() {
   test('Test create product', () async {
     var createProductRequest = ProductRequest(
         name: 'test_product',
-        type: Product.typeDigital,
+        type: ProductType.digital,
         description: 'test_description');
 
     var product = await _catalogProductsApi.createProduct(createProductRequest);
@@ -84,7 +83,7 @@ void main() {
   test('Test update product', () async {
     await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
-          op: Patch.operationReplace,
+          op: PatchOperation.replace,
           path: '/description',
           value: 'test_description_updated')
     ]);
@@ -95,7 +94,7 @@ void main() {
 
     await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
-          op: Patch.operationReplace,
+          op: PatchOperation.replace,
           path: '/description',
           value: 'test_description')
     ]);
