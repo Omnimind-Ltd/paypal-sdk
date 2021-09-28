@@ -285,6 +285,11 @@ class SubscriptionsApi {
   }
 
   /// Captures an authorized payment from the subscriber on the subscription.
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter request: The subscription capture request
+  ///
+  /// Parameter paypalRequestId: The server stores keys for 72 hours.
   Future<SubscriptionCaptureResponse> captureAuthorizedPaymentOnSubscription(
     String subscriptionId,
     SubscriptionCaptureRequest request, {
