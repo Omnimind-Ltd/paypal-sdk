@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/plan.dart';
 
+import 'model/plan.dart';
 import 'model/pricing_scheme.dart';
+import 'model/subscription.dart';
 
 /// Subscriptions API interface
 class SubscriptionsApi {
@@ -51,40 +52,7 @@ class SubscriptionsApi {
 
   /// Creates a plan that defines pricing and billing cycle details for subscriptions.
   ///
-  /// Parameter productId: The ID of the product.
-  ///
-  /// Parameter name: The plan name.
-  ///
-  /// Parameter billingCycles: An array of billing cycles for trial billing and
-  /// regular billing. A plan can have at most two trial cycles and only one
-  /// regular cycle.
-  ///
-  /// Parameter paymentPreferences: The payment preferences for a subscription.
-  ///
-  /// Parameter taxes: The tax details.
-  ///
-  /// Parameter status: The initial state of the plan. Allowed input values are
-  /// CREATED and ACTIVE.
-  ///
-  /// The possible values are:
-  /// <ul>
-  /// <li>
-  /// CREATED. The plan was created. You cannot create subscriptions for a plan
-  /// in this state.
-  /// </li>
-  /// <li>
-  /// INACTIVE. The plan is inactive.
-  /// </li>
-  /// <li>
-  /// ACTIVE. The plan is active. You can only create subscriptions for a plan
-  /// in this state.
-  /// </li>
-  /// </ul>
-  ///
-  /// Parameter description: The detailed description of the plan.
-  ///
-  /// Parameter quantitySupported: Indicates whether you can subscribe to this
-  /// plan by providing a quantity for the goods or service.
+  /// Parameter planRequest: The create plan request object
   ///
   /// Parameter paypalRequestId: The server stores keys for 72 hours.
   Future<Plan> createPlan(
@@ -125,6 +93,10 @@ class SubscriptionsApi {
   /// payment_preferences.setup_fee_failure_action. Operations:	replace
   /// </li>
   /// </ul>
+  ///
+  /// Parameter planId: The ID of the plan.
+  ///
+  /// Parameter patchRequests: The list of updates.
   Future<void> updatePlan(String planId, List<Patch> patchRequests) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
 
@@ -136,7 +108,9 @@ class SubscriptionsApi {
     await _payPalHttpClient.patch(url, body: body);
   }
 
-  /// Shows details for a plan, by ID.
+  /// Shows details for a plan.
+  ///
+  /// Parameter planId: The ID of the plan.
   Future<Plan> showPlanDetails(String planId) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
 
@@ -144,13 +118,17 @@ class SubscriptionsApi {
     return Plan.fromJson(jsonDecode(response.body));
   }
 
-  /// Activates a plan, by ID.
+  /// Activates a plan.
+  ///
+  /// Parameter planId: The ID of the plan.
   Future<void> activatePlan(String planId) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId/activate');
     await _payPalHttpClient.post(url);
   }
 
-  /// Deactivates a plan, by ID.
+  /// Deactivates a plan.
+  ///
+  /// Parameter planId: The ID of the plan.
   Future<void> deactivatePlan(String planId) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId/deactivate');
     await _payPalHttpClient.post(url);
@@ -158,6 +136,10 @@ class SubscriptionsApi {
 
   /// Updates pricing for a plan. For example, you can update a regular billing
   /// cycle from $5 per month to $7 per month.
+  ///
+  /// Parameter planId: The ID of the plan.
+  ///
+  /// Parameter pricingSchemes: The update plan pricing request object
   Future<void> updatePlanPricing(
       String planId, PricingSchemesUpdateRequest pricingSchemes) async {
     var url = _payPalHttpClient
@@ -166,5 +148,33 @@ class SubscriptionsApi {
     var body = jsonEncode(pricingSchemes.toJson());
 
     await _payPalHttpClient.post(url, body: body);
+  }
+
+  // Subscriptions
+  /// Creates a subscription.
+  /// Parameter request: The create subscription request object
+  ///
+  /// Parameter prefer: The preferred server response upon successful completion
+  /// of the request.
+  ///
+  /// Parameter paypalRequestId: The server stores keys for 72 hours.
+  Future<Subscription> createSubscription(
+    SubscriptionRequest request,
+    Prefer? prefer,
+    String? payPalRequestId,
+  ) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions');
+
+    Map<String, String>? headers;
+
+    if (prefer != null) {
+      headers = {'return': preferTypeEnumMap[prefer]!};
+    }
+
+    var body = jsonEncode(request.toJson());
+
+    var response =
+        await _payPalHttpClient.post(url, headers: headers, body: body);
+    return Subscription.fromJson(jsonDecode(response.body));
   }
 }

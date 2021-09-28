@@ -123,6 +123,7 @@ void main() {
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
+  // Plan tests
   test('Test list plans', () async {
     var planCollection = await _subscriptionsApi.listPlans();
     expect(planCollection is PlanCollection, true);
@@ -243,4 +244,6 @@ void main() {
     expect(pricingSchema?.fixedPrice?.value, '5.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
   });
+
+  // Subscription tests
 }
