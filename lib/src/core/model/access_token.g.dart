@@ -13,9 +13,9 @@ AccessToken _$AccessTokenFromJson(Map<String, dynamic> json) => AccessToken(
       appId: json['app_id'] as String,
       expiresIn: json['expires_in'] as int,
       nonce: json['nonce'] as String,
-    )..expiryDateTime = json['expiryDateTime'] == null
+    )..expiryDateTime = json['expiry_date_time'] == null
         ? null
-        : DateTime.parse(json['expiryDateTime'] as String);
+        : DateTime.parse(json['expiry_date_time'] as String);
 
 Map<String, dynamic> _$AccessTokenToJson(AccessToken instance) {
   final val = <String, dynamic>{
@@ -33,6 +33,6 @@ Map<String, dynamic> _$AccessTokenToJson(AccessToken instance) {
     }
   }
 
-  writeNotNull('expiryDateTime', instance.expiryDateTime?.toIso8601String());
+  writeNotNull('expiry_date_time', instance.expiryDateTime?.toIso8601String());
   return val;
 }

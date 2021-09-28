@@ -6,7 +6,7 @@ import 'link_description.dart';
 part 'api_error.g.dart';
 
 /// Api error.
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class ApiError {
   /// The human-readable, unique name of the error.
   final String? name;
@@ -15,12 +15,10 @@ class ApiError {
   final String? message;
 
   /// The PayPal internal ID. Used for correlation purposes.
-  @JsonKey(name: 'debug_id')
   final String? debugId;
 
   /// The information link, or URI, that shows detailed information about this
   /// error for the developer.
-  @JsonKey(name: 'information_link')
   final String? informationLink;
 
   /// An array of additional details about the error.

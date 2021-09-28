@@ -3,11 +3,10 @@ import 'package:json_annotation/json_annotation.dart';
 part 'money.g.dart';
 
 /// Monetary value.
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Money {
   /// The <a href="https://developer.paypal.com/docs/integration/direct/rest/currency-codes/">
   /// three-character ISO-4217 currency code</a> that identifies the currency.
-  @JsonKey(name: 'currency_code')
   final String currencyCode;
 
   /// The value, which might be:

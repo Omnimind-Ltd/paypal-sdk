@@ -3,20 +3,16 @@ import 'package:json_annotation/json_annotation.dart';
 part 'access_token.g.dart';
 
 /// Access token.
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class AccessToken {
   final String scope;
 
-  @JsonKey(name: 'access_token')
   final String accessToken;
 
-  @JsonKey(name: 'token_type')
   final String tokenType;
 
-  @JsonKey(name: 'app_id')
   final String appId;
 
-  @JsonKey(name: 'expires_in')
   final int expiresIn;
 
   final String nonce;

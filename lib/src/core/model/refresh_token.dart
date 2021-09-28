@@ -2,9 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'refresh_token.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class RefreshToken {
-  @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
   const RefreshToken({required this.refreshToken});

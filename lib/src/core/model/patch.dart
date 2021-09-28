@@ -2,21 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'patch.g.dart';
 
-/// Update resource request
-@JsonSerializable()
-class Patch {
-  static const String operationAdd = 'add';
-  static const String operationRemove = 'remove';
-  static const String operationReplace = 'replace';
-  static const String operationMove = 'move';
-  static const String operationCopy = 'copy';
-  static const String operationTest = 'test';
-
-  /// The operation.
-  /// The possible values are:
-  /// <ul>
-  /// <li>
-  /// add. Depending on the target location reference, completes one of these
+/// A patch operation
+enum PatchOperation {
+  /// Depending on the target location reference, completes one of these
   /// functions:
   /// <ul>
   /// <li>
@@ -34,37 +22,37 @@ class Patch {
   /// </ul>
   /// The value parameter defines the value to add. For more information, see
   /// <a href="https://tools.ietf.org/html/rfc6902#section-4.1">4.1. add.</a>
-  /// </li>
-  /// <li>
-  /// remove. Removes the value at the target location. For the operation to
+  add,
+
+  /// Removes the value at the target location. For the operation to
   /// succeed, the target location must exist. For more information, see
   /// <a href="https://tools.ietf.org/html/rfc6902#section-4.2">4.2. remove.</a>
-  /// </li>
-  /// <li>
-  /// replace. Replaces the value at the target location with a new value. The
+  remove,
+
+  /// Replaces the value at the target location with a new value. The
   /// operation object must contain a value parameter that defines the replacement
   /// value. For the operation to succeed, the target location must exist.
   /// For more information, see <a href="https://tools.ietf.org/html/rfc6902#section-4.3">
   /// 4.3. replace.</a>
-  /// </li>
-  /// <li>
-  /// move. Removes the value at a specified location and adds it to the target
+  replace,
+
+  /// Removes the value at a specified location and adds it to the target
   /// location. The operation object must contain a from parameter, which is a
   /// string that contains a JSON pointer value that references the location in
   /// the target document from which to move the value. For the operation to succeed,
   /// the from location must exist. For more information, see
   /// <a href="https://tools.ietf.org/html/rfc6902#section-4.4">4.4. move.</a>
-  /// </li>
-  /// <li>
-  /// copy. Copies the value at a specified location to the target location. The
+  move,
+
+  /// Copies the value at a specified location to the target location. The
   /// operation object must contain a from parameter, which is a string that
   /// contains a JSON pointer value that references the location in the target
   /// document from which to copy the value. For the operation to succeed, the
   /// from location must exist. For more information, see
   /// <a href="https://tools.ietf.org/html/rfc6902#section-4.5">4.5. copy.</a>
-  /// </li>
-  /// <li>
-  /// test Tests that a value at the target location is equal to a specified value.
+  copy,
+
+  /// Tests that a value at the target location is equal to a specified value.
   /// The operation object must contain a value parameter that defines the value
   /// to compare to the target location's value. For the operation to succeed,
   /// the target location must be equal to the value value. For test, equal
@@ -98,7 +86,14 @@ class Patch {
   /// </ul>
   /// </li>
   /// </ul>
-  String op;
+  test,
+}
+
+/// Update resource request
+@JsonSerializable()
+class Patch {
+  /// The operation.
+  PatchOperation op;
 
   /// The <a href="https://datatracker.ietf.org/doc/html/rfc6901">JSON Pointer</a>
   /// to the target document location at which to complete the operation.
