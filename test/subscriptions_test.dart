@@ -21,6 +21,7 @@ void main() {
   PlanStatus _planStatus = PlanStatus.active;
   PricingScheme _pricingScheme = PricingScheme(
       version: 3, fixedPrice: Money(currencyCode: 'GBP', value: '5.0'));
+  String _subscriptionCustomId = 'custom_id';
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
@@ -117,11 +118,55 @@ void main() {
       return Response('', HttpStatus.noContent);
     });
 
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions',
+        'POST',
+        (request) async => Response(
+            '{"status":"APPROVAL_PENDING","id":"I-1WSNAWATBCXP","create_time":"2'
+            '021-09-28T17:31:33Z","links":[{"href":"https://www.sandbox.paypal.c'
+            'om/webapps/billing/subscriptions?ba_token=BA-48M64319W7655191V","re'
+            'l":"approve","method":"GET"},{"href":"https://api.sandbox.paypal.co'
+            'm/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"edit","method":"P'
+            'ATCH"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscript'
+            'ions/I-1WSNAWATBCXP","rel":"self","method":"GET"}],"custom_id":"cus'
+            'tom_id"}',
+            HttpStatus.created));
+
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP',
+        'GET',
+        (request) async => Response(
+            '{"status":"APPROVAL_PENDING","id":"I-1WSNAWATBCXP","create_time":"2'
+            '021-09-28T17:31:33Z","links":[{"href":"https://www.sandbox.paypal.c'
+            'om/webapps/billing/subscriptions?ba_token=BA-48M64319W7655191V","re'
+            'l":"approve","method":"GET"},{"href":"https://api.sandbox.paypal.co'
+            'm/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"edit","method":"P'
+            'ATCH"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscript'
+            'ions/I-1WSNAWATBCXP","rel":"self","method":"GET"}],"custom_id":"'
+            '$_subscriptionCustomId"}',
+            HttpStatus.ok));
+
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP', 'PATCH', (request) async {
+      var patches = jsonDecode(request.body);
+      var patch = Patch.fromJson(patches.first);
+      _subscriptionCustomId = patch.value;
+      return Response('', HttpStatus.noContent);
+    });
+
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-93KN27174NGR/cancel',
+        'POST', (request) async => Response('', HttpStatus.noContent));
+
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
     _subscriptionsApi = SubscriptionsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
+
+    // _subscriptionsApi = SubscriptionsApi(
+    //     PayPalHttpClient(paypalEnvironment, loggingEnabled: true));
   });
+
+  setUp(() {});
 
   // Plan tests
   test('Test list plans', () async {
@@ -246,4 +291,46 @@ void main() {
   });
 
   // Subscription tests
+  test('Test create subscription', () async {
+    var createSubscriptionRequest = SubscriptionRequest(
+        planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
+    var subscription =
+        await _subscriptionsApi.createSubscription(createSubscriptionRequest);
+
+    expect(subscription is Subscription, true);
+  });
+
+  test('Test update subscription', () async {
+    var subscription =
+        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    expect(subscription.customId, 'custom_id');
+
+    await _subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
+      Patch(
+          op: PatchOperation.add,
+          path: '/custom_id',
+          value: 'updated_custom_id')
+    ]);
+
+    subscription =
+        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    expect(subscription.customId, 'updated_custom_id');
+
+    await _subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
+      Patch(op: PatchOperation.add, path: '/custom_id', value: 'custom_id')
+    ]);
+  });
+
+  test('Test show subscription details', () async {
+    var subscription =
+        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+
+    expect(subscription is Subscription, true);
+    expect(subscription.id, 'I-1WSNAWATBCXP');
+  });
+
+  test('Test cancel subscription', () async {
+    await _subscriptionsApi.cancelSubscription(
+        'I-93KN27174NGR', 'No longer needed');
+  });
 }
