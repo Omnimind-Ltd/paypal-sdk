@@ -1,4 +1,4 @@
-Unofficial Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">https://developer.paypal.com/docs/api/overview/</a>
+Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">https://developer.paypal.com/docs/api/overview/</a>
 
 ## Features
 
@@ -30,58 +30,8 @@ Follow the instructions <a href="https://developer.paypal.com/docs/api/overview/
 
 ## Usage
 
-Products API
-```dart
-var paypalEnvironment = PayPalEnvironment.sandbox(
-    clientId: YOUR_CLIENT_ID, clientSecret: YOUR_CLIENT_SECRET);
-var payPalHttpClient = PayPalHttpClient(paypalEnvironment);
-var productsApi = CatalogProductsApi(payPalHttpClient);
-
-// Get product details
-try {
-  var product = await productsApi.showProductDetails('product_id');
-  print(product);
-} catch (e) {
-  print(e);
-}
-
-// List products
-try {
-  var productsCollection = await productsApi.listProducts();
-  for (var product in productsCollection.products) {
-    print(product);
-  }
-} catch (e) {
-  print(e);
-}
-
-// Create product
-try {
-  var product = await productsApi.createProduct(
-    name: 'Product name',
-    type: Product.typeDigital,
-    category: 'ONLINE_GAMING',
-    description: 'Product description',
-  );
-
-  print(product);
-} catch (e) {
-  print(e);
-}
-
-// Update product
-try {
-  await productsApi.updateProduct('product_id', [
-  Patch(
-    op: Patch.operationReplace,
-    path: '/description',
-    value: 'Updated description')
-  ]);
-} catch (e) {
-  print(e);
-}
-```
+Check out the <a href="https://pub.dev/packages/paypal_sdk/example">Examples</a> and <a href="https://pub.dev/documentation/paypal_sdk/latest/">API docs</a> 
 
 ## Additional information
 
-I will implement further APIs as time permits. Pull requests always welcome :)
+Further APIs will be implemented as time permits. Pull requests always welcome.
