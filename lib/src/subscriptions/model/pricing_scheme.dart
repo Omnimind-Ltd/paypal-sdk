@@ -4,12 +4,20 @@ import 'package:paypal_sdk/src/subscriptions/model/pricing_tier.dart';
 
 part 'pricing_scheme.g.dart';
 
-/// Pricing scheme.
-@JsonSerializable()
-class PricingScheme {
-  static const String pricingModelVolume = 'VOLUME';
-  static const String pricingModelTiered = 'TIERED';
+/// The pricing model.
+enum PricingModel {
+  /// A volume pricing model.
+  @JsonValue('VOLUME')
+  volume,
 
+  /// A tiered pricing model.
+  @JsonValue('TIERED')
+  tiered,
+}
+
+/// Pricing scheme.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PricingScheme {
   /// The version of the pricing scheme.
   /// Maximum value: 999.
   int? version;
@@ -18,7 +26,6 @@ class PricingScheme {
   /// amount are applicable to both existing and future subscriptions. For
   /// existing subscriptions, payments within 10 days of price change are not
   /// affected.
-  @JsonKey(name: 'fixed_price')
   Money? fixedPrice;
 
   /// The pricing model for tiered plan. The 'tiers' parameter is required.
@@ -31,8 +38,7 @@ class PricingScheme {
   /// TIERED. A tiered pricing model.
   /// </li>
   /// </ul>
-  @JsonKey(name: 'pricing_model')
-  String? pricingModel;
+  PricingModel? pricingModel;
 
   /// An array of pricing tiers which are used for billing volume/tiered plans.
   /// pricing_model field has to be specified.
@@ -41,13 +47,11 @@ class PricingScheme {
   /// The date and time when the plan was created, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
-  @JsonKey(name: 'create_time')
   String? createTime;
 
   /// The date and time when the plan was last updated, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
-  @JsonKey(name: 'update_time')
   String? updateTime;
 
   PricingScheme(
@@ -68,5 +72,48 @@ class PricingScheme {
     return 'PricingScheme{version: $version, fixedPrice: $fixedPrice, '
         'pricingModel: $pricingModel, tiers: $tiers, createTime: $createTime, '
         'updateTime: $updateTime}';
+  }
+}
+
+/// Updates pricing for a plan.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PricingSchemesUpdateRequest {
+  /// An array of pricing schemes.
+  final List<PricingSchemeUpdateRequest> pricingSchemes;
+
+  const PricingSchemesUpdateRequest(this.pricingSchemes);
+
+  Map<String, dynamic> toJson() => _$PricingSchemesUpdateRequestToJson(this);
+
+  factory PricingSchemesUpdateRequest.fromJson(Map<String, dynamic> json) =>
+      _$PricingSchemesUpdateRequestFromJson(json);
+
+  @override
+  String toString() {
+    return 'PricingSchemes{pricingSchemes: $pricingSchemes}';
+  }
+}
+
+/// A pricing scheme update request.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PricingSchemeUpdateRequest {
+  /// The billing cycle sequence.
+  final int billingCycleSequence;
+
+  /// The pricing scheme details.
+  final PricingScheme pricingScheme;
+
+  const PricingSchemeUpdateRequest(
+      {required this.billingCycleSequence, required this.pricingScheme});
+
+  Map<String, dynamic> toJson() => _$PricingSchemeUpdateRequestToJson(this);
+
+  factory PricingSchemeUpdateRequest.fromJson(Map<String, dynamic> json) =>
+      _$PricingSchemeUpdateRequestFromJson(json);
+
+  @override
+  String toString() {
+    return 'PricingSchemeUpdateRequest{billingCycleSequence: '
+        '$billingCycleSequence, pricingScheme: $pricingScheme}';
   }
 }

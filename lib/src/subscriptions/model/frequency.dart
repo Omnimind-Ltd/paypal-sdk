@@ -2,14 +2,28 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'frequency.g.dart';
 
-/// Frequency.
-@JsonSerializable()
-class Frequency {
-  static const String intervalDay = 'DAY';
-  static const String intervalWeek = 'WEEK';
-  static const String intervalMonth = 'MONTH';
-  static const String intervalYear = 'YEAR';
+/// The interval at which the subscription is charged or billed.
+enum IntervalUnit {
+  /// A daily billing cycle.
+  @JsonValue('DAY')
+  day,
 
+  /// A weekly billing cycle.
+  @JsonValue('WEEK')
+  week,
+
+  /// A monthly billing cycle.
+  @JsonValue('MONTH')
+  month,
+
+  /// A yearly billing cycle.
+  @JsonValue('YEAR')
+  year,
+}
+
+/// Frequency.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class Frequency {
   /// The interval at which the subscription is charged or billed.
   ///
   /// The possible values are:
@@ -27,8 +41,7 @@ class Frequency {
   /// YEAR. A yearly billing cycle.
   /// </li>
   /// </ul>
-  @JsonKey(name: 'interval_unit')
-  String intervalUnit;
+  IntervalUnit intervalUnit;
 
   /// The number of intervals after which a subscriber is billed. For example,
   /// if the interval_unit is DAY with an interval_count of 2, the subscription
@@ -48,7 +61,6 @@ class Frequency {
   /// YEAR. Maximum: 1
   /// </li>
   /// </ul>
-  @JsonKey(name: 'interval_count')
   int intervalCount;
 
   Frequency({required this.intervalUnit, required this.intervalCount});

@@ -3,19 +3,26 @@ import 'package:paypal_sdk/core.dart';
 
 part 'payment_preferences.g.dart';
 
-/// Payment preferences.
-@JsonSerializable()
-class PaymentPreferences {
-  static const String setupFeeFailureActionContinue = 'CONTINUE';
-  static const String setupFeeFailureActionCancel = 'CANCEL';
+/// The action to take on the subscription if the initial payment for the
+/// setup fails.
+enum SetupFeeFailureAction {
+  /// Continues the subscription if the initial payment for the setup
+  @JsonValue('CONTINUE')
+  continue_,
 
+  /// Cancels the subscription if the initial payment for the setup
+  @JsonValue('CANCEL')
+  cancel,
+}
+
+/// Payment preferences.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PaymentPreferences {
   /// Indicates whether to automatically bill the outstanding amount in the next
   /// billing cycle.
-  @JsonKey(name: 'auto_bill_outstanding')
   bool? autoBillOutstanding;
 
   /// The initial set-up fee for the service.
-  @JsonKey(name: 'setup_fee')
   Money? setupFee;
 
   /// The action to take on the subscription if the initial payment for the
@@ -32,14 +39,12 @@ class PaymentPreferences {
   /// fails.
   /// </li>
   /// </ul>
-  @JsonKey(name: 'setup_fee_failure_action')
-  String? setupFeeFailureAction;
+  SetupFeeFailureAction? setupFeeFailureAction;
 
   /// The maximum number of payment failures before a subscription is suspended.
   /// For example, if payment_failure_threshold is 2, the subscription
   /// automatically updates to the SUSPEND state if two consecutive payments
   /// fail.
-  @JsonKey(name: 'payment_failure_threshold')
   int? paymentFailureThreshold;
 
   PaymentPreferences(

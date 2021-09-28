@@ -12,7 +12,8 @@ PricingScheme _$PricingSchemeFromJson(Map<String, dynamic> json) =>
       fixedPrice: json['fixed_price'] == null
           ? null
           : Money.fromJson(json['fixed_price'] as Map<String, dynamic>),
-      pricingModel: json['pricing_model'] as String?,
+      pricingModel:
+          _$enumDecodeNullable(_$PricingModelEnumMap, json['pricing_model']),
       tiers: (json['tiers'] as List<dynamic>?)
           ?.map((e) => PricingTier.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -31,9 +32,81 @@ Map<String, dynamic> _$PricingSchemeToJson(PricingScheme instance) {
 
   writeNotNull('version', instance.version);
   writeNotNull('fixed_price', instance.fixedPrice);
-  writeNotNull('pricing_model', instance.pricingModel);
+  writeNotNull('pricing_model', _$PricingModelEnumMap[instance.pricingModel]);
   writeNotNull('tiers', instance.tiers);
   writeNotNull('create_time', instance.createTime);
   writeNotNull('update_time', instance.updateTime);
   return val;
 }
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$PricingModelEnumMap = {
+  PricingModel.volume: 'VOLUME',
+  PricingModel.tiered: 'TIERED',
+};
+
+PricingSchemesUpdateRequest _$PricingSchemesUpdateRequestFromJson(
+        Map<String, dynamic> json) =>
+    PricingSchemesUpdateRequest(
+      (json['pricing_schemes'] as List<dynamic>)
+          .map((e) =>
+              PricingSchemeUpdateRequest.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$PricingSchemesUpdateRequestToJson(
+        PricingSchemesUpdateRequest instance) =>
+    <String, dynamic>{
+      'pricing_schemes': instance.pricingSchemes,
+    };
+
+PricingSchemeUpdateRequest _$PricingSchemeUpdateRequestFromJson(
+        Map<String, dynamic> json) =>
+    PricingSchemeUpdateRequest(
+      billingCycleSequence: json['billing_cycle_sequence'] as int,
+      pricingScheme: PricingScheme.fromJson(
+          json['pricing_scheme'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PricingSchemeUpdateRequestToJson(
+        PricingSchemeUpdateRequest instance) =>
+    <String, dynamic>{
+      'billing_cycle_sequence': instance.billingCycleSequence,
+      'pricing_scheme': instance.pricingScheme,
+    };

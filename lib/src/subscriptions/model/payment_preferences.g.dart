@@ -12,7 +12,8 @@ PaymentPreferences _$PaymentPreferencesFromJson(Map<String, dynamic> json) =>
       setupFee: json['setup_fee'] == null
           ? null
           : Money.fromJson(json['setup_fee'] as Map<String, dynamic>),
-      setupFeeFailureAction: json['setup_fee_failure_action'] as String?,
+      setupFeeFailureAction: _$enumDecodeNullable(
+          _$SetupFeeFailureActionEnumMap, json['setup_fee_failure_action']),
       paymentFailureThreshold: json['payment_failure_threshold'] as int?,
     );
 
@@ -27,7 +28,50 @@ Map<String, dynamic> _$PaymentPreferencesToJson(PaymentPreferences instance) {
 
   writeNotNull('auto_bill_outstanding', instance.autoBillOutstanding);
   writeNotNull('setup_fee', instance.setupFee);
-  writeNotNull('setup_fee_failure_action', instance.setupFeeFailureAction);
+  writeNotNull('setup_fee_failure_action',
+      _$SetupFeeFailureActionEnumMap[instance.setupFeeFailureAction]);
   writeNotNull('payment_failure_threshold', instance.paymentFailureThreshold);
   return val;
 }
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$SetupFeeFailureActionEnumMap = {
+  SetupFeeFailureAction.continue_: 'CONTINUE',
+  SetupFeeFailureAction.cancel: 'CANCEL',
+};
