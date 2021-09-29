@@ -23,4 +23,5 @@ export 'src/subscriptions/model/pricing_tier.dart';
 export 'src/subscriptions/model/subscriber.dart';
 export 'src/subscriptions/model/subscription.dart';
 export 'src/subscriptions/model/taxes.dart';
+export 'src/subscriptions/model/transaction.dart';
 export 'src/subscriptions/subscriptions_api.dart';
