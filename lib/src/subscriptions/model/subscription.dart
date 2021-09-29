@@ -23,7 +23,7 @@ enum SubscriptionStatus {
   @JsonValue('ACTIVE')
   active,
 
-  /// The subscription is active.
+  /// The subscription is suspended.
   @JsonValue('SUSPENDED')
   suspended,
 
