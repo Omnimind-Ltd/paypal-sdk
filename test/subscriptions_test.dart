@@ -146,9 +146,6 @@ void main() {
         clientId: 'clientId', clientSecret: 'clientSecret');
     _subscriptionsApi = SubscriptionsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
-
-    // _subscriptionsApi = SubscriptionsApi(
-    //     PayPalHttpClient(paypalEnvironment, loggingEnabled: true));
   });
 
   setUp(() {});
