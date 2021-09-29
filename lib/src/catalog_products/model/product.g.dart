@@ -7,16 +7,16 @@ part of 'product.dart';
 // **************************************************************************
 
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
-      json['id'] as String,
-      json['name'] as String,
-      json['description'] as String?,
-      _$enumDecodeNullable(_$ProductTypeEnumMap, json['type']),
-      json['category'] as String?,
-      json['image_url'] as String?,
-      json['home_url'] as String?,
-      json['create_time'] as String,
-      json['update_time'] as String?,
-      (json['links'] as List<dynamic>?)
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String?,
+      type: _$enumDecodeNullable(_$ProductTypeEnumMap, json['type']),
+      category: json['category'] as String?,
+      imageUrl: json['image_url'] as String?,
+      homeUrl: json['home_url'] as String?,
+      createTime: json['create_time'] as String,
+      updateTime: json['update_time'] as String?,
+      links: (json['links'] as List<dynamic>?)
           ?.map((e) => LinkDescription.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

@@ -70,16 +70,16 @@ class Product {
   final List<LinkDescription>? links;
 
   const Product(
-      this.id,
-      this.name,
+      {required this.id,
+      required this.name,
       this.description,
       this.type,
       this.category,
       this.imageUrl,
       this.homeUrl,
-      this.createTime,
+      required this.createTime,
       this.updateTime,
-      this.links);
+      this.links});
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 

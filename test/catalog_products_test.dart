@@ -7,6 +7,7 @@ import 'package:paypal_sdk/core.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
+import 'helper/util.dart';
 
 void main() {
   late CatalogProductsApi _catalogProductsApi;
@@ -15,37 +16,29 @@ void main() {
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
-    mockHttpClient.addHandler(
-        '/v1/catalogs/products',
-        'GET',
-        (request) async => Response(
-            '{"products":[{"id":"PROD-3XF87627UU805523Y","name":"test_product","'
-            'description":"test_description","create_time":"2021-09-21T17:13'
-            ':54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/'
-            'products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}],"l'
-            'inks":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/products'
-            '?page_size=10&page=1","rel":"self","method":"GET"}]}',
-            HttpStatus.ok));
+    mockHttpClient.addHandler('/v1/catalogs/products', 'GET', (request) async {
+      var json = await getJson('catalog_products/list_products.json');
+      return Response(json, HttpStatus.ok);
+    });
+
+    mockHttpClient.addHandler('/v1/catalogs/products', 'POST', (request) async {
+      var json = await getJson('catalog_products/create_product.json');
+      return Response(json, HttpStatus.created);
+    });
 
     mockHttpClient.addHandler(
-        '/v1/catalogs/products',
-        'POST',
-        (request) async => Response(
-            '{"id":"PROD-3XF87627UU805523Y","name":"test_product","description":'
-            '"test_description","type": "SERVICE","create_time":"2021-09-21T17:1'
-            '3:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs'
-            '/products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}',
-            HttpStatus.created));
-
-    mockHttpClient.addHandler(
-        '/v1/catalogs/products/PROD-3XF87627UU805523Y',
-        'GET',
-        (request) async => Response(
-            '{"id":"PROD-3XF87627UU805523Y","name":"test_product","description":'
-            '"$_productDescription","type": "SERVICE","create_time":"2021-09-21T'
-            '17:13:54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/cata'
-            'logs/products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}',
-            HttpStatus.created));
+        '/v1/catalogs/products/PROD-3XF87627UU805523Y', 'GET', (request) async {
+      var json = await getJson('catalog_products/create_product.json');
+      var product = Product.fromJson(jsonDecode(json));
+      return Response(
+          jsonEncode(Product(
+                  description: _productDescription,
+                  id: 'PROD-3XF87627UU805523Y',
+                  name: product.name,
+                  createTime: product.createTime)
+              .toJson()),
+          HttpStatus.ok);
+    });
 
     mockHttpClient
         .addHandler('/v1/catalogs/products/PROD-3XF87627UU805523Y', 'PATCH',
