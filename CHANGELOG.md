@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.4.0
+- renamed libraries
+
 ## 0.3.0
 - complete Subscriptions API
 - Use enums instead of String const
