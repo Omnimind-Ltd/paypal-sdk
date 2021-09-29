@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/src/core/model/address.dart';
+
+import 'address.dart';
 
 part 'card.g.dart';
 

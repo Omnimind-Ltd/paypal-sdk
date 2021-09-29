@@ -4,11 +4,11 @@ import 'dart:html' if (dart.library.io) 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:paypal_sdk/src/core/exception/api_exception.dart';
-import 'package:paypal_sdk/src/core/model/api_error.dart';
-import 'package:paypal_sdk/src/core/model/authorization_error.dart';
 
+import 'exception/api_exception.dart';
 import 'model/access_token.dart';
+import 'model/api_error.dart';
+import 'model/authorization_error.dart';
 import 'paypal_environment.dart';
 
 /// PayPal http client. Takes care of authorization. Re-authorizes when token

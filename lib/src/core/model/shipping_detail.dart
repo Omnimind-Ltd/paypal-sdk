@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+
+import 'address.dart';
+import 'name.dart';
 
 part 'shipping_detail.g.dart';
 

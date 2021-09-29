@@ -1,4 +1,4 @@
-import 'package:paypal_sdk/src/core/model/api_error.dart';
+import '../model/api_error.dart';
 
 class ApiException implements Exception {
   final int statusCode;

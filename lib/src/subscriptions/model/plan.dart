@@ -1,8 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/src/core/model/link_description.dart';
-import 'package:paypal_sdk/src/subscriptions/model/billing_cycle.dart';
-import 'package:paypal_sdk/src/subscriptions/model/payment_preferences.dart';
-import 'package:paypal_sdk/src/subscriptions/model/taxes.dart';
+import 'package:paypal_sdk/core.dart';
+
+import 'billing_cycle.dart';
+import 'payment_preferences.dart';
+import 'taxes.dart';
 
 part 'plan.g.dart';
 

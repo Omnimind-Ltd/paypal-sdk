@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/pricing_tier.dart';
+
+import 'pricing_tier.dart';
 
 part 'pricing_scheme.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/src/subscriptions/model/payment_method.dart';
+import 'payment_method.dart';
 
 part 'application_context.g.dart';
 

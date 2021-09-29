@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/src/subscriptions/model/frequency.dart';
-import 'package:paypal_sdk/src/subscriptions/model/pricing_scheme.dart';
+
+import 'frequency.dart';
+import 'pricing_scheme.dart';
 
 part 'billing_cycle.g.dart';
 

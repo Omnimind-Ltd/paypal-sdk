@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/src/core/model/api_error_details.dart';
 
+import 'api_error_details.dart';
 import 'link_description.dart';
 
 part 'api_error.g.dart';

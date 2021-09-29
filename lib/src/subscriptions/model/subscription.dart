@@ -1,8 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/application_context.dart';
 
-import 'amount_with_breakdown.dart';
+import 'application_context.dart';
 import 'billing_cycle.dart';
 import 'payment_details.dart';
 import 'plan.dart';
