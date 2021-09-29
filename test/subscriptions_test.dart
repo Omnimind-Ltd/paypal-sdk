@@ -9,6 +9,7 @@ import 'package:paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
+import 'helper/util.dart';
 
 const _planStatusEnumMap = {
   PlanStatus.created: 'CREATED',
@@ -27,65 +28,26 @@ void main() {
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
-    mockHttpClient.addHandler(
-        '/v1/billing/plans',
-        'GET',
-        (request) async => Response(
-            '{"plans":[{"id":"P-6KG67732XY2608640MFGL3RY","product_id":"PROD-3XF'
-            '87627UU805523Y","name":"Test plan","status":"ACTIVE","usage_type":"'
-            'LICENSED","create_time":"2021-09-22T09:58:42Z","links":[{"href":"ht'
-            'tps://api.sandbox.paypal.com/v1/billing/plans/P-6KG67732XY2608640MF'
-            'GL3RY","rel":"self","method":"GET","encType":"application/json"}]}]'
-            ',"links":[{"href":"https://api.sandbox.paypal.com/v1/billing/plans?'
-            'page_size=10&page=1","rel":"self","method":"GET","encType":"applica'
-            'tion/json"}]}',
-            HttpStatus.ok));
+    mockHttpClient.addHandler('/v1/billing/plans', 'GET', (request) async {
+      var json = await getJson('subscriptions/list_plans.json');
+      return Response(json, HttpStatus.ok);
+    });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/plans',
-        'POST',
-        (request) async => Response(
-            '{"id":"P-6KG67732XY2608640MFGL3RY","product_id":"PROD-41223692GT225'
-            '981R","name":"Test plan","status":"ACTIVE","usage_type":"LICENSED",'
-            '"billing_cycles":[{"pricing_scheme":{"version":1,"fixed_price":{"cu'
-            'rrency_code":"GBP","value":"5.0"},"create_time":"2021-09-22T09:58:4'
-            '2Z","update_time":"2021-09-22T09:58:42Z"},"frequency":{"interval_un'
-            'it":"MONTH","interval_count":1},"tenure_type":"REGULAR","sequence":'
-            '1,"total_cycles":1}],"payment_preferences":{"service_type":"PREPAID'
-            '","auto_bill_outstanding":true,"setup_fee":{"currency_code":"GBP","'
-            'value":"1.0"},"setup_fee_failure_action":"CANCEL","payment_failure_'
-            'threshold":2},"quantity_supported":false,"create_time":"2021-09-22T'
-            '09:58:42Z","update_time":"2021-09-22T09:58:42Z","links":[{"href":"h'
-            'ttps://api.sandbox.paypal.com/v1/billing/plans/P-2M115208E3051582AM'
-            'FFP4UQ","rel":"self","method":"GET","encType":"application/json"},{'
-            '"href":"https://api.sandbox.paypal.com/v1/billing/plans/P-2M115208E'
-            '3051582AMFFP4UQ","rel":"edit","method":"PATCH","encType":"applicati'
-            'on/json"},{"href":"https://api.sandbox.paypal.com/v1/billing/plans/'
-            'P-6KG67732XY2608640MFGL3RY/deactivate","rel":"self","method":"POST"'
-            ',"encType":"application/json"}]}',
-            HttpStatus.created));
+    mockHttpClient.addHandler('/v1/billing/plans', 'POST', (request) async {
+      var json = await getJson('subscriptions/create_plan.json');
+      return Response(json, HttpStatus.created);
+    });
 
     mockHttpClient.addHandler(
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'GET', (request) async {
-      var pricingScheme = jsonEncode(_pricingScheme.toJson());
+      var json = await getJson('subscriptions/show_plan_details.json');
+
+      json = json.replaceAll('Test description', _planDescription);
+      json = json.replaceAll('INACTIVE', _planStatusEnumMap[_planStatus]!);
+      json = json.replaceAll('5.0', _pricingScheme.fixedPrice!.value);
+
       return Response(
-          '{"id":"P-6KG67732XY2608640MFGL3RY","product_id":"PROD-41223692GT22598'
-          '1R","name":"Test plan","description":"$_planDescription","status":"'
-          '${_planStatusEnumMap[_planStatus]}","usage_type":"LICENSED","billing_cycles":[{"pricing_sch'
-          'eme":$pricingScheme,"frequency":{"interval_unit":"MONTH","interval_co'
-          'unt":1},"tenure_type":"REGULAR","sequence":1,"total_cycles":1}],"paym'
-          'ent_preferences":{"service_type":"PREPAID","auto_bill_outstanding":tr'
-          'ue,"setup_fee":{"currency_code":"GBP","value":"1.0"},"setup_fee_failu'
-          're_action":"CANCEL","payment_failure_threshold":2},"quantity_supporte'
-          'd":false,"create_time":"2021-09-22T09:58:42Z","update_time":"2021-09-'
-          '22T09:58:42Z","links":[{"href":"https://api.sandbox.paypal.com/v1/bil'
-          'ling/plans/P-6KG67732XY2608640MFGL3RY","rel":"self","method":"GET","e'
-          'ncType":"application/json"},{"href":"https://api.sandbox.paypal.com/v'
-          '1/billing/plans/P-6KG67732XY2608640MFGL3RY","rel":"edit","method":"PA'
-          'TCH","encType":"application/json"},{"href":"https://api.sandbox.paypa'
-          'l.com/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/deactivate","rel":"'
-          'self","method":"POST","encType":"application/json"}]}',
-          HttpStatus.ok);
+          jsonEncode(Plan.fromJson(jsonDecode(json))), HttpStatus.ok);
     });
 
     mockHttpClient
@@ -120,33 +82,19 @@ void main() {
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions',
-        'POST',
-        (request) async => Response(
-            '{"status":"APPROVAL_PENDING","id":"I-1WSNAWATBCXP","create_time":"2'
-            '021-09-28T17:31:33Z","links":[{"href":"https://www.sandbox.paypal.c'
-            'om/webapps/billing/subscriptions?ba_token=BA-48M64319W7655191V","re'
-            'l":"approve","method":"GET"},{"href":"https://api.sandbox.paypal.co'
-            'm/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"edit","method":"P'
-            'ATCH"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscript'
-            'ions/I-1WSNAWATBCXP","rel":"self","method":"GET"}],"custom_id":"cus'
-            'tom_id"}',
-            HttpStatus.created));
+    mockHttpClient.addHandler('/v1/billing/subscriptions', 'POST',
+        (request) async {
+      var json = await getJson('subscriptions/create_subscription.json');
+      return Response(json, HttpStatus.created);
+    });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP',
-        'GET',
-        (request) async => Response(
-            '{"status":"APPROVAL_PENDING","id":"I-1WSNAWATBCXP","create_time":"2'
-            '021-09-28T17:31:33Z","links":[{"href":"https://www.sandbox.paypal.c'
-            'om/webapps/billing/subscriptions?ba_token=BA-48M64319W7655191V","re'
-            'l":"approve","method":"GET"},{"href":"https://api.sandbox.paypal.co'
-            'm/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"edit","method":"P'
-            'ATCH"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscript'
-            'ions/I-1WSNAWATBCXP","rel":"self","method":"GET"}],"custom_id":"'
-            '$_subscriptionCustomId"}',
-            HttpStatus.ok));
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP', 'GET',
+        (request) async {
+      var json = await getJson('subscriptions/show_subscription_details.json');
+      json = json.replaceAll('subscription_custom_id', _subscriptionCustomId);
+      return Response(jsonEncode(Subscription.fromJson(jsonDecode(json))),
+          HttpStatus.created);
+    });
 
     mockHttpClient.addHandler(
         '/v1/billing/subscriptions/I-1WSNAWATBCXP', 'PATCH', (request) async {
@@ -175,24 +123,12 @@ void main() {
       return Response(jsonEncode(response.toJson()), HttpStatus.accepted);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP/revise',
-        'POST',
-        (request) async => Response(
-            '{"plan_id":"P-9DR273747C8107746MFGHYKY","shipping_amount":{"currenc'
-            'y_code":"USD","value":"2.0"},"plan_overridden":false,"links":[{"hre'
-            'f":"https://www.sandbox.paypal.com/webapps/billing/subscriptions/up'
-            'date?ba_token=BA-5W858231P24644150","rel":"approve","method":"GET"}'
-            ',{"href":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I'
-            '-1WSNAWATBCXP","rel":"edit","method":"PATCH"},{"href":"https://api.'
-            'sandbox.paypal.com/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"'
-            'self","method":"GET"},{"href":"https://api.sandbox.paypal.com/v1/bi'
-            'lling/subscriptions/I-1WSNAWATBCXP/cancel","rel":"cancel","method":'
-            '"POST"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscrip'
-            'tions/I-1WSNAWATBCXP/suspend","rel":"suspend","method":"POST"},{"hr'
-            'ef":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I-1WSN'
-            'AWATBCXP/capture","rel":"capture","method":"POST"}]}',
-            HttpStatus.ok));
+    mockHttpClient
+        .addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/revise', 'POST',
+            (request) async {
+      var json = await getJson('subscriptions/revise_subscription.json');
+      return Response(json, HttpStatus.ok);
+    });
 
     mockHttpClient.addHandler(
         '/v1/billing/subscriptions/I-1WSNAWATBCXP/suspend',
@@ -200,24 +136,19 @@ void main() {
         (request) async => Response('', HttpStatus.noContent));
 
     mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP/transactions',
-        'GET',
-        (request) async => Response(
-            '{"transactions":[{"status":"COMPLETED","id":"8PC82346NG592983M","am'
-            'ount_with_breakdown":{"gross_amount":{"currency_code":"USD","value"'
-            ':"3.00"},"fee_amount":{"currency_code":"USD","value":"0.40"},"net_a'
-            'mount":{"currency_code":"USD","value":"2.60"}},"payer_name":{"given'
-            '_name":"John","surname":"Doe"},"payer_email":"sb-p8icr7702357@perso'
-            'nal.example.com","time":"2021-09-27T18:04:05.000Z"}],"links":[{"hre'
-            'f":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I-BA70T'
-            '9G41KJP/transactions?start_time=2021-09-01T07%3A50%3A20.940Z&end_ti'
-            'me=2021-09-29T07%3A50%3A20.940Z","rel":"SELF","method":"GET"}]}',
-            HttpStatus.ok));
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP/transactions', 'GET',
+        (request) async {
+      var json = await getJson('subscriptions/list_transactions.json');
+      return Response(json, HttpStatus.ok);
+    });
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
     _subscriptionsApi = SubscriptionsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
+
+    // _subscriptionsApi = SubscriptionsApi(
+    //     PayPalHttpClient(paypalEnvironment, loggingEnabled: true));
   });
 
   setUp(() {});

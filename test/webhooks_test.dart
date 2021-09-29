@@ -109,9 +109,6 @@ void main() {
         clientId: 'clientId', clientSecret: 'clientSecret');
     _webhooksApi = WebhooksApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
-
-    // _webhooksApi =
-    //     WebhooksApi(PayPalHttpClient(paypalEnvironment, loggingEnabled: true));
   });
 
   test('Test list webhooks', () async {

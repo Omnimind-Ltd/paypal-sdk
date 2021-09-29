@@ -1,0 +1,35 @@
+{
+  "transactions": [
+    {
+      "status": "COMPLETED",
+      "id": "8PC82346NG592983M",
+      "amount_with_breakdown": {
+        "gross_amount": {
+          "currency_code": "USD",
+          "value": "3.00"
+        },
+        "fee_amount": {
+          "currency_code": "USD",
+          "value": "0.40"
+        },
+        "net_amount": {
+          "currency_code": "USD",
+          "value": "2.60"
+        }
+      },
+      "payer_name": {
+        "given_name": "John",
+        "surname": "Doe"
+      },
+      "payer_email": "sb-p8icr7702357@personal.example.com",
+      "time": "2021-09-27T18:04:05.000Z"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v1/billing/subscriptions/I-BA70T9G41KJP/transactions?start_time=2021-09-01T07%3A50%3A20.940Z&end_time=2021-09-29T07%3A50%3A20.940Z",
+      "rel": "SELF",
+      "method": "GET"
+    }
+  ]
+}

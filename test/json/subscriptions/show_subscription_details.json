@@ -1,0 +1,23 @@
+{
+  "status": "APPROVAL_PENDING",
+  "id": "I-1WSNAWATBCXP",
+  "create_time": "2021-09-28T17:31:33Z",
+  "links": [
+    {
+      "href": "https://www.sandbox.paypal.com/webapps/billing/subscriptions?ba_token=BA-48M64319W7655191V",
+      "rel": "approve",
+      "method": "GET"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/billing/subscriptions/I-1WSNAWATBCXP",
+      "rel": "edit",
+      "method": "PATCH"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/billing/subscriptions/I-1WSNAWATBCXP",
+      "rel": "self",
+      "method": "GET"
+    }
+  ],
+  "custom_id": "subscription_custom_id"
+}

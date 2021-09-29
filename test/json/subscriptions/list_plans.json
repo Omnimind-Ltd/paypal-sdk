@@ -1,0 +1,28 @@
+{
+  "plans": [
+    {
+      "id": "P-6KG67732XY2608640MFGL3RY",
+      "product_id": "PROD-3XF87627UU805523Y",
+      "name": "Test plan",
+      "status": "ACTIVE",
+      "usage_type": "LICENSED",
+      "create_time": "2021-09-22T09:58:42Z",
+      "links": [
+        {
+          "href": "https://api.sandbox.paypal.com/v1/billing/plans/P-6KG67732XY2608640MFGL3RY",
+          "rel": "self",
+          "method": "GET",
+          "encType": "application/json"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v1/billing/plans?page_size=10&page=1",
+      "rel": "self",
+      "method": "GET",
+      "encType": "application/json"
+    }
+  ]
+}
