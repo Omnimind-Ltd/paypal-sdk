@@ -81,6 +81,7 @@ class WebhooksList {
 /// A list of webhook IDs.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class WebhookIds {
+  /// Webhook IDs.
   final List<String> webhookIds;
 
   const WebhookIds(this.webhookIds);
