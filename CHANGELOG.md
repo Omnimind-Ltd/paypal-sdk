@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.3.0
+- complete Subscriptions API
+- Use enums instead of String const
+
 ## 0.2.1
 - Access token updated callback. 
 - Verify webhook signature
