@@ -9,6 +9,33 @@ import 'subscriber.dart';
 
 part 'subscription.g.dart';
 
+/// The status of the subscription.
+enum SubscriptionStatus {
+  /// The subscription is created but not yet approved by the buyer.
+  @JsonValue('APPROVAL_PENDING')
+  approvalPending,
+
+  /// The buyer has approved the subscription.
+  @JsonValue('APPROVED')
+  approved,
+
+  /// The subscription is active.
+  @JsonValue('ACTIVE')
+  active,
+
+  /// The subscription is active.
+  @JsonValue('SUSPENDED')
+  suspended,
+
+  /// The subscription is cancelled.
+  @JsonValue('CANCELLED')
+  cancelled,
+
+  /// The subscription is expired.
+  @JsonValue('EXPIRED')
+  expired,
+}
+
 /// A subscription.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Subscription {
@@ -19,7 +46,7 @@ class Subscription {
   final String? planId;
 
   /// The status of the subscription.
-  final String? status;
+  final SubscriptionStatus? status;
 
   /// The reason or notes for the status of the subscription.
   final String? statusChangeNote;

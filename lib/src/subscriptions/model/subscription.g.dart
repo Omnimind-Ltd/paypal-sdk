@@ -9,7 +9,7 @@ part of 'subscription.dart';
 Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
       json['id'] as String,
       json['plan_id'] as String?,
-      json['status'] as String?,
+      _$enumDecodeNullable(_$SubscriptionStatusEnumMap, json['status']),
       json['status_change_note'] as String?,
       json['status_update_time'] as String?,
       json['start_time'] as String?,
@@ -48,7 +48,7 @@ Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
   }
 
   writeNotNull('plan_id', instance.planId);
-  writeNotNull('status', instance.status);
+  writeNotNull('status', _$SubscriptionStatusEnumMap[instance.status]);
   writeNotNull('status_change_note', instance.statusChangeNote);
   writeNotNull('status_update_time', instance.statusUpdateTime);
   writeNotNull('start_time', instance.startTime);
@@ -64,6 +64,52 @@ Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
   writeNotNull('links', instance.links);
   return val;
 }
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$SubscriptionStatusEnumMap = {
+  SubscriptionStatus.approvalPending: 'APPROVAL_PENDING',
+  SubscriptionStatus.approved: 'APPROVED',
+  SubscriptionStatus.active: 'ACTIVE',
+  SubscriptionStatus.suspended: 'SUSPENDED',
+  SubscriptionStatus.cancelled: 'CANCELLED',
+  SubscriptionStatus.expired: 'EXPIRED',
+};
 
 SubscriptionBillingInfo _$SubscriptionBillingInfoFromJson(
         Map<String, dynamic> json) =>
@@ -169,43 +215,6 @@ Map<String, dynamic> _$SubscriptionCaptureRequestToJson(
       'capture_type': _$CaptureTypeEnumMap[instance.captureType],
       'amount': instance.amount,
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$CaptureTypeEnumMap = {
   CaptureType.outstandingBalance: 'OUTSTANDING_BALANCE',

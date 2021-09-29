@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.4.2
+- Change subscription status to enum
+
 ## 0.4.1
 - complete Webhooks API
 
