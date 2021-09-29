@@ -16,14 +16,14 @@ enum ShippingType {
 @JsonSerializable()
 class ShippingDetail {
   /// The name of the person to whom to ship the items.
-  final Name name;
+  final Name? name;
 
   /// The method by which the payer wants to get their items from the payee
   /// e.g shipping, in-person pickup. Either type or options but not both may be present.
-  final String type;
+  final String? type;
 
   /// The address of the person to whom to ship the items
-  final AddressPortable address;
+  final AddressPortable? address;
 
   ShippingDetail(this.name, this.type, this.address);
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/subscriptions/model/transaction.dart';
 
 import 'model/plan.dart';
 import 'model/pricing_scheme.dart';
@@ -152,6 +153,7 @@ class SubscriptionsApi {
 
   // Subscriptions
   /// Creates a subscription.
+  ///
   /// Parameter request: The create subscription request object
   ///
   /// Parameter prefer: The preferred server response upon successful completion
@@ -272,25 +274,43 @@ class SubscriptionsApi {
     return Subscription.fromJson(jsonDecode(response.body));
   }
 
+  /// Activates the subscription.
+  ///
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter reason: The reason for activation of a subscription. Required to
+  /// reactivate the subscription.
+  Future<void> activateSubscription(
+      String subscriptionId, String reason) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/activate');
+
+    var body = jsonEncode(Reason(reason).toJson());
+
+    await _payPalHttpClient.post(url, body: body);
+  }
+
   /// Cancels the subscription.
+  /// Parameter subscriptionId: The ID of the subscription
   ///
   /// Parameter reason: The reason for the cancellation of a subscription.
   Future<void> cancelSubscription(String subscriptionId, String reason) async {
     var url = _payPalHttpClient
         .getUrl('/v1/billing/subscriptions/$subscriptionId/cancel');
 
-    var body = jsonEncode(CancelRequest(reason).toJson());
+    var body = jsonEncode(Reason(reason).toJson());
 
     await _payPalHttpClient.post(url, body: body);
   }
 
   /// Captures an authorized payment from the subscriber on the subscription.
+  ///
   /// Parameter subscriptionId: The ID of the subscription
   ///
   /// Parameter request: The subscription capture request
   ///
   /// Parameter paypalRequestId: The server stores keys for 72 hours.
-  Future<SubscriptionCaptureResponse> captureAuthorizedPaymentOnSubscription(
+  Future<Transaction> captureAuthorizedPaymentOnSubscription(
     String subscriptionId,
     SubscriptionCaptureRequest request, {
     String? payPalRequestId,
@@ -306,6 +326,62 @@ class SubscriptionsApi {
     var response =
         await _payPalHttpClient.post(url, headers: headers, body: body);
 
-    return SubscriptionCaptureResponse.fromJson(jsonDecode(response.body));
+    return Transaction.fromJson(jsonDecode(response.body));
+  }
+
+  /// Updates the quantity of the product or service in a subscription. You can
+  /// also use this method to switch the plan and update the shipping_amount,
+  /// shipping_address values for the subscription. This type of update requires
+  /// the buyer's consent.
+  ///
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter request: The subscription revise request
+  Future<SubscriptionReviseResponse> reviseSubscription(
+    String subscriptionId,
+    SubscriptionReviseRequest request,
+  ) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/revise');
+
+    var body = jsonEncode(request.toJson());
+
+    var response = await _payPalHttpClient.post(url, body: body);
+
+    return SubscriptionReviseResponse.fromJson(jsonDecode(response.body));
+  }
+
+  /// Suspends the subscription.
+  ///
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter reason: The reason for suspenson of the subscription.
+  Future<void> suspendSubscription(String subscriptionId, Reason reason) async {
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/suspend');
+
+    var body = jsonEncode(reason.toJson());
+
+    await _payPalHttpClient.post(url, body: body);
+  }
+
+  /// Lists transactions for a subscription.
+  ///
+  /// Parameter subscriptionId: The ID of the subscription
+  ///
+  /// Parameter startTime: The start time of the range of transactions to list.
+  ///
+  /// Parameter endTime: The end time of the range of transactions to list.
+  Future<TransactionsList> listTransactions(
+      String subscriptionId, String startTime, String endTime) async {
+    var url = _payPalHttpClient.getUrl(
+        '/v1/billing/subscriptions/$subscriptionId/transactions',
+        queryParameters: {
+          'start_time': startTime,
+          'end_time': endTime,
+        });
+
+    var response = await _payPalHttpClient.get(url);
+    return TransactionsList.fromJson(jsonDecode(response.body));
   }
 }

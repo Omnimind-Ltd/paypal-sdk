@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/subscriptions/model/subscription.dart';
+import 'package:paypal_sdk/src/subscriptions/model/transaction.dart';
 import 'package:paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
@@ -154,16 +156,68 @@ void main() {
       return Response('', HttpStatus.noContent);
     });
 
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-93KN27174NGR/activate',
+        'POST',
+        (request) async => Response('', HttpStatus.noContent));
+
     mockHttpClient.addHandler('/v1/billing/subscriptions/I-93KN27174NGR/cancel',
         'POST', (request) async => Response('', HttpStatus.noContent));
+
+    mockHttpClient
+        .addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/capture', 'POST',
+            (request) async {
+      var response = Transaction(
+          status: CaptureStatus.completed,
+          id: 'id',
+          payerEmail: 'email@email.com',
+          time: '2021-09-23T13:07:55Z');
+      return Response(jsonEncode(response.toJson()), HttpStatus.accepted);
+    });
+
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP/revise',
+        'POST',
+        (request) async => Response(
+            '{"plan_id":"P-9DR273747C8107746MFGHYKY","shipping_amount":{"currenc'
+            'y_code":"USD","value":"2.0"},"plan_overridden":false,"links":[{"hre'
+            'f":"https://www.sandbox.paypal.com/webapps/billing/subscriptions/up'
+            'date?ba_token=BA-5W858231P24644150","rel":"approve","method":"GET"}'
+            ',{"href":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I'
+            '-1WSNAWATBCXP","rel":"edit","method":"PATCH"},{"href":"https://api.'
+            'sandbox.paypal.com/v1/billing/subscriptions/I-1WSNAWATBCXP","rel":"'
+            'self","method":"GET"},{"href":"https://api.sandbox.paypal.com/v1/bi'
+            'lling/subscriptions/I-1WSNAWATBCXP/cancel","rel":"cancel","method":'
+            '"POST"},{"href":"https://api.sandbox.paypal.com/v1/billing/subscrip'
+            'tions/I-1WSNAWATBCXP/suspend","rel":"suspend","method":"POST"},{"hr'
+            'ef":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I-1WSN'
+            'AWATBCXP/capture","rel":"capture","method":"POST"}]}',
+            HttpStatus.ok));
+
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP/suspend',
+        'POST',
+        (request) async => Response('', HttpStatus.noContent));
+
+    mockHttpClient.addHandler(
+        '/v1/billing/subscriptions/I-1WSNAWATBCXP/transactions',
+        'GET',
+        (request) async => Response(
+            '{"transactions":[{"status":"COMPLETED","id":"8PC82346NG592983M","am'
+            'ount_with_breakdown":{"gross_amount":{"currency_code":"USD","value"'
+            ':"3.00"},"fee_amount":{"currency_code":"USD","value":"0.40"},"net_a'
+            'mount":{"currency_code":"USD","value":"2.60"}},"payer_name":{"given'
+            '_name":"John","surname":"Doe"},"payer_email":"sb-p8icr7702357@perso'
+            'nal.example.com","time":"2021-09-27T18:04:05.000Z"}],"links":[{"hre'
+            'f":"https://api.sandbox.paypal.com/v1/billing/subscriptions/I-BA70T'
+            '9G41KJP/transactions?start_time=2021-09-01T07%3A50%3A20.940Z&end_ti'
+            'me=2021-09-29T07%3A50%3A20.940Z","rel":"SELF","method":"GET"}]}',
+            HttpStatus.ok));
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
     _subscriptionsApi = SubscriptionsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
-
-    // _subscriptionsApi = SubscriptionsApi(
-    //     PayPalHttpClient(paypalEnvironment, loggingEnabled: true));
   });
 
   setUp(() {});
@@ -329,8 +383,47 @@ void main() {
     expect(subscription.id, 'I-1WSNAWATBCXP');
   });
 
+  test('Test activate subscription', () async {
+    await _subscriptionsApi.activateSubscription(
+        'I-93KN27174NGR', 'Now required');
+  });
+
   test('Test cancel subscription', () async {
     await _subscriptionsApi.cancelSubscription(
         'I-93KN27174NGR', 'No longer needed');
+  });
+
+  test('Test capture authorized payment on subscription', () async {
+    var request = SubscriptionCaptureRequest(
+        note: 'Outstanding balance',
+        amount: Money(currencyCode: 'GBP', value: '5.00'));
+
+    var response = await _subscriptionsApi
+        .captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
+    expect(response.status, CaptureStatus.completed);
+  });
+
+  test('Test revise subscription', () async {
+    var request = SubscriptionReviseRequest(
+        planId: 'P-9DR273747C8107746MFGHYKY',
+        shippingAmount: Money(currencyCode: 'USD', value: '2.0'));
+
+    var response =
+        await _subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
+    expect(response.shippingAmount!.value, '2.0');
+  });
+
+  test('Test suspend subscription', () async {
+    var request = Reason('Out of stock');
+
+    await _subscriptionsApi.suspendSubscription('I-1WSNAWATBCXP', request);
+  });
+
+  test('Test list transactions', () async {
+    var response = await _subscriptionsApi.listTransactions('I-1WSNAWATBCXP',
+        '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
+
+    expect(response is TransactionsList, true);
+    expect(response.transactions.isNotEmpty, true);
   });
 }

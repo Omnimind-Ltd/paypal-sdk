@@ -210,25 +210,6 @@ class SubscriptionRequest {
   }
 }
 
-/// A subscription cancellation request
-@JsonSerializable()
-class CancelRequest {
-  /// The reason for the cancellation of a subscription.
-  final String reason;
-
-  const CancelRequest(this.reason);
-
-  Map<String, dynamic> toJson() => _$CancelRequestToJson(this);
-
-  factory CancelRequest.fromJson(Map<String, dynamic> json) =>
-      _$CancelRequestFromJson(json);
-
-  @override
-  String toString() {
-    return 'CancelRequest{reason: $reason}';
-  }
-}
-
 /// The type of capture.
 enum CaptureType {
   /// The outstanding balance that the subscriber must clear.
@@ -249,9 +230,9 @@ class SubscriptionCaptureRequest {
   /// the current outstanding balance amount.
   final Money amount;
 
-  const SubscriptionCaptureRequest(
-    this.note,
-    this.amount, {
+  const SubscriptionCaptureRequest({
+    required this.note,
+    required this.amount,
     this.captureType = CaptureType.outstandingBalance,
   });
 
@@ -293,47 +274,108 @@ enum CaptureStatus {
   refunded,
 }
 
-/// Capture authorized payment response
+/// Updates the quantity of the product or service in a subscription. You can
+/// also use this method to switch the plan and update the shipping_amount,
+/// shipping_address values for the subscription. This type of update requires
+/// the buyer's consent.
 @JsonSerializable(fieldRename: FieldRename.snake)
-class SubscriptionCaptureResponse {
-  /// The status of the captured payment.
-  final CaptureStatus? status;
+class SubscriptionReviseRequest {
+  /// The unique PayPal-generated ID for the plan.
+  final String planId;
 
-  /// The PayPal-generated transaction ID.
-  final String id;
+  /// The quantity of the product or service in the subscription.
+  final String? quantity;
 
-  /// The breakdown details for the amount. Includes the gross, tax, fee, and
-  /// shipping amounts.
-  final AmountWithBreakdown? amountWithBreakdown;
-
-  /// The name of the customer.
-  final Name? payerName;
-
-  /// The email ID of the customer.
-  final String? payerEmail;
-
-  /// The date and time when the transaction was processed, in
+  /// The date and time when this change is effective, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
-  final String? time;
+  final String? effectiveTime;
 
-  SubscriptionCaptureResponse(
-      {this.status,
-      required this.id,
-      this.amountWithBreakdown,
-      this.payerName,
-      this.payerEmail,
-      this.time});
+  /// The shipping charges.
+  final Money? shippingAmount;
 
-  Map<String, dynamic> toJson() => _$SubscriptionCaptureResponseToJson(this);
+  /// The shipping address of the subscriber.
+  final AddressPortable? shippingAddress;
 
-  factory SubscriptionCaptureResponse.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionCaptureResponseFromJson(json);
+  /// The application context, which customizes the payer experience during the
+  /// subscription approval process with PayPal.
+  final ApplicationContext? applicationContext;
+
+  /// An inline plan object to customise the subscription. You can override plan
+  /// level default attributes by providing customised values for the subscription
+  /// in this object. Any existing overrides will not be carried forward during
+  /// subscription revise.
+  final Plan? plan;
+
+  SubscriptionReviseRequest(
+      {required this.planId,
+      this.quantity,
+      this.effectiveTime,
+      this.shippingAmount,
+      this.shippingAddress,
+      this.applicationContext,
+      this.plan});
+
+  Map<String, dynamic> toJson() => _$SubscriptionReviseRequestToJson(this);
+
+  factory SubscriptionReviseRequest.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionReviseRequestFromJson(json);
 
   @override
   String toString() {
-    return 'SubscriptionCaptureResponse{status: $status, id: $id, '
-        'amountWithBreakdown: $amountWithBreakdown, payerName: $payerName, '
-        'payerEmail: $payerEmail, time: $time}';
+    return 'SubscriptionReviseRequest{planId: $planId, quantity: $quantity, '
+        'effectiveTime: $effectiveTime, shippingAmount: $shippingAmount, '
+        'shippingAddress: $shippingAddress, applicationContext: $applicationContext, '
+        'plan: $plan}';
   }
+}
+
+/// The subscription revise response.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class SubscriptionReviseResponse {
+  /// The ID of the plan.
+  final String? planId;
+
+  /// The quantity of the product in the subscription.
+  final String? quantity;
+
+  /// The date and time when this change is effective, in
+  /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
+  /// Internet date and time format</a>
+  final String? effectiveTime;
+
+  /// The currency and amount for a financial transaction, such as a balance or payment due.
+  final Money? shippingAmount;
+
+  /// The subscriber response information.
+  final Subscriber? subscriber;
+
+  /// The shipping address of the subscriber.
+  final AddressPortable? shippingAddress;
+
+  /// Indicates whether the subscription has overridden any plan attributes.
+  final bool? planOverridden;
+
+  /// Indicates whether the subscription has overridden any plan attributes.
+  final Plan? plan;
+
+  /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
+  /// HATEOAS links</a>.
+  final List<LinkDescription>? links;
+
+  const SubscriptionReviseResponse(
+      this.planId,
+      this.quantity,
+      this.effectiveTime,
+      this.shippingAmount,
+      this.subscriber,
+      this.shippingAddress,
+      this.planOverridden,
+      this.plan,
+      this.links);
+
+  Map<String, dynamic> toJson() => _$SubscriptionReviseResponseToJson(this);
+
+  factory SubscriptionReviseResponse.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionReviseResponseFromJson(json);
 }

@@ -15,6 +15,7 @@ export 'src/core/model/patch.dart';
 export 'src/core/model/payment.dart';
 export 'src/core/model/phone.dart';
 export 'src/core/model/prefer.dart';
+export 'src/core/model/reason.dart';
 export 'src/core/model/refresh_token.dart';
 export 'src/core/model/shipping_detail.dart';
 export 'src/core/paypal_environment.dart';

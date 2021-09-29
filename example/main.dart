@@ -72,6 +72,7 @@ Future<void> catalogProductsExamples(PayPalHttpClient payPalHttpClient) async {
 Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
   var subscriptionsApi = SubscriptionsApi(payPalHttpClient);
 
+  // Plans
   // List plans
   try {
     var planCollection = await subscriptionsApi.listPlans();
@@ -154,6 +155,95 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
                 fixedPrice: Money(currencyCode: 'GBP', value: '5.0'),
               ))
         ]));
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Subscriptions
+  // Create subscription
+  try {
+    var createSubscriptionRequest = SubscriptionRequest(
+        planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
+    var subscription =
+        await subscriptionsApi.createSubscription(createSubscriptionRequest);
+    print(subscription);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Update subscription
+  try {
+    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
+      Patch(
+          op: PatchOperation.add,
+          path: '/custom_id',
+          value: 'updated_custom_id')
+    ]);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Show subscription details
+  try {
+    var subscription =
+        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    print(subscription);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Activate subscription
+  try {} on ApiException catch (e) {
+    print(e);
+  }
+
+  // Cancel subscription
+  try {
+    await subscriptionsApi.cancelSubscription(
+        'I-93KN27174NGR', 'No longer needed');
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Capture authorized payment on subscription
+  try {
+    var request = SubscriptionCaptureRequest(
+        note: 'Outstanding balance',
+        amount: Money(currencyCode: 'GBP', value: '5.00'));
+
+    var response = await subscriptionsApi
+        .captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
+    print(response);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Revise plan or quantity of subscription
+  try {
+    var request = SubscriptionReviseRequest(
+        planId: 'P-9DR273747C8107746MFGHYKY',
+        shippingAmount: Money(currencyCode: 'USD', value: '2.0'));
+
+    var response =
+        await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
+    print(response);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Suspend subscription
+  try {
+    var request = Reason('Out of stock');
+    await subscriptionsApi.suspendSubscription('I-1WSNAWATBCXP', request);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // List transactions for subscription
+  try {
+    var response = await subscriptionsApi.listTransactions('I-1WSNAWATBCXP',
+        '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
+    print(response);
   } on ApiException catch (e) {
     print(e);
   }

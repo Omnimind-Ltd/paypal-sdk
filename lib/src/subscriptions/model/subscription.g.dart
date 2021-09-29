@@ -152,21 +152,11 @@ Map<String, dynamic> _$SubscriptionRequestToJson(SubscriptionRequest instance) {
   return val;
 }
 
-CancelRequest _$CancelRequestFromJson(Map<String, dynamic> json) =>
-    CancelRequest(
-      json['reason'] as String,
-    );
-
-Map<String, dynamic> _$CancelRequestToJson(CancelRequest instance) =>
-    <String, dynamic>{
-      'reason': instance.reason,
-    };
-
 SubscriptionCaptureRequest _$SubscriptionCaptureRequestFromJson(
         Map<String, dynamic> json) =>
     SubscriptionCaptureRequest(
-      json['note'] as String,
-      Money.fromJson(json['amount'] as Map<String, dynamic>),
+      note: json['note'] as String,
+      amount: Money.fromJson(json['amount'] as Map<String, dynamic>),
       captureType:
           _$enumDecodeNullable(_$CaptureTypeEnumMap, json['capture_type']) ??
               CaptureType.outstandingBalance,
@@ -221,24 +211,76 @@ const _$CaptureTypeEnumMap = {
   CaptureType.outstandingBalance: 'OUTSTANDING_BALANCE',
 };
 
-SubscriptionCaptureResponse _$SubscriptionCaptureResponseFromJson(
+SubscriptionReviseRequest _$SubscriptionReviseRequestFromJson(
         Map<String, dynamic> json) =>
-    SubscriptionCaptureResponse(
-      status: _$enumDecodeNullable(_$CaptureStatusEnumMap, json['status']),
-      id: json['id'] as String,
-      amountWithBreakdown: json['amount_with_breakdown'] == null
+    SubscriptionReviseRequest(
+      planId: json['plan_id'] as String,
+      quantity: json['quantity'] as String?,
+      effectiveTime: json['effective_time'] as String?,
+      shippingAmount: json['shipping_amount'] == null
           ? null
-          : AmountWithBreakdown.fromJson(
-              json['amount_with_breakdown'] as Map<String, dynamic>),
-      payerName: json['payer_name'] == null
+          : Money.fromJson(json['shipping_amount'] as Map<String, dynamic>),
+      shippingAddress: json['shipping_address'] == null
           ? null
-          : Name.fromJson(json['payer_name'] as Map<String, dynamic>),
-      payerEmail: json['payer_email'] as String?,
-      time: json['time'] as String?,
+          : AddressPortable.fromJson(
+              json['shipping_address'] as Map<String, dynamic>),
+      applicationContext: json['application_context'] == null
+          ? null
+          : ApplicationContext.fromJson(
+              json['application_context'] as Map<String, dynamic>),
+      plan: json['plan'] == null
+          ? null
+          : Plan.fromJson(json['plan'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$SubscriptionCaptureResponseToJson(
-    SubscriptionCaptureResponse instance) {
+Map<String, dynamic> _$SubscriptionReviseRequestToJson(
+    SubscriptionReviseRequest instance) {
+  final val = <String, dynamic>{
+    'plan_id': instance.planId,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull('effective_time', instance.effectiveTime);
+  writeNotNull('shipping_amount', instance.shippingAmount);
+  writeNotNull('shipping_address', instance.shippingAddress);
+  writeNotNull('application_context', instance.applicationContext);
+  writeNotNull('plan', instance.plan);
+  return val;
+}
+
+SubscriptionReviseResponse _$SubscriptionReviseResponseFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionReviseResponse(
+      json['plan_id'] as String?,
+      json['quantity'] as String?,
+      json['effective_time'] as String?,
+      json['shipping_amount'] == null
+          ? null
+          : Money.fromJson(json['shipping_amount'] as Map<String, dynamic>),
+      json['subscriber'] == null
+          ? null
+          : Subscriber.fromJson(json['subscriber'] as Map<String, dynamic>),
+      json['shipping_address'] == null
+          ? null
+          : AddressPortable.fromJson(
+              json['shipping_address'] as Map<String, dynamic>),
+      json['plan_overridden'] as bool?,
+      json['plan'] == null
+          ? null
+          : Plan.fromJson(json['plan'] as Map<String, dynamic>),
+      (json['links'] as List<dynamic>?)
+          ?.map((e) => LinkDescription.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SubscriptionReviseResponseToJson(
+    SubscriptionReviseResponse instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -247,19 +289,14 @@ Map<String, dynamic> _$SubscriptionCaptureResponseToJson(
     }
   }
 
-  writeNotNull('status', _$CaptureStatusEnumMap[instance.status]);
-  val['id'] = instance.id;
-  writeNotNull('amount_with_breakdown', instance.amountWithBreakdown);
-  writeNotNull('payer_name', instance.payerName);
-  writeNotNull('payer_email', instance.payerEmail);
-  writeNotNull('time', instance.time);
+  writeNotNull('plan_id', instance.planId);
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull('effective_time', instance.effectiveTime);
+  writeNotNull('shipping_amount', instance.shippingAmount);
+  writeNotNull('subscriber', instance.subscriber);
+  writeNotNull('shipping_address', instance.shippingAddress);
+  writeNotNull('plan_overridden', instance.planOverridden);
+  writeNotNull('plan', instance.plan);
+  writeNotNull('links', instance.links);
   return val;
 }
-
-const _$CaptureStatusEnumMap = {
-  CaptureStatus.completed: 'COMPLETED',
-  CaptureStatus.declined: 'DECLINED',
-  CaptureStatus.partiallyRefunded: 'PARTIALLY_REFUNDED',
-  CaptureStatus.pending: 'PENDING',
-  CaptureStatus.refunded: 'REFUNDED',
-};
