@@ -1,5 +1,5 @@
 /// Shared core library
-library paypal_sdk_core;
+library core;
 
 export 'src/core/exception/api_exception.dart';
 export 'src/core/model/access_token.dart';

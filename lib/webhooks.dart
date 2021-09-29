@@ -6,7 +6,7 @@
 /// events. The notifications namespace contains resource collections for webhooks.
 ///
 /// <a href="https://developer.paypal.com/docs/api/webhooks/v1/">https://developer.paypal.com/docs/api/webhooks/v1/</a>
-library paypal_sdk_webhooks;
+library webhooks;
 
 export 'src/webhooks/model/event.dart';
 export 'src/webhooks/model/verify_webhook_signature.dart';

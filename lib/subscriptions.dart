@@ -8,7 +8,7 @@
 /// Subscriptions Overview.</a>
 ///
 /// <a href="https://developer.paypal.com/docs/api/subscriptions/v1/">https://developer.paypal.com/docs/api/subscriptions/v1/</a>
-library paypal_sdk_subscriptions;
+library subscriptions;
 
 export 'src/subscriptions/model/amount_with_breakdown.dart';
 export 'src/subscriptions/model/application_context.dart';
