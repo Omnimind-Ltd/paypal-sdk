@@ -10,3 +10,4 @@ library webhooks;
 
 export 'src/webhooks/model/event.dart';
 export 'src/webhooks/model/verify_webhook_signature.dart';
+export 'src/webhooks/model/webhook.dart';

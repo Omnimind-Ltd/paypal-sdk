@@ -20,7 +20,7 @@ void main() {
         'GET',
         (request) async => Response(
             '{"products":[{"id":"PROD-3XF87627UU805523Y","name":"test_product","'
-            'description":"$_productDescription","create_time":"2021-09-21T17:13'
+            'description":"test_description","create_time":"2021-09-21T17:13'
             ':54Z","links":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/'
             'products/PROD-3XF87627UU805523Y","rel":"self","method":"GET"}]}],"l'
             'inks":[{"href":"https://api.sandbox.paypal.com/v1/catalogs/products'

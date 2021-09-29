@@ -57,15 +57,21 @@ class VerifyWebhookSignatureRequest {
   }
 }
 
+/// Verification status.
 enum VerificationStatus {
+  /// Verification successful
   @JsonValue('SUCCESS')
   success,
+
+  /// Verification failure
   @JsonValue('FAILURE')
   failure,
 }
 
+/// Verify webhook signature response
 @JsonSerializable(fieldRename: FieldRename.snake)
 class VerifyWebhookSignatureResponse {
+  /// The status of the signature verification.
   final VerificationStatus verificationStatus;
 
   VerifyWebhookSignatureResponse(this.verificationStatus);

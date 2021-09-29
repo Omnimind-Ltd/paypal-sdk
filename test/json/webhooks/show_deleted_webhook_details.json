@@ -1,0 +1,8 @@
+{
+  "name": "INVALID_RESOURCE_ID",
+  "message": "Resource id is invalid",
+  "debug_id": "6f4868cfe06f8",
+  "information_link": "https://developer.paypal.com/docs/api/webhooks/#errors",
+  "details": [],
+  "links": []
+}

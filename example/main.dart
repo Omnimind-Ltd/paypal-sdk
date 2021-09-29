@@ -1,6 +1,8 @@
 import 'package:paypal_sdk/catalog_products.dart';
 import 'package:paypal_sdk/core.dart';
+import 'package:paypal_sdk/src/webhooks/webhooks_api.dart';
 import 'package:paypal_sdk/subscriptions.dart';
+import 'package:paypal_sdk/webhooks.dart';
 
 const _clientId = 'clientId';
 const _clientSecret = 'clientSecret';
@@ -18,6 +20,8 @@ void main() async {
   });
 
   await catalogProductsExamples(payPalHttpClient);
+  await subscriptionExamples(payPalHttpClient);
+  await webhookExamples(payPalHttpClient);
 }
 
 Future<void> catalogProductsExamples(PayPalHttpClient payPalHttpClient) async {
@@ -244,6 +248,76 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
     var response = await subscriptionsApi.listTransactions('I-1WSNAWATBCXP',
         '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
     print(response);
+  } on ApiException catch (e) {
+    print(e);
+  }
+}
+
+Future<void> webhookExamples(PayPalHttpClient payPalHttpClient) async {
+  var webhooksApi = WebhooksApi(payPalHttpClient);
+
+  // List webhooks
+  try {
+    var webhooksList = await webhooksApi.listWebhooks();
+    print(webhooksList);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Create webhook
+  try {
+    var webhook =
+        Webhook(url: 'https://api.test.com/paypal_callback', eventTypes: [
+      EventType(name: 'BILLING.SUBSCRIPTION.CREATED'),
+      EventType(name: 'BILLING.SUBSCRIPTION.CANCELLED'),
+    ]);
+
+    webhook = await webhooksApi.createWebhook(webhook);
+    print(webhook);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Delete webhook
+  try {
+    await webhooksApi.deleteWebhook('1HG80537L4140544T');
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Update webhook
+  try {
+    await webhooksApi.updateWebhook('5B760822JX046254S', [
+      Patch(
+          op: PatchOperation.replace,
+          path: '/url',
+          value: 'https://api.test.com/paypal_callback_new'),
+    ]);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // Show webhook details
+  try {
+    var webhook = await webhooksApi.showWebhookDetails('7BS56736HU608525B');
+    print(webhook);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // List event types for webhook
+  try {
+    var eventTypesList =
+        await webhooksApi.listEventSubscriptionsForWebhook('7BS56736HU608525B');
+    print(eventTypesList);
+  } on ApiException catch (e) {
+    print(e);
+  }
+
+  // List available events
+  try {
+    var eventTypesList = await webhooksApi.listAvailableEvents();
+    print(eventTypesList);
   } on ApiException catch (e) {
     print(e);
   }

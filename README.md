@@ -5,24 +5,7 @@ Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">https://dev
 APIs implemented:
 - Catalog Products
 - Subscriptions
-
-In progress:
 - Webhooks
-
-TODO:
-- Add Tracking
-- Billing Agreements
-- Billing Plans
-- Disputes
-- Identity
-- Invoicing
-- Orders
-- Partner Referrals
-- Payment Experience
-- Payments
-- Payouts
-- Referenced Payouts
-- Transaction Search
 
 ## Getting started
 

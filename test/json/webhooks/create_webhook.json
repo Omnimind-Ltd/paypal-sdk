@@ -1,0 +1,31 @@
+{
+  "id": "5B760822JX046254S",
+  "url": "https://api.test.com/paypal_callback",
+  "event_types": [
+    {
+      "name": "BILLING.SUBSCRIPTION.CREATED",
+      "description": "A billing agreement is created."
+    },
+    {
+      "name": "BILLING.SUBSCRIPTION.CANCELLED",
+      "description": "A billing agreement is canceled."
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/5B760822JX046254S",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/5B760822JX046254S",
+      "rel": "update",
+      "method": "PATCH"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/5B760822JX046254S",
+      "rel": "delete",
+      "method": "DELETE"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "7BS56736HU608525B",
+  "url": "https://prapi-staging.omnichess.club/paypal_webhook/event",
+  "event_types": [
+    {
+      "name": "*",
+      "description": "ALL",
+      "status": "ENABLED"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/7BS56736HU608525B",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/7BS56736HU608525B",
+      "rel": "update",
+      "method": "PATCH"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks/7BS56736HU608525B",
+      "rel": "delete",
+      "method": "DELETE"
+    }
+  ]
+}

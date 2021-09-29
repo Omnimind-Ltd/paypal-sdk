@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.4.1
+- complete Webhooks API
+
 ## 0.4.0
 - renamed libraries
 
