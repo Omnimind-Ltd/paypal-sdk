@@ -17,4 +17,4 @@ Check out the <a href="https://pub.dev/packages/paypal_sdk/example">Examples</a>
 
 ## Additional information
 
-Further APIs will be implemented as time permits. Pull requests always welcome.
+Please raise issues on <a href="https://github.com/Omnimind-Ltd/paypal-sdk/issues">GitHub</a>. Pull requests always welcome.
