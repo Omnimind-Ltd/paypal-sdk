@@ -1,11 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
 
-import 'application_context.dart';
 import 'billing_cycle.dart';
-import 'payment_details.dart';
+import 'payment.dart';
 import 'plan.dart';
-import 'subscriber.dart';
 
 part 'subscription.g.dart';
 
@@ -34,6 +32,72 @@ enum SubscriptionStatus {
   /// The subscription is expired.
   @JsonValue('EXPIRED')
   expired,
+}
+
+/// Configures the label name to Continue or Subscribe Now for subscription
+/// consent experience.
+enum UserAction {
+  /// After you redirect the customer to the PayPal subscription consent page, a
+  /// Continue button appears. Use this option when you want to control the activation
+  /// of the subscription and do not want PayPal to activate the subscription.
+  @JsonValue('CONTINUE')
+  continue_,
+
+  ///  After you redirect the customer to the PayPal subscription consent page,
+  ///  a Subscribe Now button appears. Use this option when you want PayPal to
+  ///  activate the subscription.
+  @JsonValue('SUBSCRIBE_NOW')
+  subscribedNow,
+}
+
+/// The location from which the shipping address is derived.
+enum ShippingPreference {
+  ///  Get the customer-provided shipping address on the PayPal site.
+  @JsonValue('GET_FROM_FILE')
+  getFromFile,
+
+  /// Redacts the shipping address from the PayPal site. Recommended for digital goods.
+  @JsonValue('NO_SHIPPING')
+  noShipping,
+
+  ///  Get the merchant-provided address. The customer cannot change this address
+  ///  on the PayPal site. If merchant does not pass an address, customer can
+  ///  choose the address on PayPal pages.
+  @JsonValue('SET_PROVIDED_ADDRESS')
+  setProvidedAddress,
+}
+
+/// The type of capture.
+enum CaptureType {
+  /// The outstanding balance that the subscriber must clear.
+  @JsonValue('OUTSTANDING_BALANCE')
+  outstandingBalance,
+}
+
+/// The status of the captured payment.
+enum CaptureStatus {
+  /// The funds for this captured payment were credited to the payee's PayPal account.
+  @JsonValue('COMPLETED')
+  completed,
+
+  /// The funds could not be captured.
+  @JsonValue('DECLINED')
+  declined,
+
+  /// An amount less than this captured payment's amount was partially refunded
+  /// to the payer.
+  @JsonValue('PARTIALLY_REFUNDED')
+  partiallyRefunded,
+
+  /// The funds for this captured payment was not yet credited to the payee's
+  /// PayPal account. For more information, see status.details.
+  @JsonValue('PENDING')
+  pending,
+
+  ///  An amount greater than or equal to this captured payment's amount was
+  ///  refunded to the payer.
+  @JsonValue('REFUNDED')
+  refunded,
 }
 
 /// A subscription.
@@ -236,13 +300,6 @@ class SubscriptionRequest {
   }
 }
 
-/// The type of capture.
-enum CaptureType {
-  /// The outstanding balance that the subscriber must clear.
-  @JsonValue('OUTSTANDING_BALANCE')
-  outstandingBalance,
-}
-
 /// Capture authorized payment request
 @JsonSerializable(fieldRename: FieldRename.snake)
 class SubscriptionCaptureRequest {
@@ -272,32 +329,6 @@ class SubscriptionCaptureRequest {
     return 'SubscriptionCaptureRequest{note: $note, captureType: $captureType, '
         'amount: $amount}';
   }
-}
-
-/// The status of the captured payment.
-enum CaptureStatus {
-  /// The funds for this captured payment were credited to the payee's PayPal account.
-  @JsonValue('COMPLETED')
-  completed,
-
-  /// The funds could not be captured.
-  @JsonValue('DECLINED')
-  declined,
-
-  /// An amount less than this captured payment's amount was partially refunded
-  /// to the payer.
-  @JsonValue('PARTIALLY_REFUNDED')
-  partiallyRefunded,
-
-  /// The funds for this captured payment was not yet credited to the payee's
-  /// PayPal account. For more information, see status.details.
-  @JsonValue('PENDING')
-  pending,
-
-  ///  An amount greater than or equal to this captured payment's amount was
-  ///  refunded to the payer.
-  @JsonValue('REFUNDED')
-  refunded,
 }
 
 /// Updates the quantity of the product or service in a subscription. You can
@@ -404,4 +435,100 @@ class SubscriptionReviseResponse {
 
   factory SubscriptionReviseResponse.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionReviseResponseFromJson(json);
+}
+
+/// A subscriber.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class Subscriber {
+  /// The name of the payer. Supports only the given_name and surname properties.
+  final Name? name;
+
+  /// The email address of the payer.
+  final String? emailAddress;
+
+  /// The PayPal-assigned ID for the payer.
+  final String payerId;
+
+  /// The phone number of the customer. Available only when you enable the Contact
+  /// Telephone Number option in the
+  /// <a href="https://www.paypal.com/cgi-bin/customerprofileweb?cmd=_profile-website-payments&_ga=1.219663193.134270098.1627037710">
+  /// Profile & Settings</a> for the merchant's PayPal account. The phone.phone_number
+  /// supports only national_number.
+  final Phone? phone;
+
+  /// The shipping details.
+  final ShippingDetail? shippingAddress;
+
+  /// The payment source used to fund the payment.
+  final PaymentSource? paymentSource;
+
+  const Subscriber(
+      {this.name,
+      this.emailAddress,
+      required this.payerId,
+      this.phone,
+      this.shippingAddress,
+      this.paymentSource});
+
+  Map<String, dynamic> toJson() => _$SubscriberToJson(this);
+
+  factory Subscriber.fromJson(Map<String, dynamic> json) =>
+      _$SubscriberFromJson(json);
+
+  @override
+  String toString() {
+    return 'Subscriber{name: $name, emailAddress: $emailAddress, payerId: $payerId, '
+        'phone: $phone, shippingAddress: $shippingAddress, paymentSource: $paymentSource}';
+  }
+}
+
+/// The application context, which customizes the payer experience during the
+/// subscription approval process with PayPal.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class ApplicationContext {
+  /// The label that overrides the business name in the PayPal account on the PayPal site.
+  final String? brandName;
+
+  /// The BCP 47-formatted locale of pages that the PayPal payment experience shows.
+  /// PayPal supports a five-character code. For example, da-DK, he-IL, id-ID,
+  /// ja-JP, no-NO, pt-BR, ru-RU, sv-SE, th-TH, zh-CN, zh-HK, or zh-TW.
+  final String? locale;
+
+  /// The location from which the shipping address is derived.
+  final ShippingPreference? shippingPreference;
+
+  /// Configures the label name to Continue or Subscribe Now for subscription
+  /// consent experience.
+  final UserAction? userAction;
+
+  /// The customer and merchant payment preferences. Currently only PAYPAL payment
+  /// method is supported.
+  final PaymentMethod? paymentMethod;
+
+  /// The URL where the customer is redirected after the customer approves the payment.
+  final String returnUrl;
+
+  /// The URL where the customer is redirected after the customer cancels the payment.
+  final String cancelUrl;
+
+  const ApplicationContext(
+      {this.brandName,
+      this.locale,
+      this.shippingPreference,
+      this.userAction,
+      this.paymentMethod,
+      required this.returnUrl,
+      required this.cancelUrl});
+
+  Map<String, dynamic> toJson() => _$ApplicationContextToJson(this);
+
+  factory ApplicationContext.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationContextFromJson(json);
+
+  @override
+  String toString() {
+    return 'ApplicationContext{brandName: $brandName, locale: $locale, '
+        'shippingPreference: $shippingPreference, userAction: $userAction, '
+        'paymentMethod: $paymentMethod, returnUrl: $returnUrl, cancelUrl: $cancelUrl}';
+  }
 }

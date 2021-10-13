@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'frequency.dart';
-import 'pricing_scheme.dart';
+import 'pricing.dart';
 
 part 'billing_cycle.g.dart';
 

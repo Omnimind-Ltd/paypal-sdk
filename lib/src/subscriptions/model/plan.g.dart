@@ -163,3 +163,22 @@ Map<String, dynamic> _$PlanCollectionToJson(PlanCollection instance) {
   writeNotNull('links', instance.links);
   return val;
 }
+
+Taxes _$TaxesFromJson(Map<String, dynamic> json) => Taxes(
+      percentage: json['percentage'] as String?,
+      inclusive: json['inclusive'] as bool?,
+    );
+
+Map<String, dynamic> _$TaxesToJson(Taxes instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('percentage', instance.percentage);
+  writeNotNull('inclusive', instance.inclusive);
+  return val;
+}

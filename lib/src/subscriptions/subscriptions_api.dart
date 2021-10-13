@@ -4,7 +4,7 @@ import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/src/subscriptions/model/transaction.dart';
 
 import 'model/plan.dart';
-import 'model/pricing_scheme.dart';
+import 'model/pricing.dart';
 import 'model/subscription.dart';
 
 /// Subscriptions API interface
@@ -170,7 +170,7 @@ class SubscriptionsApi {
     Map<String, String> headers = {};
 
     if (prefer != null) {
-      headers['return'] = preferTypeEnumMap[prefer]!;
+      headers['Prefer'] = preferTypeEnumMap[prefer]!;
     }
 
     if (payPalRequestId != null) {

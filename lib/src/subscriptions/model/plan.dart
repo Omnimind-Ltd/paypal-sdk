@@ -2,8 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
 
 import 'billing_cycle.dart';
-import 'payment_preferences.dart';
-import 'taxes.dart';
+import 'payment.dart';
 
 part 'plan.g.dart';
 
@@ -190,5 +189,26 @@ class PlanCollection {
   String toString() {
     return 'PlanCollection{plans: $plans, totalItems: $totalItems, '
         'totalPages: $totalPages, links: $links}';
+  }
+}
+
+/// Taxes.
+@JsonSerializable()
+class Taxes {
+  /// The tax percentage on the billing amount.
+  String? percentage;
+
+  /// Indicates whether the tax was already included in the billing amount.
+  bool? inclusive;
+
+  Taxes({this.percentage, this.inclusive});
+
+  Map<String, dynamic> toJson() => _$TaxesToJson(this);
+
+  factory Taxes.fromJson(Map<String, dynamic> json) => _$TaxesFromJson(json);
+
+  @override
+  String toString() {
+    return 'Taxes{percentage: $percentage, inclusive: $inclusive}';
   }
 }
