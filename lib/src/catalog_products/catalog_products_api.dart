@@ -72,11 +72,19 @@ class CatalogProductsApi {
   Future<Product> createProduct(
     ProductRequest request, {
     String? payPalRequestId,
+    Prefer? prefer,
   }) async {
     var uri = _payPalHttpClient.getUrl('/v1/catalogs/products');
 
-    var headers =
-        payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
+    var headers = <String, String>{};
+
+    if (payPalRequestId != null) {
+      headers['PayPal-Request-Id'] = payPalRequestId;
+    }
+
+    if (prefer != null) {
+      headers['Prefer'] = preferTypeEnumMap[prefer]!;
+    }
 
     var body = jsonEncode(request.toJson());
 
