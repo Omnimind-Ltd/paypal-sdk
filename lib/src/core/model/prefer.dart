@@ -10,6 +10,6 @@ enum Prefer {
 }
 
 const preferTypeEnumMap = {
-  Prefer.minimal: 'minimal',
-  Prefer.representation: 'representation',
+  Prefer.minimal: 'return=minimal',
+  Prefer.representation: 'return=representation',
 };
