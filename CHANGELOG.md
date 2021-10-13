@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.5.0
+- Orders API
+
 ## 0.4.2
 - Change subscription status to enum
 

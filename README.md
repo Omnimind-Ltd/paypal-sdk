@@ -4,6 +4,7 @@ Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">https://dev
 
 APIs implemented:
 - Catalog Products
+- Orders
 - Subscriptions
 - Webhooks
 
