@@ -39,36 +39,15 @@ class CatalogProductsApi {
 
   /// Creates a product.
   ///
-  /// Parameter id: The ID of the product. You can specify the SKU for the
-  /// product. If you omit the ID, the system generates it. System-generated IDs
-  /// have the PROD- prefix.
-  /// Minimum length: 6.
-  /// Maximum length: 50.
+  /// Parameter request: The create product request object
   ///
-  /// Parameter name: The product name.
-  /// Minimum length: 1.
-  /// Maximum length: 127.
+  /// Parameter payPalRequestId: The server stores keys for 6 hours. The API callers
+  /// can request the times to up to 72 hours by speaking to their Account Manager.
   ///
-  /// Parameter type: The product type. Indicates whether the product is physical
-  /// or tangible goods, or a service. The possible values are:
-  /// <ul>
-  /// <li>
-  /// PHYSICAL. Physical goods.
-  /// </li>
-  /// <li>
-  /// DIGITAL. Digital goods.
-  /// </li>
-  /// <li>
-  /// SERVICE. A service. For example, technical support.
-  /// </li>
-  /// </ul>
-  ///
-  /// Parameter category: The product category. <a href="https://developer.paypal.com/docs/api/catalog-products/v1/#definition-product_category">
-  /// Possible values</a>
-  ///
-  /// Parameter image_url: The image URL for the product.
-  ///
-  /// Parameter home_url: The home page URL for the product.
+  /// Parameter prefer: 'minimal', The server returns a minimal response to optimize
+  /// communication between the API caller and the server. A minimal response includes
+  /// the id, status and HATEOAS links. 'representation', The server returns a complete
+  /// resource representation, including the current state of the resource.
   Future<Product> createProduct(
     ProductRequest request, {
     String? payPalRequestId,
