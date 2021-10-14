@@ -36,3 +36,30 @@ class Money {
     return 'Money{currencyCode: $currencyCode, value: $value}';
   }
 }
+
+/// Exchange rate.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class ExchangeRate {
+  /// The source currency from which to convert an amount.
+  final String sourceCurrency;
+
+  /// The target currency to which to convert an amount.
+  final String targetCurrency;
+
+  /// The target currency amount. Equivalent to one unit of the source currency.
+  /// Formatted as integer or decimal value with one to 15 digits to the right
+  /// of the decimal point.
+  final String value;
+
+  const ExchangeRate(this.sourceCurrency, this.targetCurrency, this.value);
+
+  Map<String, dynamic> toJson() => _$ExchangeRateToJson(this);
+
+  factory ExchangeRate.fromJson(Map<String, dynamic> json) =>
+      _$ExchangeRateFromJson(json);
+
+  @override
+  String toString() {
+    return 'ExchangeRate{sourceCurrency: $sourceCurrency, targetCurrency: $targetCurrency, value: $value}';
+  }
+}
