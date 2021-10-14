@@ -102,10 +102,14 @@ class Order {
   /// an order after order creation.
   final String? intent;
 
+  /// The customer who approves and pays for the order. The customer is also known
+  /// as the payer.
+  final Payer? payer;
+
   /// An array of purchase units. Each purchase unit establishes a contract between
   /// a customer and merchant. Each purchase unit represents either a full or
   /// partial order that the customer intends to purchase from the merchant.
-  final List<PurchaseUnitRequest>? purchaseUnits;
+  final List<PurchaseUnit>? purchaseUnits;
 
   /// The order status.
   final String? status;
@@ -128,6 +132,7 @@ class Order {
       {this.id,
       this.paymentSource,
       this.intent,
+      this.payer,
       this.purchaseUnits,
       this.status,
       this.createTime,
@@ -141,8 +146,8 @@ class Order {
   @override
   String toString() {
     return 'Order{id: $id, paymentSource: $paymentSource, intent: $intent, '
-        'purchaseUnits: $purchaseUnits, status: $status, createTime: $createTime, '
-        'updateTime: $updateTime, links: $links}';
+        'payer: $payer, purchaseUnits: $purchaseUnits, status: $status, '
+        'createTime: $createTime, updateTime: $updateTime, links: $links}';
   }
 }
 

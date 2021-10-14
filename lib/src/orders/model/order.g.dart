@@ -13,8 +13,11 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
           : PaymentSource.fromJson(
               json['payment_source'] as Map<String, dynamic>),
       intent: json['intent'] as String?,
+      payer: json['payer'] == null
+          ? null
+          : Payer.fromJson(json['payer'] as Map<String, dynamic>),
       purchaseUnits: (json['purchase_units'] as List<dynamic>?)
-          ?.map((e) => PurchaseUnitRequest.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => PurchaseUnit.fromJson(e as Map<String, dynamic>))
           .toList(),
       status: json['status'] as String?,
       createTime: json['create_time'] as String?,
@@ -36,6 +39,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('id', instance.id);
   writeNotNull('payment_source', instance.paymentSource);
   writeNotNull('intent', instance.intent);
+  writeNotNull('payer', instance.payer);
   writeNotNull('purchase_units', instance.purchaseUnits);
   writeNotNull('status', instance.status);
   writeNotNull('create_time', instance.createTime);

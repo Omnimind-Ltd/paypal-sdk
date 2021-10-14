@@ -6,4 +6,12 @@
 
 library orders;
 
+export 'src/orders/model/amount.dart';
+export 'src/orders/model/item.dart';
+export 'src/orders/model/order.dart';
+export 'src/orders/model/payee.dart';
+export 'src/orders/model/payer.dart';
+export 'src/orders/model/payment.dart';
+export 'src/orders/model/platform_fee.dart';
+export 'src/orders/model/purchase_unit.dart';
 export 'src/orders/orders_api.dart';
