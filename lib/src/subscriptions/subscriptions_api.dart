@@ -156,14 +156,16 @@ class SubscriptionsApi {
   ///
   /// Parameter request: The create subscription request object
   ///
-  /// Parameter prefer: The preferred server response upon successful completion
-  /// of the request.
-  ///
   /// Parameter paypalRequestId: The server stores keys for 72 hours.
+  ///
+  /// Parameter prefer: 'minimal', The server returns a minimal response to optimize
+  /// communication between the API caller and the server. A minimal response includes
+  /// the id, status and HATEOAS links. 'representation', The server returns a complete
+  /// resource representation, including the current state of the resource.
   Future<Subscription> createSubscription(
     SubscriptionRequest request, {
-    Prefer? prefer,
     String? payPalRequestId,
+    Prefer? prefer,
   }) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions');
 
