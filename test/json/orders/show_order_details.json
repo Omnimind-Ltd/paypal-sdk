@@ -1,0 +1,42 @@
+{
+  "id": "74D431066L401592Y",
+  "intent": "CAPTURE",
+  "status": "CREATED",
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "amount": {
+        "currency_code": "GBP",
+        "value": "10.00"
+      },
+      "payee": {
+        "email_address": "sb-d1mhz7702478@business.example.com",
+        "merchant_id": "9S9D4EUF2ZBZQ"
+      },
+      "description": "Test description"
+    }
+  ],
+  "create_time": "2021-10-14T09:18:10Z",
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/74D431066L401592Y",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://www.sandbox.paypal.com/checkoutnow?token=74D431066L401592Y",
+      "rel": "approve",
+      "method": "GET"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/74D431066L401592Y",
+      "rel": "update",
+      "method": "PATCH"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/74D431066L401592Y/capture",
+      "rel": "capture",
+      "method": "POST"
+    }
+  ]
+}
