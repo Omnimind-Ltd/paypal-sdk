@@ -1,10 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/orders.dart';
-import 'package:paypal_sdk/src/orders/model/amount.dart';
-import 'package:paypal_sdk/src/orders/model/payment.dart';
-
-import 'payee.dart';
 
 part 'purchase_unit.g.dart';
 

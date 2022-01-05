@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/orders.dart';
-import 'package:paypal_sdk/src/orders/model/order.dart';
 
 /// Orders API interface
 class OrdersApi {

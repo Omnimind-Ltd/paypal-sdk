@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/orders/model/platform_fee.dart';
 
 part 'payment.g.dart';
 
