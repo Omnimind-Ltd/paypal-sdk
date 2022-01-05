@@ -12,6 +12,7 @@ export 'src/core/model/money.dart';
 export 'src/core/model/name.dart';
 export 'src/core/model/patch.dart';
 export 'src/core/model/payee.dart';
+export 'src/core/model/payment.dart';
 export 'src/core/model/phone.dart';
 export 'src/core/model/platform_fee.dart';
 export 'src/core/model/prefer.dart';

@@ -6,37 +6,6 @@ part of 'payment.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PaymentInstruction _$PaymentInstructionFromJson(Map<String, dynamic> json) =>
-    PaymentInstruction(
-      disbursementMode: $enumDecodeNullable(
-          _$DisbursementModeEnumMap, json['disbursement_mode']),
-      payeePricingTierId: json['payee_pricing_tier_id'] as String?,
-      platformFee: (json['platform_fee'] as List<dynamic>?)
-          ?.map((e) => PlatformFee.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$PaymentInstructionToJson(PaymentInstruction instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('disbursement_mode',
-      _$DisbursementModeEnumMap[instance.disbursementMode]);
-  writeNotNull('payee_pricing_tier_id', instance.payeePricingTierId);
-  writeNotNull('platform_fee', instance.platformFee);
-  return val;
-}
-
-const _$DisbursementModeEnumMap = {
-  DisbursementMode.instant: 'INSTANCE',
-  DisbursementMode.delayed: 'DELAYED',
-};
-
 PaymentMethod _$PaymentMethodFromJson(Map<String, dynamic> json) =>
     PaymentMethod(
       payerSelected: json['payer_selected'] as String?,
@@ -267,7 +236,7 @@ Map<String, dynamic> _$AuthorizationWithAdditionalDataToJson(
 Capture _$CaptureFromJson(Map<String, dynamic> json) => Capture(
       status: json['status'] as String?,
       statusDetails: $enumDecodeNullable(
-          _$CaptureStatusDetailsEnumMap, json['status_details']),
+          _$CaptureStatusReasonEnumMap, json['status_details']),
       id: json['id'] as String?,
       amount: json['amount'] == null
           ? null
@@ -306,7 +275,7 @@ Map<String, dynamic> _$CaptureToJson(Capture instance) {
 
   writeNotNull('status', instance.status);
   writeNotNull(
-      'status_details', _$CaptureStatusDetailsEnumMap[instance.statusDetails]);
+      'status_details', _$CaptureStatusReasonEnumMap[instance.statusDetails]);
   writeNotNull('id', instance.id);
   writeNotNull('amount', instance.amount);
   writeNotNull('invoice_id', instance.invoiceId);
@@ -323,20 +292,20 @@ Map<String, dynamic> _$CaptureToJson(Capture instance) {
   return val;
 }
 
-const _$CaptureStatusDetailsEnumMap = {
-  CaptureStatusDetails.buyerComplaint: 'BUYER_COMPLAINT',
-  CaptureStatusDetails.chargeback: 'CHARGEBACK',
-  CaptureStatusDetails.echeck: 'ECHECK',
-  CaptureStatusDetails.internationalWithdrawal: 'INTERNATIONAL_WITHDRAWAL',
-  CaptureStatusDetails.other: 'OTHER',
-  CaptureStatusDetails.pendingReview: 'PENDING_REVIEW',
-  CaptureStatusDetails.receivingPreferenceMandatesManualAction:
+const _$CaptureStatusReasonEnumMap = {
+  CaptureStatusReason.buyerComplaint: 'BUYER_COMPLAINT',
+  CaptureStatusReason.chargeback: 'CHARGEBACK',
+  CaptureStatusReason.echeck: 'ECHECK',
+  CaptureStatusReason.internationalWithdrawal: 'INTERNATIONAL_WITHDRAWAL',
+  CaptureStatusReason.other: 'OTHER',
+  CaptureStatusReason.pendingReview: 'PENDING_REVIEW',
+  CaptureStatusReason.receivingPreferenceMandatesManualAction:
       'RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION',
-  CaptureStatusDetails.refunded: 'REFUNDED',
-  CaptureStatusDetails.transactionApprovedAwaitingFunding:
+  CaptureStatusReason.refunded: 'REFUNDED',
+  CaptureStatusReason.transactionApprovedAwaitingFunding:
       'TRANSACTION_APPROVED_AWAITING_FUNDING',
-  CaptureStatusDetails.unilateral: 'UNILATERAL',
-  CaptureStatusDetails.verificationRequired: 'VERIFICATION_REQUIRED',
+  CaptureStatusReason.unilateral: 'UNILATERAL',
+  CaptureStatusReason.verificationRequired: 'VERIFICATION_REQUIRED',
 };
 
 Refund _$RefundFromJson(Map<String, dynamic> json) => Refund(

@@ -3,20 +3,6 @@ import 'package:paypal_sdk/core.dart';
 
 part 'payment.g.dart';
 
-/// The funds that are held on behalf of the merchant.
-enum DisbursementMode {
-  /// The funds are released to the merchant immediately.
-  @JsonValue('INSTANCE')
-  instant,
-
-  /// The funds are held for a finite number of days. The actual duration depends
-  /// on the region and type of integration. You can release the funds through a
-  /// referenced payout. Otherwise, the funds disbursed automatically after the
-  /// specified duration.
-  @JsonValue('DELAYED')
-  delayed,
-}
-
 /// The merchant-preferred payment methods.
 enum PayeePreferred {
   /// Accepts any type of payment from the customer.
@@ -201,57 +187,6 @@ enum RefundStatusValue {
   completed,
 }
 
-/// The reason why the captured payment status is PENDING or DENIED.
-enum CaptureStatusDetails {
-  /// The payer initiated a dispute for this captured payment with PayPal.
-  @JsonValue('BUYER_COMPLAINT')
-  buyerComplaint,
-
-  /// The captured funds were reversed in response to the payer disputing this
-  /// captured payment with the issuer of the financial instrument used to pay for this captured payment.
-  @JsonValue('CHARGEBACK')
-  chargeback,
-
-  /// The payer paid by an eCheck that has not yet cleared.
-  @JsonValue('ECHECK')
-  echeck,
-
-  /// Visit your online account. In your **Account Overview**, accept and deny this payment.
-  @JsonValue('INTERNATIONAL_WITHDRAWAL')
-  internationalWithdrawal,
-
-  /// No additional specific reason can be provided. For more information about this captured payment, visit your account online or contact PayPal.
-  @JsonValue('OTHER')
-  other,
-
-  /// The captured payment is pending manual review.
-  @JsonValue('PENDING_REVIEW')
-  pendingReview,
-
-  /// The payee has not yet set up appropriate receiving preferences for their account.
-  /// For more information about how to accept or deny this payment, visit your account
-  /// online. This reason is typically offered in scenarios such as when the currency
-  /// of the captured payment is different from the primary holding currency of the payee.
-  @JsonValue('RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION')
-  receivingPreferenceMandatesManualAction,
-
-  /// The captured funds were refunded.
-  @JsonValue('REFUNDED')
-  refunded,
-
-  /// The payer must send the funds for this captured payment. This code generally appears for manual EFTs.
-  @JsonValue('TRANSACTION_APPROVED_AWAITING_FUNDING')
-  transactionApprovedAwaitingFunding,
-
-  /// The payee does not have a PayPal account.
-  @JsonValue('UNILATERAL')
-  unilateral,
-
-  /// The payee's PayPal account is not verified.
-  @JsonValue('VERIFICATION_REQUIRED')
-  verificationRequired,
-}
-
 /// Indicates whether the transaction is eligible for seller protection. For
 /// information, see <a href="https://www.paypal.com/us/webapps/mpp/security/seller-protection?_ga=1.13945719.134270098.1627037710">
 /// PayPal Seller Protection for Merchants</a>.
@@ -280,42 +215,6 @@ enum DisputeCategoryValue {
   /// The payer did not authorize the payment.
   @JsonValue('UNAUTHORIZED_TRANSACTION')
   unauthorizedTransaction,
-}
-
-/// A payment instruction.
-@JsonSerializable(fieldRename: FieldRename.snake)
-class PaymentInstruction {
-  /// The funds that are held on behalf of the merchant.
-  final DisbursementMode? disbursementMode;
-
-  /// This field is only enabled for selected merchants/partners to use and provides
-  /// the ability to trigger a specific pricing rate/plan for a payment transaction.
-  /// The list of eligible 'payee_pricing_tier_id' would be provided to you by your
-  /// Account Manager. Specifying values other than the one provided to you by your
-  /// account manager would result in an error.
-  final String? payeePricingTierId;
-
-  /// An array of various fees, commissions, tips, or donations. This field is
-  /// only applicable to merchants that been enabled for PayPal Commerce Platform
-  /// for Marketplaces and Platforms capability.
-  final List<PlatformFee>? platformFee;
-
-  const PaymentInstruction({
-    this.disbursementMode,
-    this.payeePricingTierId,
-    this.platformFee,
-  });
-
-  Map<String, dynamic> toJson() => _$PaymentInstructionToJson(this);
-
-  factory PaymentInstruction.fromJson(Map<String, dynamic> json) =>
-      _$PaymentInstructionFromJson(json);
-
-  @override
-  String toString() {
-    return 'PaymentInstruction{disbursementMode: $disbursementMode, '
-        'payeePricingTierId: $payeePricingTierId, platformFee: $platformFee}';
-  }
 }
 
 /// The payment method.
@@ -565,7 +464,7 @@ class Capture {
   final String? status;
 
   /// The details of the captured payment status.
-  final CaptureStatusDetails? statusDetails;
+  final CaptureStatusReason? statusDetails;
 
   /// The PayPal-generated ID for the captured payment.
   final String? id;
