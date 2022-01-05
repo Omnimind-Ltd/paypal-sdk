@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/core/model/patch.dart';
 import 'package:paypal_sdk/src/webhooks/model/event.dart';
 import 'package:paypal_sdk/src/webhooks/model/webhook.dart';
 import 'package:paypal_sdk/src/webhooks/webhooks_api.dart';

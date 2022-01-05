@@ -1,5 +1,4 @@
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/core/exception/api_exception.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';

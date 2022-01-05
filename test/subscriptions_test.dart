@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/subscription.dart';
-import 'package:paypal_sdk/src/subscriptions/model/transaction.dart';
 import 'package:paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
