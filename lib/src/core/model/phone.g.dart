@@ -30,7 +30,7 @@ Map<String, dynamic> _$PhoneToJson(Phone instance) {
 
 PhoneWithType _$PhoneWithTypeFromJson(Map<String, dynamic> json) =>
     PhoneWithType(
-      _$enumDecode(_$PhoneTypeEnumMap, json['phone_type']),
+      $enumDecode(_$PhoneTypeEnumMap, json['phone_type']),
       Phone.fromJson(json['phone_number'] as Map<String, dynamic>),
     );
 
@@ -39,32 +39,6 @@ Map<String, dynamic> _$PhoneWithTypeToJson(PhoneWithType instance) =>
       'phone_type': _$PhoneTypeEnumMap[instance.phoneType],
       'phone_number': instance.phoneNumber,
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$PhoneTypeEnumMap = {
   PhoneType.fax: 'FAX',

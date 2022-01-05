@@ -8,7 +8,7 @@ part of 'payment.dart';
 
 PaymentInstruction _$PaymentInstructionFromJson(Map<String, dynamic> json) =>
     PaymentInstruction(
-      disbursementMode: _$enumDecodeNullable(
+      disbursementMode: $enumDecodeNullable(
           _$DisbursementModeEnumMap, json['disbursement_mode']),
       payeePricingTierId: json['payee_pricing_tier_id'] as String?,
       platformFee: (json['platform_fee'] as List<dynamic>?)
@@ -32,43 +32,6 @@ Map<String, dynamic> _$PaymentInstructionToJson(PaymentInstruction instance) {
   return val;
 }
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
-
 const _$DisbursementModeEnumMap = {
   DisbursementMode.instant: 'INSTANCE',
   DisbursementMode.delayed: 'DELAYED',
@@ -77,9 +40,9 @@ const _$DisbursementModeEnumMap = {
 PaymentMethod _$PaymentMethodFromJson(Map<String, dynamic> json) =>
     PaymentMethod(
       payerSelected: json['payer_selected'] as String?,
-      payeePreferred: _$enumDecodeNullable(
-          _$PayeePreferredEnumMap, json['payee_preferred']),
-      standardEntryClassCode: _$enumDecodeNullable(
+      payeePreferred:
+          $enumDecodeNullable(_$PayeePreferredEnumMap, json['payee_preferred']),
+      standardEntryClassCode: $enumDecodeNullable(
           _$StandardEntryClassCodeEnumMap, json['standard_entry_class_code']),
     );
 
@@ -115,9 +78,9 @@ const _$StandardEntryClassCodeEnumMap = {
 StoredPaymentSource _$StoredPaymentSourceFromJson(Map<String, dynamic> json) =>
     StoredPaymentSource(
       paymentInitiator:
-          _$enumDecode(_$PaymentInitiatorEnumMap, json['payment_initiator']),
-      paymentType: _$enumDecode(_$PaymentTypeEnumMap, json['payment_type']),
-      usage: _$enumDecodeNullable(_$UsageEnumMap, json['usage']),
+          $enumDecode(_$PaymentInitiatorEnumMap, json['payment_initiator']),
+      paymentType: $enumDecode(_$PaymentTypeEnumMap, json['payment_type']),
+      usage: $enumDecodeNullable(_$UsageEnumMap, json['usage']),
       networkTransactionReference: json['network_transaction_reference'] == null
           ? null
           : NetworkTransactionReference.fromJson(
@@ -164,7 +127,7 @@ NetworkTransactionReference _$NetworkTransactionReferenceFromJson(
     NetworkTransactionReference(
       id: json['id'] as String,
       date: json['date'] as String?,
-      network: _$enumDecode(_$NetworkEnumMap, json['network']),
+      network: $enumDecode(_$NetworkEnumMap, json['network']),
     );
 
 Map<String, dynamic> _$NetworkTransactionReferenceToJson(
@@ -240,7 +203,7 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
           : AddressPortable.fromJson(
               json['billing_address'] as Map<String, dynamic>),
       lastDigits: json['last_digits'] as String?,
-      brand: _$enumDecodeNullable(_$NetworkEnumMap, json['brand']),
+      brand: $enumDecodeNullable(_$NetworkEnumMap, json['brand']),
     );
 
 Map<String, dynamic> _$CardToJson(Card instance) {
@@ -303,7 +266,7 @@ Map<String, dynamic> _$AuthorizationWithAdditionalDataToJson(
 
 Capture _$CaptureFromJson(Map<String, dynamic> json) => Capture(
       status: json['status'] as String?,
-      statusDetails: _$enumDecodeNullable(
+      statusDetails: $enumDecodeNullable(
           _$CaptureStatusDetailsEnumMap, json['status_details']),
       id: json['id'] as String?,
       amount: json['amount'] == null
@@ -419,7 +382,7 @@ Map<String, dynamic> _$RefundToJson(Refund instance) {
 }
 
 RefundStatus _$RefundStatusFromJson(Map<String, dynamic> json) => RefundStatus(
-      status: _$enumDecodeNullable(_$RefundStatusValueEnumMap, json['status']),
+      status: $enumDecodeNullable(_$RefundStatusValueEnumMap, json['status']),
       statusDetails: json['status_details'] == null
           ? null
           : RefundStatusDetails.fromJson(
@@ -448,7 +411,7 @@ const _$RefundStatusValueEnumMap = {
 
 RefundStatusDetails _$RefundStatusDetailsFromJson(Map<String, dynamic> json) =>
     RefundStatusDetails(
-      _$enumDecode(_$RefundStatusReasonEnumMap, json['reason']),
+      $enumDecode(_$RefundStatusReasonEnumMap, json['reason']),
     );
 
 Map<String, dynamic> _$RefundStatusDetailsToJson(
@@ -464,7 +427,7 @@ const _$RefundStatusReasonEnumMap = {
 SellerProtection _$SellerProtectionFromJson(Map<String, dynamic> json) =>
     SellerProtection(
       status:
-          _$enumDecodeNullable(_$SellerProtectionStatusEnumMap, json['status']),
+          $enumDecodeNullable(_$SellerProtectionStatusEnumMap, json['status']),
       disputeCategories: (json['dispute_categories'] as List<dynamic>?)
           ?.map((e) => DisputeCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -492,7 +455,7 @@ const _$SellerProtectionStatusEnumMap = {
 
 DisputeCategory _$DisputeCategoryFromJson(Map<String, dynamic> json) =>
     DisputeCategory(
-      _$enumDecode(_$DisputeCategoryValueEnumMap, json['dispute_category']),
+      $enumDecode(_$DisputeCategoryValueEnumMap, json['dispute_category']),
     );
 
 Map<String, dynamic> _$DisputeCategoryToJson(DisputeCategory instance) =>

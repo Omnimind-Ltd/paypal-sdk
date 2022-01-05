@@ -49,7 +49,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 }
 
 OrderRequest _$OrderRequestFromJson(Map<String, dynamic> json) => OrderRequest(
-      intent: _$enumDecode(_$OrderRequestIntentEnumMap, json['intent']),
+      intent: $enumDecode(_$OrderRequestIntentEnumMap, json['intent']),
       payer: json['payer'] == null
           ? null
           : Payer.fromJson(json['payer'] as Map<String, dynamic>),
@@ -79,32 +79,6 @@ Map<String, dynamic> _$OrderRequestToJson(OrderRequest instance) {
   return val;
 }
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
 const _$OrderRequestIntentEnumMap = {
   OrderRequestIntent.capture: 'CAPTURE',
   OrderRequestIntent.authorize: 'AUTHORIZE',
@@ -115,11 +89,10 @@ ApplicationContext _$ApplicationContextFromJson(Map<String, dynamic> json) =>
       brandName: json['brand_name'] as String?,
       locale: json['locale'] as String?,
       landingPage:
-          _$enumDecodeNullable(_$LandingPageEnumMap, json['landing_page']),
-      shippingPreference: _$enumDecodeNullable(
+          $enumDecodeNullable(_$LandingPageEnumMap, json['landing_page']),
+      shippingPreference: $enumDecodeNullable(
           _$ShippingPreferenceEnumMap, json['shipping_preference']),
-      userAction:
-          _$enumDecodeNullable(_$UserActionEnumMap, json['user_action']),
+      userAction: $enumDecodeNullable(_$UserActionEnumMap, json['user_action']),
       paymentMethod: json['payment_method'] == null
           ? null
           : PaymentMethod.fromJson(
@@ -152,17 +125,6 @@ Map<String, dynamic> _$ApplicationContextToJson(ApplicationContext instance) {
   writeNotNull('cancel_url', instance.cancelUrl);
   writeNotNull('stored_payment_source', instance.storedPaymentSource);
   return val;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$LandingPageEnumMap = {

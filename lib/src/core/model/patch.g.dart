@@ -7,7 +7,7 @@ part of 'patch.dart';
 // **************************************************************************
 
 Patch _$PatchFromJson(Map<String, dynamic> json) => Patch(
-      op: _$enumDecode(_$PatchOperationEnumMap, json['op']),
+      op: $enumDecode(_$PatchOperationEnumMap, json['op']),
       path: json['path'] as String,
       value: json['value'],
       from: json['from'] as String?,
@@ -28,32 +28,6 @@ Map<String, dynamic> _$PatchToJson(Patch instance) {
   writeNotNull('value', instance.value);
   writeNotNull('from', instance.from);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
 }
 
 const _$PatchOperationEnumMap = {

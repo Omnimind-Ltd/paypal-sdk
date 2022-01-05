@@ -12,7 +12,7 @@ BillingCycle _$BillingCycleFromJson(Map<String, dynamic> json) => BillingCycle(
           : PricingScheme.fromJson(
               json['pricing_scheme'] as Map<String, dynamic>),
       frequency: Frequency.fromJson(json['frequency'] as Map<String, dynamic>),
-      tenureType: _$enumDecode(_$TenureTypeEnumMap, json['tenure_type']),
+      tenureType: $enumDecode(_$TenureTypeEnumMap, json['tenure_type']),
       sequence: json['sequence'] as int?,
       totalCycles: json['total_cycles'] as int?,
     );
@@ -34,32 +34,6 @@ Map<String, dynamic> _$BillingCycleToJson(BillingCycle instance) {
   return val;
 }
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
 const _$TenureTypeEnumMap = {
   TenureType.regular: 'REGULAR',
   TenureType.trial: 'TRIAL',
@@ -67,7 +41,7 @@ const _$TenureTypeEnumMap = {
 
 CycleExecution _$CycleExecutionFromJson(Map<String, dynamic> json) =>
     CycleExecution(
-      tenureType: _$enumDecode(_$TenureTypeEnumMap, json['tenure_type']),
+      tenureType: $enumDecode(_$TenureTypeEnumMap, json['tenure_type']),
       sequence: json['sequence'] as int,
       cyclesCompleted: json['cycles_completed'] as int,
       cyclesRemaining: json['cycles_remaining'] as int?,

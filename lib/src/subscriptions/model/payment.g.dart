@@ -45,7 +45,7 @@ FailedPaymentDetails _$FailedPaymentDetailsFromJson(
     FailedPaymentDetails(
       amount: Money.fromJson(json['amount'] as Map<String, dynamic>),
       time: json['time'] as String,
-      reasonCode: _$enumDecodeNullable(
+      reasonCode: $enumDecodeNullable(
           _$FailedPaymentReasonEnumMap, json['reason_code']),
       nextPaymentRetryTime: json['next_payment_retry_time'] as String?,
     );
@@ -69,43 +69,6 @@ Map<String, dynamic> _$FailedPaymentDetailsToJson(
   return val;
 }
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
-
 const _$FailedPaymentReasonEnumMap = {
   FailedPaymentReason.paymentDenied: 'paymentDenied',
   FailedPaymentReason.internalServerError: 'internalServerError',
@@ -121,9 +84,9 @@ const _$FailedPaymentReasonEnumMap = {
 PaymentMethod _$PaymentMethodFromJson(Map<String, dynamic> json) =>
     PaymentMethod(
       payerSelected: json['payer_selected'] as String?,
-      payeePreferred: _$enumDecodeNullable(
-          _$PayeePreferredEnumMap, json['payee_preferred']),
-      standardEntryClassCode: _$enumDecodeNullable(
+      payeePreferred:
+          $enumDecodeNullable(_$PayeePreferredEnumMap, json['payee_preferred']),
+      standardEntryClassCode: $enumDecodeNullable(
           _$StandardEntryClassCodeEnumMap, json['standard_entry_class_code']),
     );
 
@@ -162,7 +125,7 @@ PaymentPreferences _$PaymentPreferencesFromJson(Map<String, dynamic> json) =>
       setupFee: json['setup_fee'] == null
           ? null
           : Money.fromJson(json['setup_fee'] as Map<String, dynamic>),
-      setupFeeFailureAction: _$enumDecodeNullable(
+      setupFeeFailureAction: $enumDecodeNullable(
           _$SetupFeeFailureActionEnumMap, json['setup_fee_failure_action']),
       paymentFailureThreshold: json['payment_failure_threshold'] as int?,
     );

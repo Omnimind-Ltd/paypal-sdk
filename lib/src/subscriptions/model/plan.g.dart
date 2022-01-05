@@ -9,7 +9,7 @@ part of 'plan.dart';
 Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       json['id'] as String,
       json['product_id'] as String?,
-      _$enumDecode(_$PlanStatusEnumMap, json['status']),
+      $enumDecode(_$PlanStatusEnumMap, json['status']),
       json['name'] as String,
       json['description'] as String?,
       (json['billing_cycles'] as List<dynamic>?)
@@ -55,32 +55,6 @@ Map<String, dynamic> _$PlanToJson(Plan instance) {
   return val;
 }
 
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
 const _$PlanStatusEnumMap = {
   PlanStatus.created: 'CREATED',
   PlanStatus.active: 'ACTIVE',
@@ -90,7 +64,7 @@ const _$PlanStatusEnumMap = {
 PlanRequest _$PlanRequestFromJson(Map<String, dynamic> json) => PlanRequest(
       productId: json['product_id'] as String,
       name: json['name'] as String,
-      status: _$enumDecodeNullable(_$PlanStatusEnumMap, json['status']),
+      status: $enumDecodeNullable(_$PlanStatusEnumMap, json['status']),
       description: json['description'] as String?,
       billingCycles: (json['billing_cycles'] as List<dynamic>)
           .map((e) => BillingCycle.fromJson(e as Map<String, dynamic>))
@@ -122,17 +96,6 @@ Map<String, dynamic> _$PlanRequestToJson(PlanRequest instance) {
   writeNotNull('taxes', instance.taxes);
   writeNotNull('quantity_supported', instance.quantitySupported);
   return val;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 PlanCollection _$PlanCollectionFromJson(Map<String, dynamic> json) =>

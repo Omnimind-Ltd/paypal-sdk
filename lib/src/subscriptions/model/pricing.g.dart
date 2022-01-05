@@ -13,7 +13,7 @@ PricingScheme _$PricingSchemeFromJson(Map<String, dynamic> json) =>
           ? null
           : Money.fromJson(json['fixed_price'] as Map<String, dynamic>),
       pricingModel:
-          _$enumDecodeNullable(_$PricingModelEnumMap, json['pricing_model']),
+          $enumDecodeNullable(_$PricingModelEnumMap, json['pricing_model']),
       tiers: (json['tiers'] as List<dynamic>?)
           ?.map((e) => PricingTier.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -37,43 +37,6 @@ Map<String, dynamic> _$PricingSchemeToJson(PricingScheme instance) {
   writeNotNull('create_time', instance.createTime);
   writeNotNull('update_time', instance.updateTime);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$PricingModelEnumMap = {

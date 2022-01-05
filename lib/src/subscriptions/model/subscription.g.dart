@@ -9,7 +9,7 @@ part of 'subscription.dart';
 Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
       json['id'] as String,
       json['plan_id'] as String?,
-      _$enumDecodeNullable(_$SubscriptionStatusEnumMap, json['status']),
+      $enumDecodeNullable(_$SubscriptionStatusEnumMap, json['status']),
       json['status_change_note'] as String?,
       json['status_update_time'] as String?,
       json['start_time'] as String?,
@@ -63,43 +63,6 @@ Map<String, dynamic> _$SubscriptionToJson(Subscription instance) {
   writeNotNull('plan', instance.plan);
   writeNotNull('links', instance.links);
   return val;
-}
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$SubscriptionStatusEnumMap = {
@@ -204,7 +167,7 @@ SubscriptionCaptureRequest _$SubscriptionCaptureRequestFromJson(
       note: json['note'] as String,
       amount: Money.fromJson(json['amount'] as Map<String, dynamic>),
       captureType:
-          _$enumDecodeNullable(_$CaptureTypeEnumMap, json['capture_type']) ??
+          $enumDecodeNullable(_$CaptureTypeEnumMap, json['capture_type']) ??
               CaptureType.outstandingBalance,
     );
 
@@ -351,10 +314,9 @@ ApplicationContext _$ApplicationContextFromJson(Map<String, dynamic> json) =>
     ApplicationContext(
       brandName: json['brand_name'] as String?,
       locale: json['locale'] as String?,
-      shippingPreference: _$enumDecodeNullable(
+      shippingPreference: $enumDecodeNullable(
           _$ShippingPreferenceEnumMap, json['shipping_preference']),
-      userAction:
-          _$enumDecodeNullable(_$UserActionEnumMap, json['user_action']),
+      userAction: $enumDecodeNullable(_$UserActionEnumMap, json['user_action']),
       paymentMethod: json['payment_method'] == null
           ? null
           : PaymentMethod.fromJson(
