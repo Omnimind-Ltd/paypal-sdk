@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.0
+- Payments API
+
 ## 0.5.0
 - Orders API
 
