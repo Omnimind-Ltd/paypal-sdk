@@ -4,10 +4,10 @@
 /// the amount and frequency of charge for a subscription. You can also define a
 /// fixed plan, such as a $5 basic plan or a volume- or graduated-based plan
 /// with pricing tiers based on the quantity purchased. For more information,
-/// see <a href="https://developer.paypal.com/docs/limited-release/subscriptions/">
+/// see <a href="https://developer.paypal.com/docs/subscriptions/">
 /// Subscriptions Overview.</a>
 ///
-/// <a href="https://developer.paypal.com/docs/api/subscriptions/v1/">https://developer.paypal.com/docs/api/subscriptions/v1/</a>
+/// <a href="https://developer.paypal.com/api/subscriptions/v1/">https://developer.paypal.com/api/subscriptions/v1/</a>
 library subscriptions;
 
 export 'src/subscriptions/model/billing_cycle.dart';

@@ -1,8 +1,10 @@
 /// An order represents a payment between two or more parties. Use the Orders
 /// API to create, update, retrieve, authorize, and capture orders. For error
 /// handling and troubleshooting, see
-/// <a href="https://developer.paypal.com/docs/api/reference/orders-v2-errors/">
+/// <a href="https://developer.paypal.com/api/rest/reference/orders/v2/errors/">
 /// Orders v2 errors</a>.
+///
+/// <a href="https://developer.paypal.com/api/orders/v2/">https://developer.paypal.com/api/orders/v2/</a>
 
 library orders;
 

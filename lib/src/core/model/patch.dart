@@ -102,7 +102,7 @@ class Patch {
   /// The value to apply. The remove operation does not require a value.
   dynamic value;
 
-  /// The a href="https://datatracker.ietf.org/doc/html/rfc6901">JSON Pointer</a>
+  /// The <a href="https://datatracker.ietf.org/doc/html/rfc6901">JSON Pointer</a>
   /// to the target document location from which to move the value. Required for
   /// the move operation.
   String? from;

@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'payee.g.dart';
 
+/// The Payee of an order.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Payee {
   /// The email address of merchant.

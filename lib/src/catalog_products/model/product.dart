@@ -65,8 +65,7 @@ class Product {
   /// Internet date and time format</a>
   final String? updateTime;
 
-  /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
-  /// HATEOAS links</a>.
+  /// An array of request-related HATEOAS links.
   final List<LinkDescription>? links;
 
   const Product(
@@ -145,8 +144,7 @@ class ProductCollectionElement {
   /// Internet date and time format</a>
   final String createTime;
 
-  /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
-  /// HATEOAS links</a>.
+  /// An array of request-related HATEOAS links.
   final List<LinkDescription> links;
 
   const ProductCollectionElement(

@@ -94,8 +94,7 @@ class Capture {
   /// The funds that are held on behalf of the merchant.
   final DisbursementMode? disbursementMode;
 
-  /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
-  /// HATEOAS links</a>.
+  /// An array of request-related HATEOAS links.
   final List<LinkDescription>? links;
 
   /// An object that provides additional processor information for a direct credit

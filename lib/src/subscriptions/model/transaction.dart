@@ -61,8 +61,7 @@ class TransactionsList {
   /// The total number of pages.
   final int? totalPages;
 
-  /// An array of request-related <a href="https://developer.paypal.com/docs/api/reference/api-responses/#hateoas-links">
-  /// HATEOAS links</a>.
+  /// An array of request-related HATEOAS links.
   final List<LinkDescription>? links;
 
   TransactionsList(

@@ -92,8 +92,7 @@ class PaymentInstruction {
   }
 }
 
-/// Processor response. See <a href="https://developer.paypal.com/docs/api/orders/v2/#definition-processor_response">docs</a>
-/// for possible values
+/// Processor response.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ProcessorResponse {
   /// The address verification code for Visa, Discover, Mastercard, or American Express transactions.
