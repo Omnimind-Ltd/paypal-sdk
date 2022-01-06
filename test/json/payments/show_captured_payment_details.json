@@ -1,0 +1,64 @@
+{
+  "id": "2GG279541U471931P",
+  "status": "COMPLETED",
+  "status_details": {},
+  "amount": {
+    "value": "10.99",
+    "currency_code": "USD"
+  },
+  "final_capture": true,
+  "seller_protection": {
+    "status": "ELIGIBLE",
+    "dispute_categories": [
+      "ITEM_NOT_RECEIVED",
+      "UNAUTHORIZED_TRANSACTION"
+    ]
+  },
+  "seller_receivable_breakdown": {
+    "gross_amount": {
+      "value": "10.99",
+      "currency_code": "USD"
+    },
+    "paypal_fee": {
+      "value": "0.33",
+      "currency_code": "USD"
+    },
+    "net_amount": {
+      "value": "10.66",
+      "currency_code": "USD"
+    },
+    "receivable_amount": {
+      "currency_code": "CNY",
+      "value": "59.26"
+    },
+    "paypal_fee_in_receivable_currency": {
+      "currency_code": "CNY",
+      "value": "1.13"
+    },
+    "exchange_rate": {
+      "source_currency": "USD",
+      "target_currency": "CNY",
+      "value": "5.9483297432325"
+    }
+  },
+  "invoice_id": "INVOICE-123",
+  "create_time": "2017-09-11T23:24:01Z",
+  "update_time": "2017-09-11T23:24:01Z",
+  "links": [
+    {
+      "href": "https://api-m.paypal.com/v2/payments/captures/2GG279541U471931P",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api-m.paypal.com/v2/payments/captures/2GG279541U471931P/refund",
+      "rel": "refund",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.paypal.com/v2/payments/authorizations/0VF52814937998046",
+      "rel": "up",
+      "method": "GET"
+    }
+  ]
+}

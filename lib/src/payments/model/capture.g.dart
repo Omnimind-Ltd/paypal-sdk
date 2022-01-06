@@ -64,6 +64,10 @@ Capture _$CaptureFromJson(Map<String, dynamic> json) => Capture(
       (json['links'] as List<dynamic>?)
           ?.map((e) => LinkDescription.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['processor_response'] == null
+          ? null
+          : ProcessorResponse.fromJson(
+              json['processor_response'] as Map<String, dynamic>),
       json['create_time'] as String?,
       json['update_time'] as String?,
     );
@@ -90,6 +94,7 @@ Map<String, dynamic> _$CaptureToJson(Capture instance) {
   writeNotNull('disbursement_mode',
       _$DisbursementModeEnumMap[instance.disbursementMode]);
   writeNotNull('links', instance.links);
+  writeNotNull('processor_response', instance.processorResponse);
   writeNotNull('create_time', instance.createTime);
   writeNotNull('update_time', instance.updateTime);
   return val;
@@ -112,14 +117,22 @@ const _$DisbursementModeEnumMap = {
 CaptureStatusDetails _$CaptureStatusDetailsFromJson(
         Map<String, dynamic> json) =>
     CaptureStatusDetails(
-      $enumDecode(_$CaptureStatusReasonEnumMap, json['reason']),
+      $enumDecodeNullable(_$CaptureStatusReasonEnumMap, json['reason']),
     );
 
 Map<String, dynamic> _$CaptureStatusDetailsToJson(
-        CaptureStatusDetails instance) =>
-    <String, dynamic>{
-      'reason': _$CaptureStatusReasonEnumMap[instance.reason],
-    };
+    CaptureStatusDetails instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('reason', _$CaptureStatusReasonEnumMap[instance.reason]);
+  return val;
+}
 
 const _$CaptureStatusReasonEnumMap = {
   CaptureStatusReason.buyerComplaint: 'BUYER_COMPLAINT',

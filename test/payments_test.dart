@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:paypal_sdk/core.dart';
 import 'package:paypal_sdk/payments.dart';
+import 'package:paypal_sdk/src/payments/model/refund.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
@@ -39,6 +40,25 @@ void main() {
         '/v2/payments/authorizations/0VF52814937998046/void', 'POST',
         (request) async {
       return Response('', HttpStatus.noContent);
+    });
+
+    mockHttpClient.addHandler('/v2/payments/captures/2GG279541U471931P', 'GET',
+        (request) async {
+      var json = await getJson('payments/show_captured_payment_details.json');
+      return Response(json, HttpStatus.ok);
+    });
+
+    mockHttpClient
+        .addHandler('/v2/payments/captures/2GG279541U471931P/refund', 'POST',
+            (request) async {
+      var json = await getJson('payments/refund.json');
+      return Response(json, HttpStatus.created);
+    });
+
+    mockHttpClient.addHandler('/v2/payments/refunds/1JU08902781691411', 'GET',
+        (request) async {
+      var json = await getJson('payments/refund.json');
+      return Response(json, HttpStatus.ok);
     });
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
@@ -86,5 +106,28 @@ void main() {
     } catch (e) {
       expect(true, false);
     }
+  });
+
+  test('Test show captured payment details', () async {
+    var capture =
+        await _paymentsApi.showCapturedPaymentDetails('2GG279541U471931P');
+    expect(capture.status, CaptureStatus.completed);
+  });
+
+  test('Test refund captured payment', () async {
+    var request = RefundRequest(
+      amount: Money(currencyCode: 'USD', value: '10.99'),
+      invoiceId: 'INVOICE-123',
+      noteToPayer: 'Defective product',
+    );
+
+    var refund =
+        await _paymentsApi.refundCapturedPayment('2GG279541U471931P', request);
+    expect(refund.status, RefundStatus.completed);
+  });
+
+  test('Test show refund details', () async {
+    var refund = await _paymentsApi.showRefundDetails('1JU08902781691411');
+    expect(refund.status, RefundStatus.completed);
   });
 }

@@ -1,0 +1,16 @@
+{
+  "id": "1JU08902781691411",
+  "status": "COMPLETED",
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "href": "https://api-m.paypal.com/v2/payments/refunds/1JU08902781691411"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "href": "https://api-m.paypal.com/v2/payments/captures/2GG279541U471931P"
+    }
+  ]
+}

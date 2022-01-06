@@ -36,3 +36,42 @@ const _$DisbursementModeEnumMap = {
   DisbursementMode.instant: 'INSTANCE',
   DisbursementMode.delayed: 'DELAYED',
 };
+
+ProcessorResponse _$ProcessorResponseFromJson(Map<String, dynamic> json) =>
+    ProcessorResponse(
+      avsCode: json['avs_code'] as String?,
+      cvvCode: json['cvv_code'] as String?,
+      responseCode: json['response_code'] as String?,
+      paymentAdviceCode: json['payment_advice_code'] as String?,
+    );
+
+Map<String, dynamic> _$ProcessorResponseToJson(ProcessorResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('avs_code', instance.avsCode);
+  writeNotNull('cvv_code', instance.cvvCode);
+  writeNotNull('response_code', instance.responseCode);
+  writeNotNull('payment_advice_code', instance.paymentAdviceCode);
+  return val;
+}
+
+RefundStatusDetails _$RefundStatusDetailsFromJson(Map<String, dynamic> json) =>
+    RefundStatusDetails(
+      $enumDecode(_$RefundStatusReasonEnumMap, json['reason']),
+    );
+
+Map<String, dynamic> _$RefundStatusDetailsToJson(
+        RefundStatusDetails instance) =>
+    <String, dynamic>{
+      'reason': _$RefundStatusReasonEnumMap[instance.reason],
+    };
+
+const _$RefundStatusReasonEnumMap = {
+  RefundStatusReason.echeck: 'ECHECK',
+};

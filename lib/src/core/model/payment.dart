@@ -91,3 +91,61 @@ class PaymentInstruction {
         'payeePricingTierId: $payeePricingTierId, platformFee: $platformFee}';
   }
 }
+
+/// Processor response. See <a href="https://developer.paypal.com/docs/api/orders/v2/#definition-processor_response">docs</a>
+/// for possible values
+@JsonSerializable(fieldRename: FieldRename.snake)
+class ProcessorResponse {
+  /// The address verification code for Visa, Discover, Mastercard, or American Express transactions.
+  final String? avsCode;
+
+  /// The card verification value code for for Visa, Discover, Mastercard, or American Express.
+  final String? cvvCode;
+
+  /// Processor response code for the non-PayPal payment processor errors
+  final String? responseCode;
+
+  /// The declined payment transactions might have payment advice codes. The card
+  /// networks, like Visa and Mastercard, return payment advice codes.
+  final String? paymentAdviceCode;
+
+  const ProcessorResponse(
+      {this.avsCode, this.cvvCode, this.responseCode, this.paymentAdviceCode});
+
+  Map<String, dynamic> toJson() => _$ProcessorResponseToJson(this);
+
+  factory ProcessorResponse.fromJson(Map<String, dynamic> json) =>
+      _$ProcessorResponseFromJson(json);
+
+  @override
+  String toString() {
+    return 'ProcessorResponse{avsCode: $avsCode, cvvCode: $cvvCode, '
+        'responseCode: $responseCode, paymentAdviceCode: $paymentAdviceCode}';
+  }
+}
+
+/// The refund status details.
+@JsonSerializable(fieldRename: FieldRename.snake)
+class RefundStatusDetails {
+  /// The reason why the refund has the PENDING or FAILED status.
+  final RefundStatusReason reason;
+
+  const RefundStatusDetails(this.reason);
+
+  Map<String, dynamic> toJson() => _$RefundStatusDetailsToJson(this);
+
+  factory RefundStatusDetails.fromJson(Map<String, dynamic> json) =>
+      _$RefundStatusDetailsFromJson(json);
+
+  @override
+  String toString() {
+    return 'RefundStatusDetails{reason: $reason}';
+  }
+}
+
+/// The reason why the refund has the PENDING or FAILED status.
+enum RefundStatusReason {
+  ///  The customer's account is funded through an eCheck, which has not yet cleared.
+  @JsonValue('ECHECK')
+  echeck,
+}

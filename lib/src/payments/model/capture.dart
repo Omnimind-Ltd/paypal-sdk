@@ -98,6 +98,10 @@ class Capture {
   /// HATEOAS links</a>.
   final List<LinkDescription>? links;
 
+  /// An object that provides additional processor information for a direct credit
+  /// card transaction.
+  final ProcessorResponse? processorResponse;
+
   /// The date and time when the transaction occurred, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
   /// Internet date and time format</a>
@@ -120,6 +124,7 @@ class Capture {
       this.sellerReceivableBreakdown,
       this.disbursementMode,
       this.links,
+      this.processorResponse,
       this.createTime,
       this.updateTime);
 
@@ -132,7 +137,7 @@ class Capture {
 @JsonSerializable(fieldRename: FieldRename.snake)
 class CaptureStatusDetails {
   /// The reason why the captured payment status is PENDING or DENIED.
-  final CaptureStatusReason reason;
+  final CaptureStatusReason? reason;
 
   const CaptureStatusDetails(this.reason);
 
