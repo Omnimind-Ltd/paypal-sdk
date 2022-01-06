@@ -1,0 +1,21 @@
+{
+  "id": "2GG279541U471931P",
+  "status": "COMPLETED",
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "href": "https://api-m.paypal.com/v2/payments/captures/2GG279541U471931P"
+    },
+    {
+      "rel": "refund",
+      "method": "POST",
+      "href": "https://api-m.paypal.com/v2/payments/captures/2GG279541U471931P/refund"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "href": "https://api-m.paypal.com/v2/payments/authorizations/0VF52814937998046"
+    }
+  ]
+}
