@@ -1,16 +1,17 @@
-Paypal SDK <a href="https://developer.paypal.com/docs/api/overview/">https://developer.paypal.com/docs/api/overview/</a>
+Paypal SDK <a href="https://developer.paypal.com/api/rest/">https://developer.paypal.com/api/rest/</a>
 
 ## Features
 
 APIs implemented:
 - Catalog Products
 - Orders
+- Payments
 - Subscriptions
 - Webhooks
 
 ## Getting started
 
-Follow the instructions <a href="https://developer.paypal.com/docs/api/overview/#create-sandbox-accounts">here</a> to get Sandbox account credentials
+Follow the instructions <a href="https://developer.paypal.com/api/rest/#link-getcredentials">here</a> to get Sandbox account credentials
 
 ## Usage
 
