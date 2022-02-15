@@ -56,7 +56,7 @@ void main() {
   });
 
   test('Test list products', () async {
-    var productsCollection = await _catalogProductsApi.listProducts();
+    dynamic productsCollection = await _catalogProductsApi.listProducts();
     expect(productsCollection is ProductCollection, true);
   });
 
@@ -66,7 +66,8 @@ void main() {
         type: ProductType.digital,
         description: 'test_description');
 
-    var product = await _catalogProductsApi.createProduct(createProductRequest);
+    dynamic product =
+        await _catalogProductsApi.createProduct(createProductRequest);
 
     expect(product is Product, true);
     expect(product.name, 'test_product');

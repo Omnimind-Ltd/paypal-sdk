@@ -150,7 +150,7 @@ void main() {
 
   // Plan tests
   test('Test list plans', () async {
-    var planCollection = await _subscriptionsApi.listPlans();
+    dynamic planCollection = await _subscriptionsApi.listPlans();
     expect(planCollection is PlanCollection, true);
     expect(planCollection.plans.length, 1);
   });
@@ -176,7 +176,7 @@ void main() {
             setupFee: Money(currencyCode: 'GBP', value: '1.00'),
             setupFeeFailureAction: SetupFeeFailureAction.cancel,
             paymentFailureThreshold: 2));
-    var billingPlan = await _subscriptionsApi.createPlan(planRequest);
+    dynamic billingPlan = await _subscriptionsApi.createPlan(planRequest);
 
     expect(billingPlan is Plan, true);
     expect(billingPlan.name, 'Test plan');
@@ -274,7 +274,7 @@ void main() {
   test('Test create subscription', () async {
     var createSubscriptionRequest = SubscriptionRequest(
         planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
-    var subscription =
+    dynamic subscription =
         await _subscriptionsApi.createSubscription(createSubscriptionRequest);
 
     expect(subscription is Subscription, true);
@@ -302,7 +302,7 @@ void main() {
   });
 
   test('Test show subscription details', () async {
-    var subscription =
+    dynamic subscription =
         await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
 
     expect(subscription is Subscription, true);
@@ -346,8 +346,10 @@ void main() {
   });
 
   test('Test list transactions', () async {
-    var response = await _subscriptionsApi.listTransactions('I-1WSNAWATBCXP',
-        '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
+    dynamic response = await _subscriptionsApi.listTransactions(
+        'I-1WSNAWATBCXP',
+        '2021-09-01T07:50:20.940Z',
+        '2021-09-29T07:50:20.940Z');
 
     expect(response is TransactionsList, true);
     expect(response.transactions.isNotEmpty, true);
