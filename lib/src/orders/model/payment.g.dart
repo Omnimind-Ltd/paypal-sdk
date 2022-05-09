@@ -383,7 +383,7 @@ SellerProtection _$SellerProtectionFromJson(Map<String, dynamic> json) =>
       status:
           $enumDecodeNullable(_$SellerProtectionStatusEnumMap, json['status']),
       disputeCategories: (json['dispute_categories'] as List<dynamic>?)
-          ?.map((e) => DisputeCategory.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => $enumDecode(_$DisputeCategoryValueEnumMap, e))
           .toList(),
     );
 
@@ -397,7 +397,11 @@ Map<String, dynamic> _$SellerProtectionToJson(SellerProtection instance) {
   }
 
   writeNotNull('status', _$SellerProtectionStatusEnumMap[instance.status]);
-  writeNotNull('dispute_categories', instance.disputeCategories);
+  writeNotNull(
+      'dispute_categories',
+      instance.disputeCategories
+          ?.map((e) => _$DisputeCategoryValueEnumMap[e])
+          .toList());
   return val;
 }
 
@@ -405,6 +409,11 @@ const _$SellerProtectionStatusEnumMap = {
   SellerProtectionStatus.eligible: 'ELIGIBLE',
   SellerProtectionStatus.partiallyEligible: 'PARTIALLY_ELIGIBLE',
   SellerProtectionStatus.notEligible: 'NOT_ELIGIBLE',
+};
+
+const _$DisputeCategoryValueEnumMap = {
+  DisputeCategoryValue.itemNotReceived: 'ITEM_NOT_RECEIVED',
+  DisputeCategoryValue.unauthorizedTransaction: 'UNAUTHORIZED_TRANSACTION',
 };
 
 DisputeCategory _$DisputeCategoryFromJson(Map<String, dynamic> json) =>
@@ -417,11 +426,6 @@ Map<String, dynamic> _$DisputeCategoryToJson(DisputeCategory instance) =>
       'dispute_category':
           _$DisputeCategoryValueEnumMap[instance.disputeCategory],
     };
-
-const _$DisputeCategoryValueEnumMap = {
-  DisputeCategoryValue.itemNotReceived: 'ITEM_NOT_RECEIVED',
-  DisputeCategoryValue.unauthorizedTransaction: 'UNAUTHORIZED_TRANSACTION',
-};
 
 SellerReceivableBreakdown _$SellerReceivableBreakdownFromJson(
         Map<String, dynamic> json) =>

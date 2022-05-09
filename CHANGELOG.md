@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.3
+- Fix SellerProtection.disputeCategories list type.
+
 ## 1.0.2
 - Update packages.
 

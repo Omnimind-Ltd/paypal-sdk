@@ -636,7 +636,7 @@ class SellerProtection {
   final SellerProtectionStatus? status;
 
   /// An array of conditions that are covered for the transaction.
-  final List<DisputeCategory>? disputeCategories;
+  final List<DisputeCategoryValue>? disputeCategories;
 
   const SellerProtection({this.status, this.disputeCategories});
 
