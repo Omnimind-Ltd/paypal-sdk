@@ -8,7 +8,8 @@ part of 'order.dart';
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       id: json['id'] as String?,
-      paymentSource: json['payment_source'] == null
+      paymentSource: json['payment_source'] == null ||
+              json['payment_source']['card'] == null
           ? null
           : PaymentSource.fromJson(
               json['payment_source'] as Map<String, dynamic>),
