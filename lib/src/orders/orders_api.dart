@@ -234,7 +234,7 @@ class OrdersApi {
   ///
   /// Parameter payPalAuthAssertion: An API-caller-provided JSON Web Token (JWT)
   /// assertion that identifies the merchant. For details, see PayPal-Auth-Assertion.
-  Future<Order> capturePayment(
+  Future<Map<String, dynamic>> capturePayment(
     String id, {
     PaymentSourceToken? paymentSource,
     String? payPalRequestId,
@@ -267,6 +267,7 @@ class OrdersApi {
 
     var response =
         await _payPalHttpClient.post(uri, headers: headers, body: body);
-    return Order.fromJson(jsonDecode(response.body));
+    // return Order.fromJson(jsonDecode(response.body));
+    return jsonDecode(response.body);
   }
 }
