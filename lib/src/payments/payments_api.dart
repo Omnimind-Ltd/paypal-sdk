@@ -49,7 +49,7 @@ class PaymentsApi {
       '/v2/payments/authorizations/$authorizationId/capture',
     );
 
-    Map<String, String> headers = {};
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     if (prefer != null) {
       headers['Prefer'] = preferTypeEnumMap[prefer]!;
@@ -103,7 +103,7 @@ class PaymentsApi {
       '/v2/payments/authorizations/$authorizationId/reauthorize',
     );
 
-    Map<String, String> headers = {};
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     if (prefer != null) {
       headers['Prefer'] = preferTypeEnumMap[prefer]!;
@@ -136,7 +136,7 @@ class PaymentsApi {
       '/v2/payments/authorizations/$authorizationId/void',
     );
 
-    Map<String, String> headers = {};
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     if (payPalAuthAssertion != null) {
       headers['PayPal-Auth-Assertion'] = payPalAuthAssertion;
@@ -179,7 +179,7 @@ class PaymentsApi {
       '/v2/payments/captures/$captureId/refund',
     );
 
-    Map<String, String> headers = {};
+    Map<String, String> headers = {'Content-Type': 'application/json'};
 
     if (payPalAuthAssertion != null) {
       headers['PayPal-Auth-Assertion'] = payPalAuthAssertion;
