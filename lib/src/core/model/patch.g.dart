@@ -15,7 +15,7 @@ Patch _$PatchFromJson(Map<String, dynamic> json) => Patch(
 
 Map<String, dynamic> _$PatchToJson(Patch instance) {
   final val = <String, dynamic>{
-    'op': _$PatchOperationEnumMap[instance.op],
+    'op': _$PatchOperationEnumMap[instance.op]!,
     'path': instance.path,
   };
 

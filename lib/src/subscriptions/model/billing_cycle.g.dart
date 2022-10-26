@@ -28,7 +28,7 @@ Map<String, dynamic> _$BillingCycleToJson(BillingCycle instance) {
 
   writeNotNull('pricing_scheme', instance.pricingScheme);
   val['frequency'] = instance.frequency;
-  val['tenure_type'] = _$TenureTypeEnumMap[instance.tenureType];
+  val['tenure_type'] = _$TenureTypeEnumMap[instance.tenureType]!;
   writeNotNull('sequence', instance.sequence);
   writeNotNull('total_cycles', instance.totalCycles);
   return val;
@@ -49,7 +49,7 @@ CycleExecution _$CycleExecutionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CycleExecutionToJson(CycleExecution instance) {
   final val = <String, dynamic>{
-    'tenure_type': _$TenureTypeEnumMap[instance.tenureType],
+    'tenure_type': _$TenureTypeEnumMap[instance.tenureType]!,
     'sequence': instance.sequence,
     'cycles_completed': instance.cyclesCompleted,
   };

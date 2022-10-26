@@ -36,7 +36,7 @@ PhoneWithType _$PhoneWithTypeFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$PhoneWithTypeToJson(PhoneWithType instance) =>
     <String, dynamic>{
-      'phone_type': _$PhoneTypeEnumMap[instance.phoneType],
+      'phone_type': _$PhoneTypeEnumMap[instance.phoneType]!,
       'phone_number': instance.phoneNumber,
     };
 

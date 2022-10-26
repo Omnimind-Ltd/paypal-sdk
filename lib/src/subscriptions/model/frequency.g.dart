@@ -12,7 +12,7 @@ Frequency _$FrequencyFromJson(Map<String, dynamic> json) => Frequency(
     );
 
 Map<String, dynamic> _$FrequencyToJson(Frequency instance) => <String, dynamic>{
-      'interval_unit': _$IntervalUnitEnumMap[instance.intervalUnit],
+      'interval_unit': _$IntervalUnitEnumMap[instance.intervalUnit]!,
       'interval_count': instance.intervalCount,
     };
 

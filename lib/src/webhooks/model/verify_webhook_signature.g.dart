@@ -40,7 +40,7 @@ Map<String, dynamic> _$VerifyWebhookSignatureResponseToJson(
         VerifyWebhookSignatureResponse instance) =>
     <String, dynamic>{
       'verification_status':
-          _$VerificationStatusEnumMap[instance.verificationStatus],
+          _$VerificationStatusEnumMap[instance.verificationStatus]!,
     };
 
 const _$VerificationStatusEnumMap = {

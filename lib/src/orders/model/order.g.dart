@@ -64,7 +64,7 @@ OrderRequest _$OrderRequestFromJson(Map<String, dynamic> json) => OrderRequest(
 
 Map<String, dynamic> _$OrderRequestToJson(OrderRequest instance) {
   final val = <String, dynamic>{
-    'intent': _$OrderRequestIntentEnumMap[instance.intent],
+    'intent': _$OrderRequestIntentEnumMap[instance.intent]!,
   };
 
   void writeNotNull(String key, dynamic value) {

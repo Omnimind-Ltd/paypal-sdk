@@ -134,7 +134,7 @@ Map<String, dynamic> _$ProductRequestToJson(ProductRequest instance) {
   writeNotNull('id', instance.id);
   val['name'] = instance.name;
   writeNotNull('description', instance.description);
-  val['type'] = _$ProductTypeEnumMap[instance.type];
+  val['type'] = _$ProductTypeEnumMap[instance.type]!;
   writeNotNull('category', instance.category);
   writeNotNull('image_url', instance.imageUrl);
   writeNotNull('home_url', instance.homeUrl);

@@ -27,7 +27,7 @@ Map<String, dynamic> _$SellerProtectionToJson(SellerProtection instance) {
   writeNotNull(
       'dispute_categories',
       instance.disputeCategories
-          ?.map((e) => _$DisputeCategoryEnumMap[e])
+          ?.map((e) => _$DisputeCategoryEnumMap[e]!)
           .toList());
   return val;
 }

@@ -42,7 +42,7 @@ Map<String, dynamic> _$PlanToJson(Plan instance) {
   }
 
   writeNotNull('product_id', instance.productId);
-  val['status'] = _$PlanStatusEnumMap[instance.status];
+  val['status'] = _$PlanStatusEnumMap[instance.status]!;
   val['name'] = instance.name;
   writeNotNull('description', instance.description);
   writeNotNull('billing_cycles', instance.billingCycles);

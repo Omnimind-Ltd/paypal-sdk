@@ -74,7 +74,7 @@ AuthorizationStatusDetails _$AuthorizationStatusDetailsFromJson(
 Map<String, dynamic> _$AuthorizationStatusDetailsToJson(
         AuthorizationStatusDetails instance) =>
     <String, dynamic>{
-      'reason': _$AuthorizationStatusReasonEnumMap[instance.reason],
+      'reason': _$AuthorizationStatusReasonEnumMap[instance.reason]!,
     };
 
 const _$AuthorizationStatusReasonEnumMap = {

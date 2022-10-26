@@ -175,7 +175,7 @@ Map<String, dynamic> _$SubscriptionCaptureRequestToJson(
         SubscriptionCaptureRequest instance) =>
     <String, dynamic>{
       'note': instance.note,
-      'capture_type': _$CaptureTypeEnumMap[instance.captureType],
+      'capture_type': _$CaptureTypeEnumMap[instance.captureType]!,
       'amount': instance.amount,
     };
 

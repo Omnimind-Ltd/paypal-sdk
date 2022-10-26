@@ -69,7 +69,7 @@ RefundStatusDetails _$RefundStatusDetailsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$RefundStatusDetailsToJson(
         RefundStatusDetails instance) =>
     <String, dynamic>{
-      'reason': _$RefundStatusReasonEnumMap[instance.reason],
+      'reason': _$RefundStatusReasonEnumMap[instance.reason]!,
     };
 
 const _$RefundStatusReasonEnumMap = {
