@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.4
+- Bug Fix: Always set Content-Type for Orders API authorizePaymentForOrder and capturePayment to avoid 415 error response
+- Update packages.
+
 ## 1.0.3
 - Fix SellerProtection.disputeCategories list type.
 
