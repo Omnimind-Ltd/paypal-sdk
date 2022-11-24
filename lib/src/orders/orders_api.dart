@@ -181,7 +181,7 @@ class OrdersApi {
   }) async {
     var uri = _payPalHttpClient.getUrl('/v2/checkout/orders/$id/authorize');
 
-    var headers = <String, String>{'Content-Type':'application/json'};
+    var headers = <String, String>{'Content-Type': 'application/json'};
 
     if (payPalRequestId != null) {
       headers['PayPal-Request-Id'] = payPalRequestId;
@@ -244,7 +244,7 @@ class OrdersApi {
   }) async {
     var uri = _payPalHttpClient.getUrl('/v2/checkout/orders/$id/capture');
 
-    var headers = <String, String>{'Content-Type':'application/json'};
+    var headers = <String, String>{'Content-Type': 'application/json'};
 
     if (payPalRequestId != null) {
       headers['PayPal-Request-Id'] = payPalRequestId;

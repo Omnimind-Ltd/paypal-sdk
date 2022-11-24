@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.5
+- Fix static analysis issues
+
 ## 1.0.4
 - Bug Fix: Always set Content-Type for Orders API authorizePaymentForOrder and capturePayment to avoid 415 error response
 - Update packages.
