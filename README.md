@@ -20,3 +20,7 @@ Check out the <a href="https://pub.dev/packages/paypal_sdk/example">Examples</a>
 ## Additional information
 
 Please raise issues on <a href="https://github.com/Omnimind-Ltd/paypal-sdk/issues">GitHub</a>. Pull requests always welcome.
+
+<a href="https://www.buymeacoffee.com/uJ8QjYHOKs" target="_blank">
+<img src="https://i.imgur.com/jccWDIN.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 146px !important;">
+</a>
