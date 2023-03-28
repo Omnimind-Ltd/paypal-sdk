@@ -16,13 +16,13 @@ const _planStatusEnumMap = {
 };
 
 void main() {
-  late SubscriptionsApi _subscriptionsApi;
+  late SubscriptionsApi subscriptionsApi;
 
-  String _planDescription = 'Test description';
-  PlanStatus _planStatus = PlanStatus.active;
-  PricingScheme _pricingScheme = PricingScheme(
+  String planDescription = 'Test description';
+  PlanStatus planStatus = PlanStatus.active;
+  PricingScheme pricingScheme = PricingScheme(
       version: 3, fixedPrice: Money(currencyCode: 'GBP', value: '5.0'));
-  String _subscriptionCustomId = 'custom_id';
+  String subscriptionCustomId = 'custom_id';
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
@@ -40,9 +40,9 @@ void main() {
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'GET', (request) async {
       var json = await getJson('subscriptions/show_plan_details.json');
 
-      json = json.replaceAll('Test description', _planDescription);
-      json = json.replaceAll('INACTIVE', _planStatusEnumMap[_planStatus]!);
-      json = json.replaceAll('5.0', _pricingScheme.fixedPrice!.value);
+      json = json.replaceAll('Test description', planDescription);
+      json = json.replaceAll('INACTIVE', _planStatusEnumMap[planStatus]!);
+      json = json.replaceAll('5.0', pricingScheme.fixedPrice!.value);
 
       return Response(
           jsonEncode(Plan.fromJson(jsonDecode(json))), HttpStatus.ok);
@@ -53,21 +53,21 @@ void main() {
             (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
-      _planDescription = patch.value;
+      planDescription = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
     mockHttpClient.addHandler(
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/activate', 'POST',
         (request) async {
-      _planStatus = PlanStatus.active;
+      planStatus = PlanStatus.active;
       return Response('', HttpStatus.noContent);
     });
 
     mockHttpClient.addHandler(
         '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/deactivate', 'POST',
         (request) async {
-      _planStatus = PlanStatus.inactive;
+      planStatus = PlanStatus.inactive;
       return Response('', HttpStatus.noContent);
     });
 
@@ -76,7 +76,7 @@ void main() {
         'POST', (request) async {
       var updateRequest =
           PricingSchemesUpdateRequest.fromJson(jsonDecode(request.body));
-      _pricingScheme = updateRequest.pricingSchemes.first.pricingScheme;
+      pricingScheme = updateRequest.pricingSchemes.first.pricingScheme;
       return Response('', HttpStatus.noContent);
     });
 
@@ -89,7 +89,7 @@ void main() {
     mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP', 'GET',
         (request) async {
       var json = await getJson('subscriptions/show_subscription_details.json');
-      json = json.replaceAll('subscription_custom_id', _subscriptionCustomId);
+      json = json.replaceAll('subscription_custom_id', subscriptionCustomId);
       return Response(jsonEncode(Subscription.fromJson(jsonDecode(json))),
           HttpStatus.created);
     });
@@ -98,7 +98,7 @@ void main() {
         '/v1/billing/subscriptions/I-1WSNAWATBCXP', 'PATCH', (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
-      _subscriptionCustomId = patch.value;
+      subscriptionCustomId = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
@@ -142,7 +142,7 @@ void main() {
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _subscriptionsApi = SubscriptionsApi(
+    subscriptionsApi = SubscriptionsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
@@ -150,7 +150,7 @@ void main() {
 
   // Plan tests
   test('Test list plans', () async {
-    dynamic planCollection = await _subscriptionsApi.listPlans();
+    dynamic planCollection = await subscriptionsApi.listPlans();
     expect(planCollection is PlanCollection, true);
     expect(planCollection.plans.length, 1);
   });
@@ -176,7 +176,7 @@ void main() {
             setupFee: Money(currencyCode: 'GBP', value: '1.00'),
             setupFeeFailureAction: SetupFeeFailureAction.cancel,
             paymentFailureThreshold: 2));
-    dynamic billingPlan = await _subscriptionsApi.createPlan(planRequest);
+    dynamic billingPlan = await subscriptionsApi.createPlan(planRequest);
 
     expect(billingPlan is Plan, true);
     expect(billingPlan.name, 'Test plan');
@@ -184,10 +184,10 @@ void main() {
 
   test('Test update plan', () async {
     var billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.description, 'Test description');
 
-    await _subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
+    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
       Patch(
           op: PatchOperation.replace,
           path: '/description',
@@ -195,10 +195,10 @@ void main() {
     ]);
 
     billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.description, 'Test description updated');
 
-    await _subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
+    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
       Patch(
           op: PatchOperation.replace,
           path: '/description',
@@ -208,36 +208,36 @@ void main() {
 
   test('Test show plan details', () async {
     var billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.name, 'Test plan');
   });
 
   test('Test deactivate/activate plan', () async {
     var billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.active);
 
-    await _subscriptionsApi.deactivatePlan('P-6KG67732XY2608640MFGL3RY');
+    await subscriptionsApi.deactivatePlan('P-6KG67732XY2608640MFGL3RY');
 
     billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.inactive);
 
-    await _subscriptionsApi.activatePlan('P-6KG67732XY2608640MFGL3RY');
+    await subscriptionsApi.activatePlan('P-6KG67732XY2608640MFGL3RY');
 
     billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.active);
   });
 
   test('Test update pricing schemas', () async {
     var billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     var pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '5.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
 
-    await _subscriptionsApi.updatePlanPricing(
+    await subscriptionsApi.updatePlanPricing(
         'P-6KG67732XY2608640MFGL3RY',
         PricingSchemesUpdateRequest([
           PricingSchemeUpdateRequest(
@@ -248,12 +248,12 @@ void main() {
         ]));
 
     billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '10.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
 
-    await _subscriptionsApi.updatePlanPricing(
+    await subscriptionsApi.updatePlanPricing(
         'P-6KG67732XY2608640MFGL3RY',
         PricingSchemesUpdateRequest([
           PricingSchemeUpdateRequest(
@@ -264,7 +264,7 @@ void main() {
         ]));
 
     billingPlan =
-        await _subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '5.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
@@ -275,17 +275,17 @@ void main() {
     var createSubscriptionRequest = SubscriptionRequest(
         planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
     dynamic subscription =
-        await _subscriptionsApi.createSubscription(createSubscriptionRequest);
+        await subscriptionsApi.createSubscription(createSubscriptionRequest);
 
     expect(subscription is Subscription, true);
   });
 
   test('Test update subscription', () async {
     var subscription =
-        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
     expect(subscription.customId, 'custom_id');
 
-    await _subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
+    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
       Patch(
           op: PatchOperation.add,
           path: '/custom_id',
@@ -293,29 +293,29 @@ void main() {
     ]);
 
     subscription =
-        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
     expect(subscription.customId, 'updated_custom_id');
 
-    await _subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
+    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
       Patch(op: PatchOperation.add, path: '/custom_id', value: 'custom_id')
     ]);
   });
 
   test('Test show subscription details', () async {
     dynamic subscription =
-        await _subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
 
     expect(subscription is Subscription, true);
     expect(subscription.id, 'I-1WSNAWATBCXP');
   });
 
   test('Test activate subscription', () async {
-    await _subscriptionsApi.activateSubscription(
+    await subscriptionsApi.activateSubscription(
         'I-93KN27174NGR', 'Now required');
   });
 
   test('Test cancel subscription', () async {
-    await _subscriptionsApi.cancelSubscription(
+    await subscriptionsApi.cancelSubscription(
         'I-93KN27174NGR', 'No longer needed');
   });
 
@@ -324,7 +324,7 @@ void main() {
         note: 'Outstanding balance',
         amount: Money(currencyCode: 'GBP', value: '5.00'));
 
-    var response = await _subscriptionsApi
+    var response = await subscriptionsApi
         .captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
     expect(response.status, CaptureStatus.completed);
   });
@@ -335,18 +335,18 @@ void main() {
         shippingAmount: Money(currencyCode: 'USD', value: '2.0'));
 
     var response =
-        await _subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
+        await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
     expect(response.shippingAmount!.value, '2.0');
   });
 
   test('Test suspend subscription', () async {
     var request = Reason('Out of stock');
 
-    await _subscriptionsApi.suspendSubscription('I-1WSNAWATBCXP', request);
+    await subscriptionsApi.suspendSubscription('I-1WSNAWATBCXP', request);
   });
 
   test('Test list transactions', () async {
-    dynamic response = await _subscriptionsApi.listTransactions(
+    dynamic response = await subscriptionsApi.listTransactions(
         'I-1WSNAWATBCXP',
         '2021-09-01T07:50:20.940Z',
         '2021-09-29T07:50:20.940Z');

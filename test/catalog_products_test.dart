@@ -10,9 +10,9 @@ import 'helper/mock_http_client.dart';
 import 'helper/util.dart';
 
 void main() {
-  late CatalogProductsApi _catalogProductsApi;
+  late CatalogProductsApi catalogProductsApi;
 
-  String _productDescription = 'test_description';
+  String productDescription = 'test_description';
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
@@ -32,7 +32,7 @@ void main() {
       var product = Product.fromJson(jsonDecode(json));
       return Response(
           jsonEncode(Product(
-                  description: _productDescription,
+                  description: productDescription,
                   id: 'PROD-3XF87627UU805523Y',
                   name: product.name,
                   createTime: product.createTime)
@@ -45,18 +45,18 @@ void main() {
             (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
-      _productDescription = patch.value;
+      productDescription = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _catalogProductsApi = CatalogProductsApi(
+    catalogProductsApi = CatalogProductsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   test('Test list products', () async {
-    dynamic productsCollection = await _catalogProductsApi.listProducts();
+    dynamic productsCollection = await catalogProductsApi.listProducts();
     expect(productsCollection is ProductCollection, true);
   });
 
@@ -67,7 +67,7 @@ void main() {
         description: 'test_description');
 
     dynamic product =
-        await _catalogProductsApi.createProduct(createProductRequest);
+        await catalogProductsApi.createProduct(createProductRequest);
 
     expect(product is Product, true);
     expect(product.name, 'test_product');
@@ -75,7 +75,7 @@ void main() {
   });
 
   test('Test update product', () async {
-    await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
+    await catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
           op: PatchOperation.replace,
           path: '/description',
@@ -83,10 +83,10 @@ void main() {
     ]);
 
     var product =
-        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
+        await catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.description, 'test_description_updated');
 
-    await _catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
+    await catalogProductsApi.updateProduct('PROD-3XF87627UU805523Y', [
       Patch(
           op: PatchOperation.replace,
           path: '/description',
@@ -94,13 +94,13 @@ void main() {
     ]);
 
     product =
-        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
+        await catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.description, 'test_description');
   });
 
   test('Test get product', () async {
     var product =
-        await _catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
+        await catalogProductsApi.showProductDetails('PROD-3XF87627UU805523Y');
     expect(product.name, 'test_product');
     expect(product.description, 'test_description');
   });

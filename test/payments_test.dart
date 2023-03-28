@@ -10,7 +10,7 @@ import 'helper/mock_http_client.dart';
 import 'helper/util.dart';
 
 void main() {
-  late PaymentsApi _paymentsApi;
+  late PaymentsApi paymentsApi;
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
@@ -63,13 +63,13 @@ void main() {
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _paymentsApi = PaymentsApi(
+    paymentsApi = PaymentsApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   test('Test show details for authorized payment', () async {
     var details =
-        await _paymentsApi.showDetailsForAuthorizedPayment('0VF52814937998046');
+        await paymentsApi.showDetailsForAuthorizedPayment('0VF52814937998046');
 
     expect(details.id, '0VF52814937998046');
   });
@@ -84,7 +84,7 @@ void main() {
       softDescriptor: 'Bob\'s Custom Sweaters',
     );
 
-    var capture = await _paymentsApi.captureAuthorizedPayment(
+    var capture = await paymentsApi.captureAuthorizedPayment(
         '0VF52814937998046', request);
 
     expect(capture.status, CaptureStatus.completed);
@@ -93,7 +93,7 @@ void main() {
   test('Test reauthorize payment', () async {
     var amount = Money(currencyCode: 'USD', value: "10.99");
 
-    var details = await _paymentsApi.reauthorizeAuthorizedPayment(
+    var details = await paymentsApi.reauthorizeAuthorizedPayment(
         '0VF52814937998046', amount);
 
     expect(details.status, AuthorizationStatus.created);
@@ -101,7 +101,7 @@ void main() {
 
   test('Test void payment', () async {
     try {
-      await _paymentsApi.voidAuthorizedPayment('0VF52814937998046');
+      await paymentsApi.voidAuthorizedPayment('0VF52814937998046');
       expect(true, true);
     } catch (e) {
       expect(true, false);
@@ -110,7 +110,7 @@ void main() {
 
   test('Test show captured payment details', () async {
     var capture =
-        await _paymentsApi.showCapturedPaymentDetails('2GG279541U471931P');
+        await paymentsApi.showCapturedPaymentDetails('2GG279541U471931P');
     expect(capture.status, CaptureStatus.completed);
   });
 
@@ -122,12 +122,12 @@ void main() {
     );
 
     var refund =
-        await _paymentsApi.refundCapturedPayment('2GG279541U471931P', request);
+        await paymentsApi.refundCapturedPayment('2GG279541U471931P', request);
     expect(refund.status, RefundStatus.completed);
   });
 
   test('Test show refund details', () async {
-    var refund = await _paymentsApi.showRefundDetails('1JU08902781691411');
+    var refund = await paymentsApi.showRefundDetails('1JU08902781691411');
     expect(refund.status, RefundStatus.completed);
   });
 }

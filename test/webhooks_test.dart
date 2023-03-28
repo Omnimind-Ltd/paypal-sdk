@@ -12,7 +12,7 @@ import 'helper/mock_http_client.dart';
 import 'helper/util.dart';
 
 void main() {
-  late WebhooksApi _webhooksApi;
+  late WebhooksApi webhooksApi;
 
   String url = 'https://api.test.com/paypal_callback';
 
@@ -106,12 +106,12 @@ void main() {
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _webhooksApi = WebhooksApi(
+    webhooksApi = WebhooksApi(
         PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   test('Test list webhooks', () async {
-    var webhooksList = await _webhooksApi.listWebhooks();
+    var webhooksList = await webhooksApi.listWebhooks();
     expect(webhooksList.webhooks.isNotEmpty, true);
   });
 
@@ -122,23 +122,23 @@ void main() {
       EventType(name: 'BILLING.SUBSCRIPTION.CANCELLED'),
     ]);
 
-    webhook = await _webhooksApi.createWebhook(webhook);
+    webhook = await webhooksApi.createWebhook(webhook);
 
     expect(webhook.eventTypes.length, 2);
   });
 
   test('Test delete webhook', () async {
-    await _webhooksApi.deleteWebhook('1HG80537L4140544T');
+    await webhooksApi.deleteWebhook('1HG80537L4140544T');
 
     try {
-      await _webhooksApi.showWebhookDetails('1HG80537L4140544T');
+      await webhooksApi.showWebhookDetails('1HG80537L4140544T');
     } on ApiException catch (e) {
       expect(e.statusCode, HttpStatus.notFound);
     }
   });
 
   test('Test update webhook', () async {
-    var webhook = await _webhooksApi.updateWebhook('5B760822JX046254S', [
+    var webhook = await webhooksApi.updateWebhook('5B760822JX046254S', [
       Patch(
           op: PatchOperation.replace,
           path: '/url',
@@ -147,7 +147,7 @@ void main() {
 
     expect(webhook.url, 'https://api.test.com/paypal_callback_new');
 
-    webhook = await _webhooksApi.updateWebhook('5B760822JX046254S', [
+    webhook = await webhooksApi.updateWebhook('5B760822JX046254S', [
       Patch(
           op: PatchOperation.replace,
           path: '/url',
@@ -158,40 +158,40 @@ void main() {
   });
 
   test('Test show webhook details', () async {
-    var webhook = await _webhooksApi.showWebhookDetails('7BS56736HU608525B');
+    var webhook = await webhooksApi.showWebhookDetails('7BS56736HU608525B');
     expect(webhook.id, '7BS56736HU608525B');
   });
 
   test('Test list event types for webhook', () async {
-    var eventTypesList = await _webhooksApi
+    var eventTypesList = await webhooksApi
         .listEventSubscriptionsForWebhook('7BS56736HU608525B');
     expect(eventTypesList.eventTypes.isNotEmpty, true);
   });
 
   test('Test list available events', () async {
-    var eventTypesList = await _webhooksApi.listAvailableEvents();
+    var eventTypesList = await webhooksApi.listAvailableEvents();
     expect(eventTypesList.eventTypes.isNotEmpty, true);
   });
 
   test('Test list event notifications', () async {
-    var eventList = await _webhooksApi.listEventNotifications();
+    var eventList = await webhooksApi.listEventNotifications();
     expect(eventList.events.isNotEmpty, true);
   });
 
   test('Test show event notification details', () async {
-    var event = await _webhooksApi
+    var event = await webhooksApi
         .showEventNotificationDetails('WH-775565228C8562314-0UB98355RN659701W');
     expect(event.id, 'WH-775565228C8562314-0UB98355RN659701W');
   });
 
   test('Test resend event notification', () async {
-    var event = await _webhooksApi.resendEventNotification(
+    var event = await webhooksApi.resendEventNotification(
         'WH-775565228C8562314-0UB98355RN659701W', ['7BS56736HU608525B']);
     expect(event.id, 'WH-775565228C8562314-0UB98355RN659701W');
   });
 
   test('Test simulate event', () async {
-    var event = await _webhooksApi.simulateWebhookEvent(SimulateEvent(
+    var event = await webhooksApi.simulateWebhookEvent(SimulateEvent(
         webhookId: '7BS56736HU608525B',
         eventType: 'BILLING.SUBSCRIPTION.CREATED'));
     expect(event.eventType, 'BILLING.SUBSCRIPTION.CREATED');

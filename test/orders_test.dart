@@ -10,9 +10,9 @@ import 'helper/mock_http_client.dart';
 import 'helper/util.dart';
 
 void main() {
-  late OrdersApi _ordersApi;
+  late OrdersApi ordersApi;
 
-  String _orderDescription = 'Test description';
+  String orderDescription = 'Test description';
 
   setUp(() {
     var mockHttpClient = MockHttpClient(MockHttpClientHandler());
@@ -26,7 +26,7 @@ void main() {
         (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
-      _orderDescription = patch.value;
+      orderDescription = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
@@ -34,7 +34,7 @@ void main() {
         (request) async {
       var json = await getJson('orders/show_order_details.json');
 
-      json = json.replaceAll('Test description', _orderDescription);
+      json = json.replaceAll('Test description', orderDescription);
 
       return Response(
           jsonEncode(Order.fromJson(jsonDecode(json))), HttpStatus.ok);
@@ -42,12 +42,12 @@ void main() {
 
     var paypalEnvironment = PayPalEnvironment.sandbox(
         clientId: 'clientId', clientSecret: 'clientSecret');
-    _ordersApi =
+    ordersApi =
         OrdersApi(PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   test('Test create order', () async {
-    var order = await _ordersApi.createOrder(
+    var order = await ordersApi.createOrder(
         OrderRequest(intent: OrderRequestIntent.capture, purchaseUnits: [
       PurchaseUnitRequest(
           amount: AmountWithBreakdown(currencyCode: 'GBP', value: '10.00'))
@@ -57,20 +57,20 @@ void main() {
   });
 
   test('Test update order', () async {
-    var order = await _ordersApi.showOrderDetails('74D431066L401592Y');
+    var order = await ordersApi.showOrderDetails('74D431066L401592Y');
     expect(order.purchaseUnits!.first.description, 'Test description');
 
-    await _ordersApi.updateOrder('74D431066L401592Y', [
+    await ordersApi.updateOrder('74D431066L401592Y', [
       Patch(
           op: PatchOperation.add,
           path: '/purchase_units/@reference_id==\'default\'/description',
           value: 'Test description updated')
     ]);
 
-    order = await _ordersApi.showOrderDetails('74D431066L401592Y');
+    order = await ordersApi.showOrderDetails('74D431066L401592Y');
     expect(order.purchaseUnits!.first.description, 'Test description updated');
 
-    await _ordersApi.updateOrder('74D431066L401592Y', [
+    await ordersApi.updateOrder('74D431066L401592Y', [
       Patch(
           op: PatchOperation.replace,
           path: '/purchase_units/@reference_id==\'default\'/description',
@@ -79,7 +79,7 @@ void main() {
   });
 
   test('Test show order details', () async {
-    var order = await _ordersApi.showOrderDetails('74D431066L401592Y');
+    var order = await ordersApi.showOrderDetails('74D431066L401592Y');
 
     expect(order.id, '74D431066L401592Y');
     expect(order.purchaseUnits!.first.description, 'Test description');
