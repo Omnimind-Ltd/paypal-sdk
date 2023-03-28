@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.7
+- README fix
+
 ## 1.0.6
 - Update packages.
 

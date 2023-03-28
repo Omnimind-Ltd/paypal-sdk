@@ -1,7 +1,7 @@
 name: paypal_sdk
 description: PayPal SDK for facilitating integration with PayPal REST APIs
 homepage: https://github.com/Omnimind-Ltd/paypal-sdk
-version: 1.0.6
+version: 1.0.7
 
 environment:
   sdk: '>=2.15.0 <3.0.0'
