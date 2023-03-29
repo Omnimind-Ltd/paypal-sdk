@@ -40,8 +40,8 @@ class OrdersApi {
       headers['PayPal-Request-Id'] = payPalRequestId;
     }
 
-    if (payPalPartnerAttributionId != null) {
-      headers['PayPal-Partner-Attribution-Id'] = payPalPartnerAttributionId;
+    if (payPalPartnerAttributtonId != null) {
+      headers['PayPal-Partner-Attributton-Id'] = payPalPartnerAttributtonId;
     }
 
     if (payPalClientMetadataId != null) {
