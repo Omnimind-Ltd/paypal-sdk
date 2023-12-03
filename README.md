@@ -1,3 +1,7 @@
+Note: This library is not official from PayPal and is a fork of the <a href="https://pub.dev/packages/paypal_sdk">paypal-sdk</a> package (that seems not maintained anymore).
+
+So I decided to fork it and make it work with the latest requirements and fix some issues.
+
 Paypal SDK <a href="https://developer.paypal.com/api/rest/">https://developer.paypal.com/api/rest/</a>
 
 ## Features
@@ -19,6 +23,4 @@ Check out the <a href="https://pub.dev/packages/paypal_sdk/example">Examples</a>
 
 ## Additional information
 
-Please raise issues on <a href="https://github.com/Omnimind-Ltd/paypal-sdk/issues">GitHub</a>. Pull requests always welcome.
-
-<a href="https://www.buymeacoffee.com/uJ8QjYHOKs" target="_blank"><img align="center" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="30px" width= "108px"></a>
+Please raise issues on <a href="https://github.com/EBaglieriSkylabs/flutter_paypal_sdk">GitHub</a>. Pull requests always welcome.
