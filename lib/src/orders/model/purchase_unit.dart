@@ -1,6 +1,6 @@
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/orders.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/orders.dart';
 
 part 'purchase_unit.g.dart';
 
@@ -166,8 +166,7 @@ class PurchaseUnit {
 
   Map<String, dynamic> toJson() => _$PurchaseUnitToJson(this);
 
-  factory PurchaseUnit.fromJson(Map<String, dynamic> json) =>
-      _$PurchaseUnitFromJson(json);
+  factory PurchaseUnit.fromJson(Map<String, dynamic> json) => _$PurchaseUnitFromJson(json);
 
   @override
   String toString() {

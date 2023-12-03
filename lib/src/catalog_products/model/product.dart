@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 part 'product.g.dart';
 
@@ -82,8 +82,7 @@ class Product {
 
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
   @override
   String toString() {
@@ -112,8 +111,7 @@ class ProductCollection {
   /// HATEOAS links.</a>
   final List<LinkDescription>? links;
 
-  const ProductCollection(
-      {required this.products, this.totalItems, this.totalPages, this.links});
+  const ProductCollection({required this.products, this.totalItems, this.totalPages, this.links});
 
   Map<String, dynamic> toJson() => _$ProductCollectionToJson(this);
 
@@ -147,8 +145,7 @@ class ProductCollectionElement {
   /// An array of request-related HATEOAS links.
   final List<LinkDescription> links;
 
-  const ProductCollectionElement(
-      this.id, this.name, this.description, this.createTime, this.links);
+  const ProductCollectionElement(this.id, this.name, this.description, this.createTime, this.links);
 
   Map<String, dynamic> toJson() => _$ProductCollectionElementToJson(this);
 
@@ -212,8 +209,7 @@ class ProductRequest {
 
   Map<String, dynamic> toJson() => _$ProductRequestToJson(this);
 
-  factory ProductRequest.fromJson(Map<String, dynamic> json) =>
-      _$ProductRequestFromJson(json);
+  factory ProductRequest.fromJson(Map<String, dynamic> json) => _$ProductRequestFromJson(json);
 
   @override
   String toString() {

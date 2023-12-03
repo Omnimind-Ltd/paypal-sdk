@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 part 'refund.g.dart';
 
@@ -24,8 +24,7 @@ class RefundRequest {
 
   Map<String, dynamic> toJson() => _$RefundRequestToJson(this);
 
-  factory RefundRequest.fromJson(Map<String, dynamic> json) =>
-      _$RefundRequestFromJson(json);
+  factory RefundRequest.fromJson(Map<String, dynamic> json) => _$RefundRequestFromJson(json);
 
   @override
   String toString() {
@@ -72,17 +71,8 @@ class Refund {
   /// Internet date and time format</a>
   final String? updateTime;
 
-  const Refund(
-      this.status,
-      this.statusDetails,
-      this.id,
-      this.amount,
-      this.invoiceId,
-      this.noteToPayer,
-      this.sellerPayableBreakdown,
-      this.links,
-      this.createTime,
-      this.updateTime);
+  const Refund(this.status, this.statusDetails, this.id, this.amount, this.invoiceId,
+      this.noteToPayer, this.sellerPayableBreakdown, this.links, this.createTime, this.updateTime);
 
   Map<String, dynamic> toJson() => _$RefundToJson(this);
 

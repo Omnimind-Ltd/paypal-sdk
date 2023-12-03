@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/payments/model/refund.dart';
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/src/payments/model/refund.dart';
 
 import 'model/authorization.dart';
 import 'model/capture.dart';
@@ -10,15 +10,13 @@ import 'model/capture.dart';
 class PaymentsApi {
   final PayPalHttpClient _payPalHttpClient;
 
-  PaymentsApi(PayPalHttpClient payPalHttpClient)
-      : _payPalHttpClient = payPalHttpClient;
+  PaymentsApi(PayPalHttpClient payPalHttpClient) : _payPalHttpClient = payPalHttpClient;
 
   // Authorizations
   /// Shows details for an authorized payment, by ID.
   ///
   /// Parameter authorizationId: The ID of the authorized payment for which to show details.
-  Future<Authorization> showDetailsForAuthorizedPayment(
-      String authorizationId) async {
+  Future<Authorization> showDetailsForAuthorizedPayment(String authorizationId) async {
     var url = _payPalHttpClient.getUrl(
       '/v2/payments/authorizations/$authorizationId',
     );
@@ -60,8 +58,7 @@ class PaymentsApi {
     }
 
     var body = jsonEncode(request.toJson());
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
     return Capture.fromJson(jsonDecode(response.body));
   }
 
@@ -114,8 +111,7 @@ class PaymentsApi {
     }
 
     var body = jsonEncode(amount.toJson());
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
     return Authorization.fromJson(jsonDecode(response.body));
   }
 
@@ -130,8 +126,7 @@ class PaymentsApi {
   /// Note:For three party transactions in which a partner is managing the API calls
   /// on behalf of a merchant, the partner must identify the merchant using either
   /// a PayPal-Auth-Assertion header or an access token with target_subject.
-  Future<void> voidAuthorizedPayment(String authorizationId,
-      {String? payPalAuthAssertion}) async {
+  Future<void> voidAuthorizedPayment(String authorizationId, {String? payPalAuthAssertion}) async {
     var url = _payPalHttpClient.getUrl(
       '/v2/payments/authorizations/$authorizationId/void',
     );
@@ -190,8 +185,7 @@ class PaymentsApi {
     }
 
     var body = jsonEncode(request.toJson());
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
     return Refund.fromJson(jsonDecode(response.body));
   }
 

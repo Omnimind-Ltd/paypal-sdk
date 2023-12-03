@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 import 'seller.dart';
 
@@ -45,8 +45,7 @@ class CaptureRequest {
 
   Map<String, dynamic> toJson() => _$CaptureRequestToJson(this);
 
-  factory CaptureRequest.fromJson(Map<String, dynamic> json) =>
-      _$CaptureRequestFromJson(json);
+  factory CaptureRequest.fromJson(Map<String, dynamic> json) => _$CaptureRequestFromJson(json);
 
   @override
   String toString() {
@@ -129,8 +128,7 @@ class Capture {
 
   Map<String, dynamic> toJson() => _$CaptureToJson(this);
 
-  factory Capture.fromJson(Map<String, dynamic> json) =>
-      _$CaptureFromJson(json);
+  factory Capture.fromJson(Map<String, dynamic> json) => _$CaptureFromJson(json);
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)

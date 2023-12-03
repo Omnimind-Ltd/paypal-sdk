@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 class MockHttpClient extends MockClient {
   final MockHttpClientHandler _mockHttpClientHandler;
@@ -45,14 +45,11 @@ class MockHttpClient extends MockClient {
               tokenType: 'Bearer',
               appId: 'APP-80W284485P519543T',
               expiresIn: 32400,
-              nonce:
-                  '2021-09-22T10:04:16Z70I9LDXcdu7aqfHHOwFtFTYba_NSS5IbJ3BFWr_0E4U')),
+              nonce: '2021-09-22T10:04:16Z70I9LDXcdu7aqfHHOwFtFTYba_NSS5IbJ3BFWr_0E4U')),
           HttpStatus.ok,
         );
       } else {
-        return Response(
-            jsonEncode(
-                AuthorizationError('invalid_client', 'error_description')),
+        return Response(jsonEncode(AuthorizationError('invalid_client', 'error_description')),
             HttpStatus.unauthorized);
       }
     });
@@ -62,8 +59,7 @@ class MockHttpClient extends MockClient {
 class MockHttpClientHandler {
   MockHttpClientHandler();
 
-  final Map<String, Map<String, Function>> handlers =
-      <String, Map<String, MockClientHandler>>{};
+  final Map<String, Map<String, Function>> handlers = <String, Map<String, MockClientHandler>>{};
 
   void addHandler(String path, String method, MockClientHandler handler) {
     handlers[path] ??= <String, MockClientHandler>{};
@@ -77,7 +73,6 @@ class MockHttpClientHandler {
       return await handler(request);
     }
 
-    throw Exception(
-        'No handler for request ${request.method} ${request.url.path}');
+    throw Exception('No handler for request ${request.method} ${request.url.path}');
   }
 }

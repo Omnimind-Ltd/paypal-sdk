@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/subscriptions.dart';
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/subscriptions.dart';
 import 'package:test/test.dart';
 
 import 'helper/mock_http_client.dart';
@@ -20,8 +20,8 @@ void main() {
 
   String planDescription = 'Test description';
   PlanStatus planStatus = PlanStatus.active;
-  PricingScheme pricingScheme = PricingScheme(
-      version: 3, fixedPrice: Money(currencyCode: 'GBP', value: '5.0'));
+  PricingScheme pricingScheme =
+      PricingScheme(version: 3, fixedPrice: Money(currencyCode: 'GBP', value: '5.0'));
   String subscriptionCustomId = 'custom_id';
 
   setUp(() {
@@ -36,83 +36,71 @@ void main() {
       return Response(json, HttpStatus.created);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'GET', (request) async {
+    mockHttpClient.addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'GET',
+        (request) async {
       var json = await getJson('subscriptions/show_plan_details.json');
 
       json = json.replaceAll('Test description', planDescription);
       json = json.replaceAll('INACTIVE', _planStatusEnumMap[planStatus]!);
       json = json.replaceAll('5.0', pricingScheme.fixedPrice!.value);
 
-      return Response(
-          jsonEncode(Plan.fromJson(jsonDecode(json))), HttpStatus.ok);
+      return Response(jsonEncode(Plan.fromJson(jsonDecode(json))), HttpStatus.ok);
     });
 
-    mockHttpClient
-        .addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'PATCH',
-            (request) async {
+    mockHttpClient.addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY', 'PATCH',
+        (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
       planDescription = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/activate', 'POST',
+    mockHttpClient.addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/activate', 'POST',
         (request) async {
       planStatus = PlanStatus.active;
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/deactivate', 'POST',
+    mockHttpClient.addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/deactivate', 'POST',
         (request) async {
       planStatus = PlanStatus.inactive;
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/update-pricing-schemes',
-        'POST', (request) async {
-      var updateRequest =
-          PricingSchemesUpdateRequest.fromJson(jsonDecode(request.body));
+    mockHttpClient
+        .addHandler('/v1/billing/plans/P-6KG67732XY2608640MFGL3RY/update-pricing-schemes', 'POST',
+            (request) async {
+      var updateRequest = PricingSchemesUpdateRequest.fromJson(jsonDecode(request.body));
       pricingScheme = updateRequest.pricingSchemes.first.pricingScheme;
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler('/v1/billing/subscriptions', 'POST',
-        (request) async {
+    mockHttpClient.addHandler('/v1/billing/subscriptions', 'POST', (request) async {
       var json = await getJson('subscriptions/create_subscription.json');
       return Response(json, HttpStatus.created);
     });
 
-    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP', 'GET',
-        (request) async {
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP', 'GET', (request) async {
       var json = await getJson('subscriptions/show_subscription_details.json');
       json = json.replaceAll('subscription_custom_id', subscriptionCustomId);
-      return Response(jsonEncode(Subscription.fromJson(jsonDecode(json))),
-          HttpStatus.created);
+      return Response(jsonEncode(Subscription.fromJson(jsonDecode(json))), HttpStatus.created);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP', 'PATCH', (request) async {
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP', 'PATCH', (request) async {
       var patches = jsonDecode(request.body);
       var patch = Patch.fromJson(patches.first);
       subscriptionCustomId = patch.value;
       return Response('', HttpStatus.noContent);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-93KN27174NGR/activate',
-        'POST',
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-93KN27174NGR/activate', 'POST',
         (request) async => Response('', HttpStatus.noContent));
 
-    mockHttpClient.addHandler('/v1/billing/subscriptions/I-93KN27174NGR/cancel',
-        'POST', (request) async => Response('', HttpStatus.noContent));
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-93KN27174NGR/cancel', 'POST',
+        (request) async => Response('', HttpStatus.noContent));
 
-    mockHttpClient
-        .addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/capture', 'POST',
-            (request) async {
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/capture', 'POST',
+        (request) async {
       var response = Transaction(
           status: CaptureStatus.completed,
           id: 'id',
@@ -121,29 +109,25 @@ void main() {
       return Response(jsonEncode(response.toJson()), HttpStatus.accepted);
     });
 
-    mockHttpClient
-        .addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/revise', 'POST',
-            (request) async {
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/revise', 'POST',
+        (request) async {
       var json = await getJson('subscriptions/revise_subscription.json');
       return Response(json, HttpStatus.ok);
     });
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP/suspend',
-        'POST',
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/suspend', 'POST',
         (request) async => Response('', HttpStatus.noContent));
 
-    mockHttpClient.addHandler(
-        '/v1/billing/subscriptions/I-1WSNAWATBCXP/transactions', 'GET',
+    mockHttpClient.addHandler('/v1/billing/subscriptions/I-1WSNAWATBCXP/transactions', 'GET',
         (request) async {
       var json = await getJson('subscriptions/list_transactions.json');
       return Response(json, HttpStatus.ok);
     });
 
-    var paypalEnvironment = PayPalEnvironment.sandbox(
-        clientId: 'clientId', clientSecret: 'clientSecret');
-    subscriptionsApi = SubscriptionsApi(
-        PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
+    var paypalEnvironment =
+        PayPalEnvironment.sandbox(clientId: 'clientId', clientSecret: 'clientSecret');
+    subscriptionsApi =
+        SubscriptionsApi(PayPalHttpClient(paypalEnvironment, client: mockHttpClient));
   });
 
   setUp(() {});
@@ -183,56 +167,42 @@ void main() {
   });
 
   test('Test update plan', () async {
-    var billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    var billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.description, 'Test description');
 
     await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
-      Patch(
-          op: PatchOperation.replace,
-          path: '/description',
-          value: 'Test description updated')
+      Patch(op: PatchOperation.replace, path: '/description', value: 'Test description updated')
     ]);
 
-    billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.description, 'Test description updated');
 
-    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
-      Patch(
-          op: PatchOperation.replace,
-          path: '/description',
-          value: 'Test description')
-    ]);
+    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY',
+        [Patch(op: PatchOperation.replace, path: '/description', value: 'Test description')]);
   });
 
   test('Test show plan details', () async {
-    var billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    var billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.name, 'Test plan');
   });
 
   test('Test deactivate/activate plan', () async {
-    var billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    var billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.active);
 
     await subscriptionsApi.deactivatePlan('P-6KG67732XY2608640MFGL3RY');
 
-    billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.inactive);
 
     await subscriptionsApi.activatePlan('P-6KG67732XY2608640MFGL3RY');
 
-    billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     expect(billingPlan.status, PlanStatus.active);
   });
 
   test('Test update pricing schemas', () async {
-    var billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    var billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     var pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '5.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
@@ -247,8 +217,7 @@ void main() {
               ))
         ]));
 
-    billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '10.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
@@ -263,8 +232,7 @@ void main() {
               ))
         ]));
 
-    billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     pricingSchema = billingPlan.billingCycles?.first.pricingScheme;
     expect(pricingSchema?.fixedPrice?.value, '5.0');
     expect(pricingSchema?.fixedPrice?.currencyCode, 'GBP');
@@ -272,60 +240,48 @@ void main() {
 
   // Subscription tests
   test('Test create subscription', () async {
-    var createSubscriptionRequest = SubscriptionRequest(
-        planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
-    dynamic subscription =
-        await subscriptionsApi.createSubscription(createSubscriptionRequest);
+    var createSubscriptionRequest =
+        SubscriptionRequest(planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
+    dynamic subscription = await subscriptionsApi.createSubscription(createSubscriptionRequest);
 
     expect(subscription is Subscription, true);
   });
 
   test('Test update subscription', () async {
-    var subscription =
-        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    var subscription = await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
     expect(subscription.customId, 'custom_id');
 
-    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
-      Patch(
-          op: PatchOperation.add,
-          path: '/custom_id',
-          value: 'updated_custom_id')
-    ]);
+    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP',
+        [Patch(op: PatchOperation.add, path: '/custom_id', value: 'updated_custom_id')]);
 
-    subscription =
-        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    subscription = await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
     expect(subscription.customId, 'updated_custom_id');
 
-    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
-      Patch(op: PatchOperation.add, path: '/custom_id', value: 'custom_id')
-    ]);
+    await subscriptionsApi.updateSubscription(
+        'I-1WSNAWATBCXP', [Patch(op: PatchOperation.add, path: '/custom_id', value: 'custom_id')]);
   });
 
   test('Test show subscription details', () async {
-    dynamic subscription =
-        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    dynamic subscription = await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
 
     expect(subscription is Subscription, true);
     expect(subscription.id, 'I-1WSNAWATBCXP');
   });
 
   test('Test activate subscription', () async {
-    await subscriptionsApi.activateSubscription(
-        'I-93KN27174NGR', 'Now required');
+    await subscriptionsApi.activateSubscription('I-93KN27174NGR', 'Now required');
   });
 
   test('Test cancel subscription', () async {
-    await subscriptionsApi.cancelSubscription(
-        'I-93KN27174NGR', 'No longer needed');
+    await subscriptionsApi.cancelSubscription('I-93KN27174NGR', 'No longer needed');
   });
 
   test('Test capture authorized payment on subscription', () async {
     var request = SubscriptionCaptureRequest(
-        note: 'Outstanding balance',
-        amount: Money(currencyCode: 'GBP', value: '5.00'));
+        note: 'Outstanding balance', amount: Money(currencyCode: 'GBP', value: '5.00'));
 
-    var response = await subscriptionsApi
-        .captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
+    var response =
+        await subscriptionsApi.captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
     expect(response.status, CaptureStatus.completed);
   });
 
@@ -334,8 +290,7 @@ void main() {
         planId: 'P-9DR273747C8107746MFGHYKY',
         shippingAmount: Money(currencyCode: 'USD', value: '2.0'));
 
-    var response =
-        await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
+    var response = await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
     expect(response.shippingAmount!.value, '2.0');
   });
 
@@ -347,9 +302,7 @@ void main() {
 
   test('Test list transactions', () async {
     dynamic response = await subscriptionsApi.listTransactions(
-        'I-1WSNAWATBCXP',
-        '2021-09-01T07:50:20.940Z',
-        '2021-09-29T07:50:20.940Z');
+        'I-1WSNAWATBCXP', '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
 
     expect(response is TransactionsList, true);
     expect(response.transactions.isNotEmpty, true);

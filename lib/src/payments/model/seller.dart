@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 part 'seller.g.dart';
 
@@ -16,8 +16,7 @@ class SellerProtection {
 
   Map<String, dynamic> toJson() => _$SellerProtectionToJson(this);
 
-  factory SellerProtection.fromJson(Map<String, dynamic> json) =>
-      _$SellerProtectionFromJson(json);
+  factory SellerProtection.fromJson(Map<String, dynamic> json) => _$SellerProtectionFromJson(json);
 
   @override
   String toString() {

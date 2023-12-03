@@ -1,8 +1,8 @@
-import 'package:paypal_sdk/catalog_products.dart';
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/webhooks/webhooks_api.dart';
-import 'package:paypal_sdk/subscriptions.dart';
-import 'package:paypal_sdk/webhooks.dart';
+import 'package:flutter_paypal_sdk/catalog_products.dart';
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/src/webhooks/webhooks_api.dart';
+import 'package:flutter_paypal_sdk/subscriptions.dart';
+import 'package:flutter_paypal_sdk/webhooks.dart';
 
 const _clientId = 'clientId';
 const _clientSecret = 'clientSecret';
@@ -10,12 +10,11 @@ const _clientSecret = 'clientSecret';
 void main() async {
   AccessToken? accessToken; // load existing token here if available
 
-  var paypalEnvironment = PayPalEnvironment.sandbox(
-      clientId: _clientId, clientSecret: _clientSecret);
+  var paypalEnvironment =
+      PayPalEnvironment.sandbox(clientId: _clientId, clientSecret: _clientSecret);
 
-  var payPalHttpClient =
-      PayPalHttpClient(paypalEnvironment, accessToken: accessToken,
-          accessTokenUpdatedCallback: (accessToken) async {
+  var payPalHttpClient = PayPalHttpClient(paypalEnvironment, accessToken: accessToken,
+      accessTokenUpdatedCallback: (accessToken) async {
     // Persist token for re-use
   });
 
@@ -49,9 +48,7 @@ Future<void> catalogProductsExamples(PayPalHttpClient payPalHttpClient) async {
   // Create product
   try {
     var createProductRequest = ProductRequest(
-        name: 'test_product',
-        type: ProductType.digital,
-        description: 'test_description');
+        name: 'test_product', type: ProductType.digital, description: 'test_description');
 
     var product = await productsApi.createProduct(createProductRequest);
 
@@ -62,12 +59,8 @@ Future<void> catalogProductsExamples(PayPalHttpClient payPalHttpClient) async {
 
   // Update product
   try {
-    await productsApi.updateProduct('product_id', [
-      Patch(
-          op: PatchOperation.replace,
-          path: '/description',
-          value: 'Updated description')
-    ]);
+    await productsApi.updateProduct('product_id',
+        [Patch(op: PatchOperation.replace, path: '/description', value: 'Updated description')]);
   } on ApiException catch (e) {
     print(e);
   }
@@ -115,20 +108,15 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
 
   // Update plan
   try {
-    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY', [
-      Patch(
-          op: PatchOperation.replace,
-          path: '/description',
-          value: 'Test description')
-    ]);
+    await subscriptionsApi.updatePlan('P-6KG67732XY2608640MFGL3RY',
+        [Patch(op: PatchOperation.replace, path: '/description', value: 'Test description')]);
   } on ApiException catch (e) {
     print(e);
   }
 
   // Show plan details
   try {
-    var billingPlan =
-        await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
+    var billingPlan = await subscriptionsApi.showPlanDetails('P-6KG67732XY2608640MFGL3RY');
     print(billingPlan);
   } on ApiException catch (e) {
     print(e);
@@ -166,10 +154,9 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
   // Subscriptions
   // Create subscription
   try {
-    var createSubscriptionRequest = SubscriptionRequest(
-        planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
-    var subscription =
-        await subscriptionsApi.createSubscription(createSubscriptionRequest);
+    var createSubscriptionRequest =
+        SubscriptionRequest(planId: 'P-6KG67732XY2608640MFGL3RY', customId: 'custom_id');
+    var subscription = await subscriptionsApi.createSubscription(createSubscriptionRequest);
     print(subscription);
   } on ApiException catch (e) {
     print(e);
@@ -177,20 +164,15 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
 
   // Update subscription
   try {
-    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP', [
-      Patch(
-          op: PatchOperation.add,
-          path: '/custom_id',
-          value: 'updated_custom_id')
-    ]);
+    await subscriptionsApi.updateSubscription('I-1WSNAWATBCXP',
+        [Patch(op: PatchOperation.add, path: '/custom_id', value: 'updated_custom_id')]);
   } on ApiException catch (e) {
     print(e);
   }
 
   // Show subscription details
   try {
-    var subscription =
-        await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
+    var subscription = await subscriptionsApi.showSubscriptionDetails('I-1WSNAWATBCXP');
     print(subscription);
   } on ApiException catch (e) {
     print(e);
@@ -203,8 +185,7 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
 
   // Cancel subscription
   try {
-    await subscriptionsApi.cancelSubscription(
-        'I-93KN27174NGR', 'No longer needed');
+    await subscriptionsApi.cancelSubscription('I-93KN27174NGR', 'No longer needed');
   } on ApiException catch (e) {
     print(e);
   }
@@ -212,11 +193,10 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
   // Capture authorized payment on subscription
   try {
     var request = SubscriptionCaptureRequest(
-        note: 'Outstanding balance',
-        amount: Money(currencyCode: 'GBP', value: '5.00'));
+        note: 'Outstanding balance', amount: Money(currencyCode: 'GBP', value: '5.00'));
 
-    var response = await subscriptionsApi
-        .captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
+    var response =
+        await subscriptionsApi.captureAuthorizedPaymentOnSubscription('I-1WSNAWATBCXP', request);
     print(response);
   } on ApiException catch (e) {
     print(e);
@@ -228,8 +208,7 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
         planId: 'P-9DR273747C8107746MFGHYKY',
         shippingAmount: Money(currencyCode: 'USD', value: '2.0'));
 
-    var response =
-        await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
+    var response = await subscriptionsApi.reviseSubscription('I-1WSNAWATBCXP', request);
     print(response);
   } on ApiException catch (e) {
     print(e);
@@ -245,8 +224,8 @@ Future<void> subscriptionExamples(PayPalHttpClient payPalHttpClient) async {
 
   // List transactions for subscription
   try {
-    var response = await subscriptionsApi.listTransactions('I-1WSNAWATBCXP',
-        '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
+    var response = await subscriptionsApi.listTransactions(
+        'I-1WSNAWATBCXP', '2021-09-01T07:50:20.940Z', '2021-09-29T07:50:20.940Z');
     print(response);
   } on ApiException catch (e) {
     print(e);
@@ -266,8 +245,7 @@ Future<void> webhookExamples(PayPalHttpClient payPalHttpClient) async {
 
   // Create webhook
   try {
-    var webhook =
-        Webhook(url: 'https://api.test.com/paypal_callback', eventTypes: [
+    var webhook = Webhook(url: 'https://api.test.com/paypal_callback', eventTypes: [
       EventType(name: 'BILLING.SUBSCRIPTION.CREATED'),
       EventType(name: 'BILLING.SUBSCRIPTION.CANCELLED'),
     ]);
@@ -307,8 +285,7 @@ Future<void> webhookExamples(PayPalHttpClient payPalHttpClient) async {
 
   // List event types for webhook
   try {
-    var eventTypesList =
-        await webhooksApi.listEventSubscriptionsForWebhook('7BS56736HU608525B');
+    var eventTypesList = await webhooksApi.listEventSubscriptionsForWebhook('7BS56736HU608525B');
     print(eventTypesList);
   } on ApiException catch (e) {
     print(e);

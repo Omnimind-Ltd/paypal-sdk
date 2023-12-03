@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 import 'model/product.dart';
 
@@ -8,8 +8,7 @@ import 'model/product.dart';
 class CatalogProductsApi {
   final PayPalHttpClient _payPalHttpClient;
 
-  CatalogProductsApi(PayPalHttpClient payPalHttpClient)
-      : _payPalHttpClient = payPalHttpClient;
+  CatalogProductsApi(PayPalHttpClient payPalHttpClient) : _payPalHttpClient = payPalHttpClient;
 
   /// Lists products.
   ///
@@ -22,8 +21,7 @@ class CatalogProductsApi {
   ///
   /// Parameter total_required: Indicates whether to show the total count in
   /// the response.
-  Future<ProductCollection> listProducts(
-      {int? pageSize, int? page, bool? totalRequired}) async {
+  Future<ProductCollection> listProducts({int? pageSize, int? page, bool? totalRequired}) async {
     var uri = _payPalHttpClient.getUrl(
       '/v1/catalogs/products',
       queryParameters: {
@@ -67,8 +65,7 @@ class CatalogProductsApi {
 
     var body = jsonEncode(request.toJson());
 
-    var response =
-        await _payPalHttpClient.post(uri, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(uri, headers: headers, body: body);
     return Product.fromJson(jsonDecode(response.body));
   }
 
@@ -87,12 +84,11 @@ class CatalogProductsApi {
   /// home_url. Operations:	add, replace, remove
   /// </li>
   /// </ul>
-  Future<void> updateProduct(
-      String productId, List<Patch> patchRequests) async {
+  Future<void> updateProduct(String productId, List<Patch> patchRequests) async {
     var uri = _payPalHttpClient.getUrl('/v1/catalogs/products/$productId');
 
-    var patchRequest = List.generate(
-        patchRequests.length, (index) => patchRequests[index].toJson());
+    var patchRequest =
+        List.generate(patchRequests.length, (index) => patchRequests[index].toJson());
 
     var body = jsonEncode(patchRequest);
 

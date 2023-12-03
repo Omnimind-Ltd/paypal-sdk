@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 part 'event.g.dart';
 
@@ -35,16 +35,8 @@ class Event {
   /// An array of request-related HATEOAS links.
   final List<LinkDescription> links;
 
-  Event(
-      this.id,
-      this.createTime,
-      this.resourceType,
-      this.eventVersion,
-      this.eventType,
-      this.summary,
-      this.resourceVersion,
-      this.resource,
-      this.links);
+  Event(this.id, this.createTime, this.resourceType, this.eventVersion, this.eventType,
+      this.summary, this.resourceVersion, this.resource, this.links);
 
   Map<String, dynamic> toJson() => _$EventToJson(this);
 
@@ -75,8 +67,7 @@ class EventList {
 
   Map<String, dynamic> toJson() => _$EventListToJson(this);
 
-  factory EventList.fromJson(Map<String, dynamic> json) =>
-      _$EventListFromJson(json);
+  factory EventList.fromJson(Map<String, dynamic> json) => _$EventListFromJson(json);
 
   @override
   String toString() {
@@ -94,8 +85,7 @@ class ResourceVersion {
 
   Map<String, dynamic> toJson() => _$ResourceVersionToJson(this);
 
-  factory ResourceVersion.fromJson(Map<String, dynamic> json) =>
-      _$ResourceVersionFromJson(json);
+  factory ResourceVersion.fromJson(Map<String, dynamic> json) => _$ResourceVersionFromJson(json);
 
   @override
   String toString() {
@@ -118,16 +108,11 @@ class EventType {
   /// Identifier for the event type example: 1.0/2.0 etc.
   final List<ResourceVersion>? resourceVersions;
 
-  const EventType(
-      {required this.name,
-      this.description,
-      this.status,
-      this.resourceVersions});
+  const EventType({required this.name, this.description, this.status, this.resourceVersions});
 
   Map<String, dynamic> toJson() => _$EventTypeToJson(this);
 
-  factory EventType.fromJson(Map<String, dynamic> json) =>
-      _$EventTypeFromJson(json);
+  factory EventType.fromJson(Map<String, dynamic> json) => _$EventTypeFromJson(json);
 
   @override
   String toString() {
@@ -146,8 +131,7 @@ class EventTypeList {
 
   Map<String, dynamic> toJson() => _$EventTypeListToJson(this);
 
-  factory EventTypeList.fromJson(Map<String, dynamic> json) =>
-      _$EventTypeListFromJson(json);
+  factory EventTypeList.fromJson(Map<String, dynamic> json) => _$EventTypeListFromJson(json);
 
   @override
   String toString() {
@@ -170,16 +154,11 @@ class SimulateEvent {
   /// The identifier for event type ex: 1.0/2.0 etc.
   final String? resourceVersion;
 
-  const SimulateEvent(
-      {this.webhookId,
-      this.url,
-      required this.eventType,
-      this.resourceVersion});
+  const SimulateEvent({this.webhookId, this.url, required this.eventType, this.resourceVersion});
 
   Map<String, dynamic> toJson() => _$SimulateEventToJson(this);
 
-  factory SimulateEvent.fromJson(Map<String, dynamic> json) =>
-      _$SimulateEventFromJson(json);
+  factory SimulateEvent.fromJson(Map<String, dynamic> json) => _$SimulateEventFromJson(json);
 
   @override
   String toString() {

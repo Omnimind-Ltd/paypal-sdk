@@ -1,7 +1,7 @@
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/src/orders/model/payment.dart';
+import 'package:flutter_paypal_sdk/src/orders/model/purchase_unit.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/orders/model/payment.dart';
-import 'package:paypal_sdk/src/orders/model/purchase_unit.dart';
 
 import 'payer.dart';
 
@@ -171,15 +171,11 @@ class OrderRequest {
   final ApplicationContext? applicationContext;
 
   const OrderRequest(
-      {required this.intent,
-      this.payer,
-      required this.purchaseUnits,
-      this.applicationContext});
+      {required this.intent, this.payer, required this.purchaseUnits, this.applicationContext});
 
   Map<String, dynamic> toJson() => _$OrderRequestToJson(this);
 
-  factory OrderRequest.fromJson(Map<String, dynamic> json) =>
-      _$OrderRequestFromJson(json);
+  factory OrderRequest.fromJson(Map<String, dynamic> json) => _$OrderRequestFromJson(json);
 
   @override
   String toString() {

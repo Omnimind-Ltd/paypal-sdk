@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 import 'event.dart';
 
@@ -49,8 +49,7 @@ class Webhook {
 
   Map<String, dynamic> toJson() => _$WebhookToJson(this);
 
-  factory Webhook.fromJson(Map<String, dynamic> json) =>
-      _$WebhookFromJson(json);
+  factory Webhook.fromJson(Map<String, dynamic> json) => _$WebhookFromJson(json);
 
   @override
   String toString() {
@@ -68,8 +67,7 @@ class WebhooksList {
 
   Map<String, dynamic> toJson() => _$WebhooksListToJson(this);
 
-  factory WebhooksList.fromJson(Map<String, dynamic> json) =>
-      _$WebhooksListFromJson(json);
+  factory WebhooksList.fromJson(Map<String, dynamic> json) => _$WebhooksListFromJson(json);
 
   @override
   String toString() {
@@ -87,8 +85,7 @@ class WebhookIds {
 
   Map<String, dynamic> toJson() => _$WebhookIdsToJson(this);
 
-  factory WebhookIds.fromJson(Map<String, dynamic> json) =>
-      _$WebhookIdsFromJson(json);
+  factory WebhookIds.fromJson(Map<String, dynamic> json) => _$WebhookIdsFromJson(json);
 
   @override
   String toString() {

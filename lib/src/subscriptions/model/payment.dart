@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 import 'card.dart';
 
@@ -100,8 +100,7 @@ class PaymentSource {
 
   Map<String, dynamic> toJson() => _$PaymentSourceToJson(this);
 
-  factory PaymentSource.fromJson(Map<String, dynamic> json) =>
-      _$PaymentSourceFromJson(json);
+  factory PaymentSource.fromJson(Map<String, dynamic> json) => _$PaymentSourceFromJson(json);
 
   @override
   String toString() {
@@ -156,10 +155,7 @@ class FailedPaymentDetails {
   final String? nextPaymentRetryTime;
 
   const FailedPaymentDetails(
-      {required this.amount,
-      required this.time,
-      this.reasonCode,
-      this.nextPaymentRetryTime});
+      {required this.amount, required this.time, this.reasonCode, this.nextPaymentRetryTime});
 
   Map<String, dynamic> toJson() => _$FailedPaymentDetailsToJson(this);
 
@@ -191,13 +187,11 @@ class PaymentMethod {
   /// supports the following SEC codes.
   final StandardEntryClassCode? standardEntryClassCode;
 
-  const PaymentMethod(
-      {this.payerSelected, this.payeePreferred, this.standardEntryClassCode});
+  const PaymentMethod({this.payerSelected, this.payeePreferred, this.standardEntryClassCode});
 
   Map<String, dynamic> toJson() => _$PaymentMethodToJson(this);
 
-  factory PaymentMethod.fromJson(Map<String, dynamic> json) =>
-      _$PaymentMethodFromJson(json);
+  factory PaymentMethod.fromJson(Map<String, dynamic> json) => _$PaymentMethodFromJson(json);
 
   @override
   String toString() {

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 import 'seller.dart';
 
@@ -64,8 +64,7 @@ class Authorization {
 
   Map<String, dynamic> toJson() => _$AuthorizationToJson(this);
 
-  factory Authorization.fromJson(Map<String, dynamic> json) =>
-      _$AuthorizationFromJson(json);
+  factory Authorization.fromJson(Map<String, dynamic> json) => _$AuthorizationFromJson(json);
 
   @override
   String toString() {

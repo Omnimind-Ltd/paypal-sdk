@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 import 'billing_cycle.dart';
 import 'payment.dart';
@@ -154,8 +154,7 @@ class PlanRequest {
 
   Map<String, dynamic> toJson() => _$PlanRequestToJson(this);
 
-  factory PlanRequest.fromJson(Map<String, dynamic> json) =>
-      _$PlanRequestFromJson(json);
+  factory PlanRequest.fromJson(Map<String, dynamic> json) => _$PlanRequestFromJson(json);
 }
 
 /// A collection of billing plans
@@ -176,13 +175,11 @@ class PlanCollection {
   /// HATEOAS links.</a>
   final List<LinkDescription>? links;
 
-  const PlanCollection(
-      {required this.plans, this.totalItems, this.totalPages, this.links});
+  const PlanCollection({required this.plans, this.totalItems, this.totalPages, this.links});
 
   Map<String, dynamic> toJson() => _$PlanCollectionToJson(this);
 
-  factory PlanCollection.fromJson(Map<String, dynamic> json) =>
-      _$PlanCollectionFromJson(json);
+  factory PlanCollection.fromJson(Map<String, dynamic> json) => _$PlanCollectionFromJson(json);
 
   @override
   String toString() {

@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 part 'amount.g.dart';
 
@@ -91,8 +91,7 @@ class AmountBreakdown {
 
   Map<String, dynamic> toJson() => _$AmountBreakdownToJson(this);
 
-  factory AmountBreakdown.fromJson(Map<String, dynamic> json) =>
-      _$AmountBreakdownFromJson(json);
+  factory AmountBreakdown.fromJson(Map<String, dynamic> json) => _$AmountBreakdownFromJson(json);
 
   @override
   String toString() {

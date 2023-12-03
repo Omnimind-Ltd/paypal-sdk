@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/src/subscriptions/model/transaction.dart';
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/src/subscriptions/model/transaction.dart';
 
 import 'model/plan.dart';
 import 'model/pricing.dart';
@@ -11,8 +11,7 @@ import 'model/subscription.dart';
 class SubscriptionsApi {
   final PayPalHttpClient _payPalHttpClient;
 
-  SubscriptionsApi(PayPalHttpClient payPalHttpClient)
-      : _payPalHttpClient = payPalHttpClient;
+  SubscriptionsApi(PayPalHttpClient payPalHttpClient) : _payPalHttpClient = payPalHttpClient;
   // Plans
   /// Lists billing plans.
   ///
@@ -31,11 +30,7 @@ class SubscriptionsApi {
   /// Parameter total_required: Indicates whether to show the total count in
   /// the response.
   Future<PlanCollection> listPlans(
-      {String? productId,
-      String? planIds,
-      int? pageSize,
-      int? page,
-      bool? totalRequired}) async {
+      {String? productId, String? planIds, int? pageSize, int? page, bool? totalRequired}) async {
     var url = _payPalHttpClient.getUrl(
       '/v1/billing/plans',
       queryParameters: {
@@ -62,13 +57,11 @@ class SubscriptionsApi {
   }) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans');
 
-    var headers =
-        payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
+    var headers = payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
 
     var body = jsonEncode(planRequest.toJson());
 
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
     return Plan.fromJson(jsonDecode(response.body));
   }
 
@@ -101,8 +94,8 @@ class SubscriptionsApi {
   Future<void> updatePlan(String planId, List<Patch> patchRequests) async {
     var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId');
 
-    var patchRequest = List.generate(
-        patchRequests.length, (index) => patchRequests[index].toJson());
+    var patchRequest =
+        List.generate(patchRequests.length, (index) => patchRequests[index].toJson());
 
     var body = jsonEncode(patchRequest);
 
@@ -141,10 +134,8 @@ class SubscriptionsApi {
   /// Parameter planId: The ID of the plan.
   ///
   /// Parameter pricingSchemes: The update plan pricing request object
-  Future<void> updatePlanPricing(
-      String planId, PricingSchemesUpdateRequest pricingSchemes) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/plans/$planId/update-pricing-schemes');
+  Future<void> updatePlanPricing(String planId, PricingSchemesUpdateRequest pricingSchemes) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/plans/$planId/update-pricing-schemes');
 
     var body = jsonEncode(pricingSchemes.toJson());
 
@@ -181,8 +172,7 @@ class SubscriptionsApi {
 
     var body = jsonEncode(request.toJson());
 
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
     return Subscription.fromJson(jsonDecode(response.body));
   }
 
@@ -244,13 +234,11 @@ class SubscriptionsApi {
   /// subscriber.payment_source (for subscriptions funded by card payments). Operations: replace
   /// </li>
   /// </ul>
-  Future<void> updateSubscription(
-      String subscriptionId, List<Patch> patchRequests) async {
-    var url =
-        _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId');
+  Future<void> updateSubscription(String subscriptionId, List<Patch> patchRequests) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId');
 
-    var patchRequest = List.generate(
-        patchRequests.length, (index) => patchRequests[index].toJson());
+    var patchRequest =
+        List.generate(patchRequests.length, (index) => patchRequests[index].toJson());
 
     var body = jsonEncode(patchRequest);
 
@@ -265,11 +253,9 @@ class SubscriptionsApi {
   /// Possible value for fields are last_failed_payment and plan.
   Future<Subscription> showSubscriptionDetails(String subscriptionId,
       {List<String>? fields}) async {
-    var queryParameters =
-        fields != null ? <String, dynamic>{'fields': fields} : null;
+    var queryParameters = fields != null ? <String, dynamic>{'fields': fields} : null;
 
-    var url = _payPalHttpClient.getUrl(
-        '/v1/billing/subscriptions/$subscriptionId',
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId',
         queryParameters: queryParameters);
 
     var response = await _payPalHttpClient.get(url);
@@ -282,10 +268,8 @@ class SubscriptionsApi {
   ///
   /// Parameter reason: The reason for activation of a subscription. Required to
   /// reactivate the subscription.
-  Future<void> activateSubscription(
-      String subscriptionId, String reason) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/subscriptions/$subscriptionId/activate');
+  Future<void> activateSubscription(String subscriptionId, String reason) async {
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId/activate');
 
     var body = jsonEncode(Reason(reason).toJson());
 
@@ -297,8 +281,7 @@ class SubscriptionsApi {
   ///
   /// Parameter reason: The reason for the cancellation of a subscription.
   Future<void> cancelSubscription(String subscriptionId, String reason) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/subscriptions/$subscriptionId/cancel');
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId/cancel');
 
     var body = jsonEncode(Reason(reason).toJson());
 
@@ -317,16 +300,13 @@ class SubscriptionsApi {
     SubscriptionCaptureRequest request, {
     String? payPalRequestId,
   }) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/subscriptions/$subscriptionId/capture');
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId/capture');
 
-    var headers =
-        payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
+    var headers = payPalRequestId != null ? {'PayPal-Request-Id': payPalRequestId} : null;
 
     var body = jsonEncode(request.toJson());
 
-    var response =
-        await _payPalHttpClient.post(url, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(url, headers: headers, body: body);
 
     return Transaction.fromJson(jsonDecode(response.body));
   }
@@ -343,8 +323,7 @@ class SubscriptionsApi {
     String subscriptionId,
     SubscriptionReviseRequest request,
   ) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/subscriptions/$subscriptionId/revise');
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId/revise');
 
     var body = jsonEncode(request.toJson());
 
@@ -359,8 +338,7 @@ class SubscriptionsApi {
   ///
   /// Parameter reason: The reason for suspenson of the subscription.
   Future<void> suspendSubscription(String subscriptionId, Reason reason) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/billing/subscriptions/$subscriptionId/suspend');
+    var url = _payPalHttpClient.getUrl('/v1/billing/subscriptions/$subscriptionId/suspend');
 
     var body = jsonEncode(reason.toJson());
 
@@ -376,12 +354,11 @@ class SubscriptionsApi {
   /// Parameter endTime: The end time of the range of transactions to list.
   Future<TransactionsList> listTransactions(
       String subscriptionId, String startTime, String endTime) async {
-    var url = _payPalHttpClient.getUrl(
-        '/v1/billing/subscriptions/$subscriptionId/transactions',
-        queryParameters: {
-          'start_time': startTime,
-          'end_time': endTime,
-        });
+    var url = _payPalHttpClient
+        .getUrl('/v1/billing/subscriptions/$subscriptionId/transactions', queryParameters: {
+      'start_time': startTime,
+      'end_time': endTime,
+    });
 
     var response = await _payPalHttpClient.get(url);
     return TransactionsList.fromJson(jsonDecode(response.body));

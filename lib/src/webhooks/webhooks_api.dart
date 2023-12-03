@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 import 'model/event.dart';
 import 'model/verify_webhook_signature.dart';
@@ -10,17 +10,14 @@ import 'model/webhook.dart';
 class WebhooksApi {
   final PayPalHttpClient _payPalHttpClient;
 
-  WebhooksApi(PayPalHttpClient payPalHttpClient)
-      : _payPalHttpClient = payPalHttpClient;
+  WebhooksApi(PayPalHttpClient payPalHttpClient) : _payPalHttpClient = payPalHttpClient;
 
   /// Lists webhooks for an app.
   Future<WebhooksList> listWebhooks({AnchorType? anchorType}) async {
-    var queryParameters = anchorType != null
-        ? {'anchor_id': anchorTypeEnumMap[anchorType]}
-        : null;
+    var queryParameters = anchorType != null ? {'anchor_id': anchorTypeEnumMap[anchorType]} : null;
 
-    var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks',
-        queryParameters: queryParameters);
+    var url =
+        _payPalHttpClient.getUrl('/v1/notifications/webhooks', queryParameters: queryParameters);
 
     var response = await _payPalHttpClient.get(url);
     return WebhooksList.fromJson(jsonDecode(response.body));
@@ -55,12 +52,11 @@ class WebhooksApi {
   /// Parameter webhookId: The webhook you wish to delete
   ///
   /// Parameter patchRequests: The list of updates.
-  Future<Webhook> updateWebhook(
-      String webhookId, List<Patch> patchRequests) async {
+  Future<Webhook> updateWebhook(String webhookId, List<Patch> patchRequests) async {
     var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks/$webhookId');
 
-    var patchRequest = List.generate(
-        patchRequests.length, (index) => patchRequests[index].toJson());
+    var patchRequest =
+        List.generate(patchRequests.length, (index) => patchRequests[index].toJson());
 
     var body = jsonEncode(patchRequest);
 
@@ -83,10 +79,8 @@ class WebhooksApi {
   /// Lists event subscriptions for a webhook, by ID.
   ///
   /// Parameter webhookId: The ID of the webhook for which to list subscriptions.
-  Future<EventTypeList> listEventSubscriptionsForWebhook(
-      String webhookId) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/notifications/webhooks/$webhookId/event-types');
+  Future<EventTypeList> listEventSubscriptionsForWebhook(String webhookId) async {
+    var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks/$webhookId/event-types');
 
     var response = await _payPalHttpClient.get(url);
 
@@ -98,8 +92,7 @@ class WebhooksApi {
   /// Parameter request: the verify webhook signature request
   Future<VerifyWebhookSignatureResponse> verifyWebhookSignature(
       VerifyWebhookSignatureRequest request) async {
-    var url =
-        _payPalHttpClient.getUrl('/v1/notifications/verify-webhook-signature');
+    var url = _payPalHttpClient.getUrl('/v1/notifications/verify-webhook-signature');
 
     var body = jsonEncode(request.toJson());
 
@@ -110,8 +103,7 @@ class WebhooksApi {
   /// Lists available events to which any webhook can subscribe. For a list of
   /// supported events, see <a href="https://developer.paypal.com/docs/api-basics/notifications/webhooks/event-names/">Webhook event names.</a>
   Future<EventTypeList> listAvailableEvents() async {
-    var url =
-        _payPalHttpClient.getUrl('/v1/notifications/webhooks-event-types');
+    var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks-event-types');
 
     var response = await _payPalHttpClient.get(url);
     return EventTypeList.fromJson(jsonDecode(response.body));
@@ -174,8 +166,7 @@ class WebhooksApi {
   /// Parameter eventId: The ID of the webhook event notification for which
   /// to show details.
   Future<Event> showEventNotificationDetails(String eventId) async {
-    var url =
-        _payPalHttpClient.getUrl('/v1/notifications/webhooks-events/$eventId');
+    var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks-events/$eventId');
 
     var response = await _payPalHttpClient.get(url);
 
@@ -188,10 +179,8 @@ class WebhooksApi {
   /// Parameter eventId: The ID of the webhook event notification to resend.
   ///
   /// Parameter webhookIds: An array of webhook account IDs.
-  Future<Event> resendEventNotification(
-      String eventId, List<String> webhookIds) async {
-    var url = _payPalHttpClient
-        .getUrl('/v1/notifications/webhooks-events/$eventId/resend');
+  Future<Event> resendEventNotification(String eventId, List<String> webhookIds) async {
+    var url = _payPalHttpClient.getUrl('/v1/notifications/webhooks-events/$eventId/resend');
 
     var body = jsonEncode(WebhookIds(webhookIds).toJson());
 

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/core.dart';
 
 part 'platform_fee.g.dart';
 
@@ -17,8 +17,7 @@ class PlatformFee {
 
   Map<String, dynamic> toJson() => _$PlatformFeeToJson(this);
 
-  factory PlatformFee.fromJson(Map<String, dynamic> json) =>
-      _$PlatformFeeFromJson(json);
+  factory PlatformFee.fromJson(Map<String, dynamic> json) => _$PlatformFeeFromJson(json);
 
   @override
   String toString() {

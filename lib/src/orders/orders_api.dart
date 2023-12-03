@@ -1,14 +1,13 @@
 import 'dart:convert';
 
-import 'package:paypal_sdk/core.dart';
-import 'package:paypal_sdk/orders.dart';
+import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/orders.dart';
 
 /// Orders API interface
 class OrdersApi {
   final PayPalHttpClient _payPalHttpClient;
 
-  OrdersApi(PayPalHttpClient payPalHttpClient)
-      : _payPalHttpClient = payPalHttpClient;
+  OrdersApi(PayPalHttpClient payPalHttpClient) : _payPalHttpClient = payPalHttpClient;
 
   /// Creates an order
   ///
@@ -54,8 +53,7 @@ class OrdersApi {
 
     var body = jsonEncode(request.toJson());
 
-    var response =
-        await _payPalHttpClient.post(uri, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(uri, headers: headers, body: body);
     return Order.fromJson(jsonDecode(response.body));
   }
 
@@ -118,8 +116,8 @@ class OrdersApi {
   Future<void> updateOrder(String id, List<Patch> patchRequests) async {
     var url = _payPalHttpClient.getUrl('/v2/checkout/orders/$id');
 
-    var patchRequest = List.generate(
-        patchRequests.length, (index) => patchRequests[index].toJson());
+    var patchRequest =
+        List.generate(patchRequests.length, (index) => patchRequests[index].toJson());
 
     var body = jsonEncode(patchRequest);
 
@@ -137,8 +135,7 @@ class OrdersApi {
     List<String>? fields,
   }) async {
     var queryParameters = fields != null ? {'fields': fields} : null;
-    var uri = _payPalHttpClient.getUrl('/v2/checkout/orders/$id',
-        queryParameters: queryParameters);
+    var uri = _payPalHttpClient.getUrl('/v2/checkout/orders/$id', queryParameters: queryParameters);
 
     var response = await _payPalHttpClient.get(uri);
     return Order.fromJson(jsonDecode(response.body));
@@ -199,11 +196,9 @@ class OrdersApi {
       headers['Prefer'] = preferTypeEnumMap[prefer]!;
     }
 
-    var body =
-        paymentSource != null ? jsonEncode(paymentSource.toJson()) : null;
+    var body = paymentSource != null ? jsonEncode(paymentSource.toJson()) : null;
 
-    var response =
-        await _payPalHttpClient.post(uri, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(uri, headers: headers, body: body);
     return Order.fromJson(jsonDecode(response.body));
   }
 
@@ -262,11 +257,9 @@ class OrdersApi {
       headers['Prefer'] = preferTypeEnumMap[prefer]!;
     }
 
-    var body =
-        paymentSource != null ? jsonEncode(paymentSource.toJson()) : null;
+    var body = paymentSource != null ? jsonEncode(paymentSource.toJson()) : null;
 
-    var response =
-        await _payPalHttpClient.post(uri, headers: headers, body: body);
+    var response = await _payPalHttpClient.post(uri, headers: headers, body: body);
     return Order.fromJson(jsonDecode(response.body));
   }
 }

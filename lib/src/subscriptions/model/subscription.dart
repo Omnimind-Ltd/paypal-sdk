@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 import 'billing_cycle.dart';
 import 'payment.dart';
@@ -178,8 +178,7 @@ class Subscription {
 
   Map<String, dynamic> toJson() => _$SubscriptionToJson(this);
 
-  factory Subscription.fromJson(Map<String, dynamic> json) =>
-      _$SubscriptionFromJson(json);
+  factory Subscription.fromJson(Map<String, dynamic> json) => _$SubscriptionFromJson(json);
 
   @override
   String toString() {
@@ -470,8 +469,7 @@ class Subscriber {
 
   Map<String, dynamic> toJson() => _$SubscriberToJson(this);
 
-  factory Subscriber.fromJson(Map<String, dynamic> json) =>
-      _$SubscriberFromJson(json);
+  factory Subscriber.fromJson(Map<String, dynamic> json) => _$SubscriberFromJson(json);
 
   @override
   String toString() {

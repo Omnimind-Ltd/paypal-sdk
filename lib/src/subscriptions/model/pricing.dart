@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 part 'pricing.g.dart';
 
@@ -63,8 +63,7 @@ class PricingScheme {
 
   Map<String, dynamic> toJson() => _$PricingSchemeToJson(this);
 
-  factory PricingScheme.fromJson(Map<String, dynamic> json) =>
-      _$PricingSchemeFromJson(json);
+  factory PricingScheme.fromJson(Map<String, dynamic> json) => _$PricingSchemeFromJson(json);
 
   @override
   String toString() {
@@ -137,8 +136,7 @@ class PricingTier {
 
   Map<String, dynamic> toJson() => _$PricingTierToJson(this);
 
-  factory PricingTier.fromJson(Map<String, dynamic> json) =>
-      _$PricingTierFromJson(json);
+  factory PricingTier.fromJson(Map<String, dynamic> json) => _$PricingTierFromJson(json);
 
   @override
   String toString() {

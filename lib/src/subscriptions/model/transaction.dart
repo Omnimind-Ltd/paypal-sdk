@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 import 'subscription.dart';
 
@@ -29,17 +29,11 @@ class Transaction {
   final String? time;
 
   Transaction(
-      {this.status,
-      this.id,
-      this.amountWithBreakdown,
-      this.payerName,
-      this.payerEmail,
-      this.time});
+      {this.status, this.id, this.amountWithBreakdown, this.payerName, this.payerEmail, this.time});
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
-  factory Transaction.fromJson(Map<String, dynamic> json) =>
-      _$TransactionFromJson(json);
+  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
 
   @override
   String toString() {
@@ -64,13 +58,11 @@ class TransactionsList {
   /// An array of request-related HATEOAS links.
   final List<LinkDescription>? links;
 
-  TransactionsList(
-      this.transactions, this.totalItems, this.totalPages, this.links);
+  TransactionsList(this.transactions, this.totalItems, this.totalPages, this.links);
 
   Map<String, dynamic> toJson() => _$TransactionsListToJson(this);
 
-  factory TransactionsList.fromJson(Map<String, dynamic> json) =>
-      _$TransactionsListFromJson(json);
+  factory TransactionsList.fromJson(Map<String, dynamic> json) => _$TransactionsListFromJson(json);
 
   @override
   String toString() {
