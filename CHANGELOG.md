@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.9
+- Update dependencies to any.
+
 ## 1.0.8
 - Update packages and min Dart SDK.
 
