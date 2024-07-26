@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.10
+- Update dependencies to specific versions.
+
 ## 1.0.9
 - Update dependencies to any.
 
